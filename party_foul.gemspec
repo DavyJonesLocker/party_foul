@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.summary     = "Auto-submit Rails exceptions as new isues on Github"
   s.description = "Auto-submit Rails exceptions as new isues on Github"
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
+  s.files = Dir["{app,config,db,lib}/**/*"] + ["Rakefile", "README.md"]
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails", "~> 3.2.11"
