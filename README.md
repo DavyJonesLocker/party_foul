@@ -24,7 +24,8 @@ gem 'party_foul'
 ## Authors ##
 
 [Brian Cardarella](http://twitter.com/bcardarella)
-[Dan McClain](http://twitter.com/danmcclain)
+
+[Dan McClain](http://twitter.com/_danmcclain)
 
 [We are very thankful for the many contributors](https://github.com/dockyard/party_foul/graphs/contributors)
 
