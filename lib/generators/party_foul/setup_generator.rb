@@ -1,28 +1,23 @@
 require 'rails/generators'
 require 'io/console'
-require 'debugger'
 require 'net/http'
 
 module PartyFoul
   class SetupGenerator < Rails::Generators::Base
 
-    def create_configuration_file
+    def create_initializer_file
       puts 'A Github Application is required'
 
-      print 'Github App Client ID: '
-      client_id = gets.strip
-      print 'Github App Client Secret: '
-      client_secret = gets.strip
-      print 'Github username: '
-      username = gets.strip
-      print 'Github password: '
-      password = STDIN.noecho(&:gets).strip
-      puts ''
+      client_id = ask 'Github App Client ID:'
+      client_secret = ask 'Github App Client Secret:'
+      username = ask 'Github username:'
+      password = STDIN.noecho do
+        ask 'Github password:'
+      end
+      say ''
 
-      print 'Repository owner: '
-      owner = gets.strip
-      print 'Repository name: '
-      name = gets.strip
+      owner = ask 'Repository owner:'
+      name = ask 'Repository name:'
       auth_uri = URI("https://api.github.com/authorizations")
 
       response = nil
@@ -39,7 +34,7 @@ module PartyFoul
       if response.code == '201'
         token = JSON.parse(response.body)['token']
 
-        File.open('config/party_foul.yml', 'w') do |f|
+        File.open('config/initializers.party_foul.rb', 'w') do |f|
           f.puts <<-CONTENTS
 client_id:     #{client_id}
 client_secret: #{client_secret}
@@ -48,9 +43,11 @@ repo_owner:    #{owner}
 repo_name:     #{name}
 CONTENTS
         end
+      else
+        say 'There was an error retrieving your Github OAuth token'
       end
 
-      puts 'Done'
+      say 'Done'
     end
 
     private

@@ -32,8 +32,6 @@ ISSUE
     end
 
     def self.url_string(env)
-      # Arguments are +scheme+, +userinfo+, +host+, +port+, +registry+, +path+,
-      #     # +opaque+, +query+ and +fragment+, in that order.
       uri = URI::HTTP.new env['rack.url_scheme'], nil, env['SERVER_NAME'], env['SERVER_PORT'], nil, env['REQUEST_PATH'], nil, env['QUERY_STRING'], nil
 
       uri.to_s
