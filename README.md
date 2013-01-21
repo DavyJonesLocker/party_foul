@@ -6,6 +6,21 @@
 
 Rails exceptions automatically opened as issues on Github
 
+## About ##
+
+`PartyFoul` will capture exceptions in your application and will do the
+following:
+
+1. Will attempt to find a matching issue in your Github repo
+2. If no matching issue is found an new issue will be created with a
+   unique title, session information, and stack trace. The issue will be
+tagged as a 'Bug'
+3. If an open issue is found the occurance count and time stamp will be
+   updated
+4. If a closed issue is found the occurance count and time stamp will be
+   updated. The issue will be reopened and a 'Regression' tag will be
+added.
+
 ## Installation ##
 
 In your Gemfile add the following:
