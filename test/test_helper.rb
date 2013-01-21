@@ -18,3 +18,9 @@ end
 module MiniTest::Expectations
   infect_an_assertion :assert_received, :must_have_received
 end
+
+def clean_up_party
+  %w{github oauth_token endpoint owner repo ignored_exceptions}.each do |attr|
+    PartyFoul.send("#{attr}=", nil)
+  end
+end

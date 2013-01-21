@@ -8,7 +8,11 @@ module PartyFoul
   autoload :ExceptionHandler
 
   class << self
-    attr_accessor :github, :oauth_token, :endpoint, :owner, :repo
+    attr_accessor :github, :oauth_token, :endpoint, :owner, :repo, :ignored_exceptions
+  end
+
+  def self.ignored_exceptions
+    @ignored_exceptions || []
   end
 
   def self.config(&block)

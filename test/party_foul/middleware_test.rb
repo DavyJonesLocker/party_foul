@@ -3,11 +3,20 @@ require 'test_helper'
 describe 'Party Foul Middleware' do
   include Rack::Test::Methods
 
+  after do
+    clean_up_party
+  end
+
+  def error_to_raise
+    Exception
+  end
+
   def app
+    _self = self
     Rack::Builder.new {
       map '/' do
         use PartyFoul::Middleware
-        run lambda { |env| raise StandardError }
+        run lambda { |env| raise _self.error_to_raise }
       end
     }
   end
@@ -28,7 +37,9 @@ describe 'Party Foul Middleware' do
       PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'Test Title', state: 'open').returns(Hashie::Mash.new(issues: []))
       PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'Test Title', state: 'closed').returns(Hashie::Mash.new(issues: []))
       PartyFoul.github.issues.expects(:create).with('test_owner', 'test_repo', title: 'Test Title', body: 'Test Body', :labels => ['bug'])
-      get '/' rescue nil
+      lambda {
+        get '/'
+      }.must_raise(Exception)
     end
   end
 
@@ -41,7 +52,9 @@ describe 'Party Foul Middleware' do
       it 'will open the count on the body' do
         PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'Test Title', state: 'open').returns(Hashie::Mash.new(issues: [{title: 'Test Title', body: 'Test Body', status: 'open', number: 1}]))
         PartyFoul.github.issues.expects(:edit).with('test_owner', 'test_repo', 1, body: 'New Body', state: 'open')
-        get '/' rescue nil
+        lambda {
+          get '/'
+        }.must_raise(Exception)
       end
     end
 
@@ -50,8 +63,28 @@ describe 'Party Foul Middleware' do
         PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'Test Title', state: 'open').returns(Hashie::Mash.new(issues: []))
         PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'Test Title', state: 'closed').returns(Hashie::Mash.new(issues: [{title: 'Test Title', body: 'Test Body', status: 'closed', number: 1}]))
         PartyFoul.github.issues.expects(:edit).with('test_owner', 'test_repo', 1, body: 'New Body', state: 'open')
-        get '/' rescue nil
+        lambda {
+          get '/'
+        }.must_raise(Exception)
       end
+    end
+  end
+
+  context 'filtering' do
+    before do
+      PartyFoul.ignored_exceptions = [StandardError]
+      self.stubs(:error_to_raise).returns(StandardError)
+    end
+
+    it 'does not handle exception' do
+      PartyFoul::ExceptionHandler.any_instance.stubs(:issue_body).returns('Test Body')
+      PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'Test Title', state: 'open').returns(Hashie::Mash.new(issues: []))
+      PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'Test Title', state: 'closed').returns(Hashie::Mash.new(issues: []))
+      PartyFoul.github.stubs(:issues).returns(mock('Issues'))
+      PartyFoul.github.issues.expects(:create).never
+      lambda {
+        get '/'
+      }.must_raise(StandardError)
     end
   end
 end
