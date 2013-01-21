@@ -59,7 +59,7 @@ example in Rails you would add the following to
 `config/environments/production.rb`
 
 ```ruby
-config.middleware.insert_before -1, 'PartyFoul::Middleware'
+config.middleware.insert_before(-1, 'PartyFoul::Middleware')
 ```
 
 You should create a Github account specific for opening issues if you
