@@ -44,10 +44,14 @@ class PartyFoul::ExceptionHandler
   end
 
   def update_body(body)
-    current_count = body.match(/^Count: (\d+)/)[1].to_i
-    body.sub!("Count: #{current_count}", "Count: #{current_count + 1}")
-    body.sub!(/Last Occurance: .+/, "Last Occurance: #{Time.now}")
-    body
+    begin
+      current_count = body.match(/^Count: (\d+)/)[1].to_i
+      body.sub!("Count: #{current_count}", "Count: #{current_count + 1}")
+      body.sub!(/Last Occurance: .+/, "Last Occurance: #{Time.now}")
+      body
+    rescue
+      issue_body
+    end
   end
 
   def params
@@ -57,7 +61,7 @@ class PartyFoul::ExceptionHandler
   def issue_body
     <<-BODY
 Count: 1
-Laste Occurance: #{Time.now}
+Last Occurance: #{Time.now}
 Params: `#{params}`
 Exception: `#{exception}`
 Stack Trace:
