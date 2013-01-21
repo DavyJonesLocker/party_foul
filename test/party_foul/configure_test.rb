@@ -7,7 +7,7 @@ describe 'Party Foul Confg' do
   end
 
   it 'sets the proper config variables' do
-    PartyFoul.config do |config|
+    PartyFoul.configure do |config|
       config.ignored_exceptions = [StandardError]
       config.oauth_token        = 'test_token'
       config.endpoint           = 'test_endpoint'

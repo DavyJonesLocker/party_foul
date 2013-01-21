@@ -22,7 +22,7 @@ describe 'Party Foul Middleware' do
   end
 
   before do
-    PartyFoul.config do |config|
+    PartyFoul.configure do |config|
       config.oauth_token = 'abcdefg1234567890'
       config.owner       = 'test_owner'
       config.repo        = 'test_repo'

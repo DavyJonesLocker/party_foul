@@ -15,7 +15,7 @@ module PartyFoul
     @ignored_exceptions || []
   end
 
-  def self.config(&block)
+  def self.configure(&block)
     yield self
     _self = self
     self.github ||= Github.new do |config|
