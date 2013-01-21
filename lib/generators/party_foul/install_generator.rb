@@ -3,7 +3,7 @@ require 'io/console'
 require 'net/http'
 
 module PartyFoul
-  class SetupGenerator < Rails::Generators::Base
+  class InstallGenerator < Rails::Generators::Base
 
     def create_initializer_file
       puts 'A Github Application is required'
@@ -17,7 +17,7 @@ module PartyFoul
       say ''
 
       owner = ask 'Repository owner:'
-      name = ask 'Repository name:'
+      repo  = ask 'Repository name:'
       auth_uri = URI("https://api.github.com/authorizations")
 
       response = nil
@@ -32,15 +32,27 @@ module PartyFoul
       end
 
       if response.code == '201'
-        token = JSON.parse(response.body)['token']
+        oauth_token = JSON.parse(response.body)['token']
 
         File.open('config/initializers.party_foul.rb', 'w') do |f|
           f.puts <<-CONTENTS
-client_id:     #{client_id}
-client_secret: #{client_secret}
-access_token:  #{token}
-repo_owner:    #{owner}
-repo_name:     #{name}
+PartyFoul.configure do |config|
+  # the collection of exceptions to be ignored by PartyFoul
+  config.ignored_exceptions = [ActiveRecord::RecordNotFound]
+
+  # The OAuth token for the account that will be opening the issues on Github
+  config.oauth_token        = '#{oauth_token}'
+
+  # The API endpoint for Github. Unless you are hosting a private
+  # instance of Enterprise Github you do not need to include this
+  # config.endpoint         = 'https://api.github.com'
+
+  # The organization or user that owns the target repository
+  config.owner              = '#{owner}'
+
+  # The repository for this application
+  config.repo               = '#{repo}'
+end
 CONTENTS
         end
       else
