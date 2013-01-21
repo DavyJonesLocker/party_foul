@@ -34,7 +34,7 @@ class PartyFoul::ExceptionHandler
   end
 
   def update_issue(issue)
-    PartyFoul.github.issues.edit(PartyFoul.owner, PartyFoul.repo, issue.number, body: update_body(issue.body), state: 'open')
+    PartyFoul.github.issues.edit(PartyFoul.owner, PartyFoul.repo, issue['number'], body: update_body(issue['body']), state: 'open')
   end
 
   def issue_title
