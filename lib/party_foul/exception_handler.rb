@@ -50,11 +50,20 @@ class PartyFoul::ExceptionHandler
     body
   end
 
+  def params
+    env['action_dispatch.request.path_parameters'] || env['QUERY_STRING']
+  end
+
   def issue_body
     <<-BODY
 Count: 1
 Laste Occurance: #{Time.now}
+Params: `#{params}`
+Exception: `#{exception}`
 Stack Trace:
+```
+#{stack_trace}
+```
     BODY
   end
 
