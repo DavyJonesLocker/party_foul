@@ -11,8 +11,14 @@ Rails exceptions automatically opened as issues on Github
 In your Gemfile add the following:
 
 ```ruby
-gem 'party_foul'
+group :production do
+  gem 'party_foul'
+end
 ```
+
+We are only using PartyFoul in the `production` environment. If you want
+to use `PartyFoul` in other environments you should include the gem in
+those groups.
 
 ### Rails ###
 If you are using Rails you can run the install generator
