@@ -1,16 +1,16 @@
-# Configure Rails Environment
-ENV["RAILS_ENV"] = "test"
-
-require File.expand_path("../dummy/config/environment.rb",  __FILE__)
 require 'minitest/autorun'
-require "rails/test_help"
+require 'rack/test'
+require 'mocha/setup'
+require 'bourne'
+require 'debugger'
+require 'party_foul'
 
-Rails.backtrace_cleaner.remove_silencers!
+class MiniTest::Spec
+  class << self
+    alias :context :describe
+  end
+end
 
-# Load support files
-Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
-
-# Load fixtures from the engine
-if ActiveSupport::TestCase.method_defined?(:fixture_path=)
-  ActiveSupport::TestCase.fixture_path = File.expand_path("../fixtures", __FILE__)
+module MiniTest::Expectations
+  infect_an_assertion :assert_received, :must_have_received
 end
