@@ -14,12 +14,57 @@ In your Gemfile add the following:
 gem 'party_foul'
 ```
 
+### Rails ###
+If you are using Rails you can run the install generator
+
+```
+rails g party_foul:install
+```
+
+This will prompt you for the Github credentials of the account that will
+be opening the issues. The OAuth token for that account will be stored
+in `config/initializers/party_foul.rb`. You may want to remove this and
+store in an environment variable if you are not comfortable keeping this
+token in version control.
+
+### Other ###
+
+You will need to initialize `PartyFoul`, you can use the following to do
+so:
+
+```ruby
+PartyFoul.configure do |config|
+  # the collection of exceptions to be ignored by PartyFoul
+  config.ignored_exceptions = [ActiveRecord::RecordNotFound]
+
+  # The OAuth token for the account that will be opening the issues on Github
+  config.oauth_token        = 'abcdefgh1234567890'
+
+  # The API endpoint for Github. Unless you are hosting a private
+  # instance of Enterprise Github you do not need to include this
+  config.endpoint           = 'https://api.github.com'
+
+  # The organization or user that owns the target repository
+  config.owner              = 'owner_name'
+
+  # The repository for this application
+  config.repo               = 'repo_name'
+end
+```
 
 ## Usage ##
 
+Add as the very last middleware in your production `Rack` stack. For
+example in Rails you would add the following to
+`config/environments/production.rb`
 
-## What you get ##
+```ruby
+config.middleware.insert_before -1, 'PartyFoul::Middleware'
+```
 
+You should create a Github account specific for opening issues if you
+don't already have one. If you use your own account Github will not
+notify you via email when a new issue is created with your credentials.
 
 ## Authors ##
 
