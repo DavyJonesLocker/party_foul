@@ -1,12 +1,6 @@
-require 'active_support'
 require 'github_api'
 
 module PartyFoul
-  extend ActiveSupport::Autoload
-
-  autoload :Middleware
-  autoload :ExceptionHandler
-
   class << self
     attr_accessor :github, :oauth_token, :endpoint, :owner, :repo, :ignored_exceptions
   end
@@ -25,3 +19,6 @@ module PartyFoul
     end
   end
 end
+
+require 'party_foul/exception_handler'
+require 'party_foul/middleware'

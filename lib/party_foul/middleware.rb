@@ -17,8 +17,15 @@ module PartyFoul
 
     def allow_handling?(captured_exception)
       !PartyFoul.ignored_exceptions.find do |ignored_exception|
-        ignored_exception_class = Object.const_defined?(ignored_exception) ? Object.const_get(ignored_exception) : Object.const_missing(ignored_exception)
-        ignored_exception_class === captured_exception
+        names = ignored_exception.split('::')
+        names.shift if names.empty? || names.first.empty?
+
+        constant = Object
+        names.each do |name|
+          constant = constant.const_defined?(name) ? constant.const_get(name) : constant.const_missing(name)
+        end
+
+        constant === captured_exception
       end
     end
   end
