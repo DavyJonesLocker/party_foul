@@ -1,4 +1,8 @@
-require 'minitest/autorun'
+if defined?(M)
+  require 'minitest/spec'
+else
+  require 'minitest/autorun'
+end
 require 'rack/test'
 require 'mocha/setup'
 require 'bourne'
