@@ -34,7 +34,7 @@ module PartyFoul
       if response.code == '201'
         oauth_token = JSON.parse(response.body)['token']
 
-        File.open('config/initializers.party_foul.rb', 'w') do |f|
+        File.open('config/initializers/party_foul.rb', 'w') do |f|
           f.puts <<-CONTENTS
 PartyFoul.configure do |config|
   # the collection of exceptions to be ignored by PartyFoul
