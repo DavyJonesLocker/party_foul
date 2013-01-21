@@ -72,7 +72,7 @@ describe 'Party Foul Middleware' do
 
   context 'filtering' do
     before do
-      PartyFoul.ignored_exceptions = [StandardError]
+      PartyFoul.ignored_exceptions = ['StandardError']
       self.stubs(:error_to_raise).returns(StandardError)
     end
 
