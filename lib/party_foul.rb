@@ -4,7 +4,6 @@ require 'github_api'
 module PartyFoul
   extend ActiveSupport::Autoload
 
-  autoload :Engine
   autoload :Middleware
   autoload :ExceptionHandler
 
