@@ -20,13 +20,26 @@ class PartyFoul::ExceptionHandler
   end
 
   def find_issue
-    issue = nil
+    issue = PartyFoul.github.search.issues(owner: PartyFoul.owner, repo: PartyFoul.repo, state: 'open', keyword: issue_title).issues.first
 
-    unless issue = PartyFoul.github.search.issues(owner: PartyFoul.owner, repo: PartyFoul.repo, state: 'open', keyword: issue_title).issues.first
+    if !issue || issue['title'] != issue_title
       issue = PartyFoul.github.search.issues(owner: PartyFoul.owner, repo: PartyFoul.repo, state: 'closed', keyword: issue_title).issues.first
+      if !issue || issue['title'] != issue_title
+        issue = nil
+      end
     end
 
     issue
+  end
+
+  def stack_trace
+    exception.backtrace.map do |line|
+      if matches = extract_file_name_and_line_number(line)
+        " * [#{line}](../tree/master/#{matches[2]}#L#{matches[3]}) "
+      else
+        " * #{line} "
+      end
+    end.join("\n ")
   end
 
   def create_issue
@@ -34,7 +47,13 @@ class PartyFoul::ExceptionHandler
   end
 
   def update_issue(issue)
-    PartyFoul.github.issues.edit(PartyFoul.owner, PartyFoul.repo, issue['number'], body: update_body(issue['body']), state: 'open')
+    params = {body: update_body(issue['body']), state: 'open'}
+
+    if issue['state'] == 'closed'
+      params[:labels] = ['bug', 'regression']
+    end
+
+    PartyFoul.github.issues.edit(PartyFoul.owner, PartyFoul.repo, issue['number'], params)
   end
 
   def issue_title
