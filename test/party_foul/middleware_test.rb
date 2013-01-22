@@ -30,6 +30,7 @@ describe 'Party Foul Middleware' do
     PartyFoul.github.stubs(:issues).returns(mock('Issues'))
     PartyFoul.github.stubs(:search).returns(mock('Search'))
     PartyFoul.github.issues.stubs(:create)
+    PartyFoul.github.issues.stubs(:edit)
     PartyFoul::ExceptionHandler.any_instance.stubs(:issue_title).returns('Test Title')
     PartyFoul::ExceptionHandler.any_instance.stubs(:fingerprint).returns('test_fingerprint')
   end
@@ -70,6 +71,19 @@ describe 'Party Foul Middleware' do
           get '/'
         }.must_raise(Exception)
       end
+    end
+  end
+
+  context 'when issue is marked as "wontfix"' do
+    it 'does nothing' do
+      PartyFoul::ExceptionHandler.any_instance.stubs(:issue_body).returns('Test Body')
+      PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'test_fingerprint', state: 'open').returns(Hashie::Mash.new(issues: []))
+      PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'test_fingerprint', state: 'closed').returns(Hashie::Mash.new(issues: [{title: 'Test Title', body: 'Test Body', state: 'closed', number: 1, 'labels' => ['wontfix']}]))
+      PartyFoul.github.issues.expects(:create).never
+      PartyFoul.github.issues.expects(:edit).never
+      lambda {
+        get '/'
+      }.must_raise(Exception)
     end
   end
 

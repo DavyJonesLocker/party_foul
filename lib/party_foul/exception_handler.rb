@@ -42,13 +42,15 @@ class PartyFoul::ExceptionHandler
   end
 
   def update_issue(issue)
-    params = {body: update_body(issue['body']), state: 'open'}
+    unless issue.key?('labels') && issue['labels'].include?('wontfix')
+      params = {body: update_body(issue['body']), state: 'open'}
 
-    if issue['state'] == 'closed'
-      params[:labels] = ['bug', 'regression']
+      if issue['state'] == 'closed'
+        params[:labels] = ['bug', 'regression']
+      end
+
+      PartyFoul.github.issues.edit(PartyFoul.owner, PartyFoul.repo, issue['number'], params)
     end
-
-    PartyFoul.github.issues.edit(PartyFoul.owner, PartyFoul.repo, issue['number'], params)
   end
 
   def issue_title
