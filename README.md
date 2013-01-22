@@ -88,9 +88,6 @@ end
 
 Add as the very last middleware in your production `Rack` stack.
 
-## Usage ##
-
-
 ## Authors ##
 
 [Brian Cardarella](http://twitter.com/bcardarella)
