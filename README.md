@@ -14,13 +14,13 @@ following:
 1. Will attempt to find a matching issue in your Github repo
 2. If no matching issue is found an new issue will be created with a
    unique title, session information, and stack trace. The issue will be
-tagged as a 'Bug'
+tagged as a `bug`
 3. If an open issue is found the occurance count and time stamp will be
    updated
 4. If a closed issue is found the occurance count and time stamp will be
-   updated. The issue will be reopened and a 'regression' tag will be
+   updated. The issue will be reopened and a `regression` tag will be
 added.
-5. If the issue is marked as 'wontfix' the issue is not updated nor is
+5. If the issue is marked as `wontfix` the issue is not updated nor is
    a new issue created.
 
 ## Installation ##
