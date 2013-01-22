@@ -34,7 +34,7 @@ class PartyFoul::ExceptionHandler
       else
         line
       end
-    end.join("\n ")
+    end.join("\n")
   end
 
   def create_issue
