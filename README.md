@@ -20,6 +20,8 @@ tagged as a 'Bug'
 4. If a closed issue is found the occurance count and time stamp will be
    updated. The issue will be reopened and a 'Regression' tag will be
 added.
+5. If the issue is marked as 'wontfix' the issue is not updated nor is
+   a new issue created.
 
 ## Installation ##
 
@@ -107,4 +109,3 @@ on how to properly submit issues and pull requests.
 [@dockyard](http://twitter.com/dockyard)
 
 [Licensed under the MIT license](http://www.opensource.org/licenses/mit-license.php)
-
