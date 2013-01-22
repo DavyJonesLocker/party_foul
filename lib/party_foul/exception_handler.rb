@@ -30,9 +30,9 @@ class PartyFoul::ExceptionHandler
   def stack_trace
     exception.backtrace.map do |line|
       if matches = extract_file_name_and_line_number(line)
-        " * [#{line}](../tree/master/#{matches[2]}#L#{matches[3]}) "
+        "<a href='../tree/master/#{matches[2]}#L#{matches[3]}'>#{line}</a>"
       else
-        " * #{line} "
+        line
       end
     end.join("\n ")
   end
@@ -63,9 +63,9 @@ class PartyFoul::ExceptionHandler
 
   def update_body(body)
     begin
-      current_count = body.match(/Count: `(\d+)`/)[1].to_i
-      body.sub!("Count: `#{current_count}`", "Count: `#{current_count + 1}`")
-      body.sub!(/Last Occurance: .+/, "Last Occurance: `#{Time.now}`")
+      current_count = body.match(/<th>Count<\/th><td>(\d+)<\/td>/)[1].to_i
+      body.sub!("<th>Count</th><td>#{current_count}</td>", "<th>Count</th><td>#{current_count + 1}</td>")
+      body.sub!(/<th>Last Occurance<\/th><td>.+<\/td>/, "<th>Last Occurance</th><td>#{Time.now}</td>")
       body
     rescue
       issue_body
@@ -78,15 +78,16 @@ class PartyFoul::ExceptionHandler
 
   def issue_body
     <<-BODY
-Fingerprint: `#{fingerprint}`
-Count: `1`
-Last Occurance: `#{Time.now}`
-Params: `#{params}`
-Exception: `#{exception}`
-Stack Trace:
-```
-#{stack_trace}
-```
+<table>
+<tr><th>Fingerprint</th><td>#{fingerprint}</td><tr>
+<tr><th>Count</th><td>1</td></tr>
+<tr><th>Last Occurance</th><td>#{Time.now}</td></tr>
+<tr><th>Params</th><td>#{params}</td></tr>
+<tr><th>Exception</th><td>#{exception}</td></tr>
+</table>
+
+## Stack Trace
+<pre>#{stack_trace}</pre>
     BODY
   end
 

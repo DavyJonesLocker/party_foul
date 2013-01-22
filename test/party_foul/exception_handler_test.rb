@@ -17,29 +17,31 @@ describe 'Party Fould Exception Handler' do
 
       it 'updates count and timestamp' do
         body = <<-BODY
-Fingerprint: `abcdefg1234567890`
-Count: `1`
-Last Occurance: `#{Time.now}`
-Params: ``
-Exception: ``
-Stack Trace:
-```
+<table>
+<tr><th>Fingerprint</th><td>abcdefg1234567890</td><tr>
+<tr><th>Count</th><td>1</td></tr>
+<tr><th>Last Occurance</th><td>#{Time.now}</td></tr>
+<tr><th>Params</th><td></td></tr>
+<tr><th>Exception</th><td></td></tr>
+</table>
 
-```
+## Stack Trace
+<pre></pre>
     BODY
 
         Time.stubs(:now).returns(Time.new(1985, 10, 25, 1, 22, 0, '-05:00'))
 
         expected_body = <<-BODY
-Fingerprint: `abcdefg1234567890`
-Count: `2`
-Last Occurance: `#{Time.now}`
-Params: ``
-Exception: ``
-Stack Trace:
-```
+<table>
+<tr><th>Fingerprint</th><td>abcdefg1234567890</td><tr>
+<tr><th>Count</th><td>2</td></tr>
+<tr><th>Last Occurance</th><td>#{Time.now}</td></tr>
+<tr><th>Params</th><td></td></tr>
+<tr><th>Exception</th><td></td></tr>
+</table>
 
-```
+## Stack Trace
+<pre></pre>
     BODY
 
         @handler.update_body(body).must_equal expected_body
@@ -57,15 +59,16 @@ Stack Trace:
 
       it 'resets body' do
         expected_body = <<-BODY
-Fingerprint: `abcdefg1234567890`
-Count: `1`
-Last Occurance: `#{Time.now}`
-Params: ``
-Exception: ``
-Stack Trace:
-```
+<table>
+<tr><th>Fingerprint</th><td>abcdefg1234567890</td><tr>
+<tr><th>Count</th><td>1</td></tr>
+<tr><th>Last Occurance</th><td>#{Time.now}</td></tr>
+<tr><th>Params</th><td></td></tr>
+<tr><th>Exception</th><td></td></tr>
+</table>
 
-```
+## Stack Trace
+<pre></pre>
     BODY
         @handler.update_body(nil).must_equal expected_body
       end
