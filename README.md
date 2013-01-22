@@ -32,7 +32,7 @@ you will need to complete the installation.
 
 **Note** We highly recommend that you create a new Github account that is
 a collaborator on your repository. Use this new account's credentials
-for the installation below. If you use your own account then you will
+for the installation below. If you use your own account you will
 not receive emails when issues are created, updated, reopened, etc...
 because all of the work will be done as your account.
 
@@ -49,13 +49,17 @@ If you are using Rails you can run the install generator.
 rails g party_foul:install
 ```
 
-
 This will prompt you for the Github credentials of the account that will
 be opening the issues. The OAuth token for that account will be stored
 in `config/initializers/party_foul.rb`. You may want to remove the token
 string and store in an environment variable. It is best not to store the
 token in version control.
 
+Add as the very last middleware in your production `Rack` stack in `config/environments/production.rb`
+
+```ruby
+config.middleware.insert_before(-1, 'PartyFoul::Middleware')
+```
 ### Other ###
 
 You will need to initialize `PartyFoul`, you can use the following to do
@@ -82,19 +86,10 @@ PartyFoul.configure do |config|
 end
 ```
 
+Add as the very last middleware in your production `Rack` stack.
+
 ## Usage ##
 
-Add as the very last middleware in your production `Rack` stack. For
-example in Rails you would add the following to
-`config/environments/production.rb`
-
-```ruby
-config.middleware.insert_before(-1, 'PartyFoul::Middleware')
-```
-
-You should create a Github account specific for opening issues if you
-don't already have one. If you use your own account Github will not
-notify you via email when a new issue is created with your credentials.
 
 ## Authors ##
 
