@@ -73,13 +73,17 @@ class PartyFoul::ExceptionHandler
   end
 
   def params
-    env['action_dispatch.request.path_parameters'] || env['QUERY_STRING']
+    if env["action_dispatch.parameter_filter"]
+      parameter_filter = ActionDispatch::Http::ParameterFilter.new(env["action_dispatch.parameter_filter"])
+      parameter_filter.filter(env['action_dispatch.request.path_parameters'])
+    else
+      env['QUERY_STRING']
+    end
   end
 
   def issue_body
     <<-BODY
 <table>
-<tr><th>Fingerprint</th><td>#{fingerprint}</td><tr>
 <tr><th>Count</th><td>1</td></tr>
 <tr><th>Last Occurance</th><td>#{Time.now}</td></tr>
 <tr><th>Params</th><td>#{params}</td></tr>
@@ -88,6 +92,7 @@ class PartyFoul::ExceptionHandler
 
 ## Stack Trace
 <pre>#{stack_trace}</pre>
+Fingerprint: `#{fingerprint}`
     BODY
   end
 

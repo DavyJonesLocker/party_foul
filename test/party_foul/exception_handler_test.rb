@@ -1,6 +1,8 @@
 require 'test_helper'
+require 'active_support/core_ext/object/blank'
+require 'action_dispatch/http/parameter_filter'
 
-describe 'Party Fould Exception Handler' do
+describe 'Party Foul Exception Handler' do
   before do
     Time.stubs(:now).returns(Time.at(0))
   end
@@ -18,7 +20,6 @@ describe 'Party Fould Exception Handler' do
       it 'updates count and timestamp' do
         body = <<-BODY
 <table>
-<tr><th>Fingerprint</th><td>abcdefg1234567890</td><tr>
 <tr><th>Count</th><td>1</td></tr>
 <tr><th>Last Occurance</th><td>#{Time.now}</td></tr>
 <tr><th>Params</th><td></td></tr>
@@ -27,13 +28,13 @@ describe 'Party Fould Exception Handler' do
 
 ## Stack Trace
 <pre></pre>
+Fingerprint: `abcdefg1234567890`
     BODY
 
         Time.stubs(:now).returns(Time.new(1985, 10, 25, 1, 22, 0, '-05:00'))
 
         expected_body = <<-BODY
 <table>
-<tr><th>Fingerprint</th><td>abcdefg1234567890</td><tr>
 <tr><th>Count</th><td>2</td></tr>
 <tr><th>Last Occurance</th><td>#{Time.now}</td></tr>
 <tr><th>Params</th><td></td></tr>
@@ -42,6 +43,7 @@ describe 'Party Fould Exception Handler' do
 
 ## Stack Trace
 <pre></pre>
+Fingerprint: `abcdefg1234567890`
     BODY
 
         @handler.update_body(body).must_equal expected_body
@@ -60,7 +62,6 @@ describe 'Party Fould Exception Handler' do
       it 'resets body' do
         expected_body = <<-BODY
 <table>
-<tr><th>Fingerprint</th><td>abcdefg1234567890</td><tr>
 <tr><th>Count</th><td>1</td></tr>
 <tr><th>Last Occurance</th><td>#{Time.now}</td></tr>
 <tr><th>Params</th><td></td></tr>
@@ -69,6 +70,7 @@ describe 'Party Fould Exception Handler' do
 
 ## Stack Trace
 <pre></pre>
+Fingerprint: `abcdefg1234567890`
     BODY
         @handler.update_body(nil).must_equal expected_body
       end
@@ -78,21 +80,22 @@ describe 'Party Fould Exception Handler' do
   describe '#params' do
     context 'with Rails' do
       before do
-        @handler = PartyFoul::ExceptionHandler.new(nil, {'action_dispatch.request.path_parameters' => { status: 'ok' }, 'QUERY_STRING' => { status: 'fail' } })
+        @handler = PartyFoul::ExceptionHandler.new(nil, {'action_dispatch.parameter_filter' => ['password'], 'action_dispatch.request.path_parameters' => { 'status' => 'ok', 'password' => 'test' }, 'QUERY_STRING' => { 'status' => 'fail' } })
       end
 
       it 'returns ok' do
-        @handler.params[:status].must_equal 'ok'
+        @handler.params['status'].must_equal 'ok'
+        @handler.params['password'].must_equal '[FILTERED]'
       end
     end
 
     context 'without Rails' do
       before do
-        @handler = PartyFoul::ExceptionHandler.new(nil, {'QUERY_STRING' => { status: 'ok' } })
+        @handler = PartyFoul::ExceptionHandler.new(nil, {'QUERY_STRING' => { 'status' => 'ok' } })
       end
 
       it 'returns ok' do
-        @handler.params[:status].must_equal 'ok'
+        @handler.params['status'].must_equal 'ok'
       end
     end
   end
