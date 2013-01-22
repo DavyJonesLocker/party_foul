@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'github_api', '~> 0.8.8'
 
   s.add_development_dependency 'actionpack'
+  s.add_development_dependency 'activesupport'
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'minitest'
   s.add_development_dependency 'webmock'
