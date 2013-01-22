@@ -18,7 +18,7 @@ tagged as a 'Bug'
 3. If an open issue is found the occurance count and time stamp will be
    updated
 4. If a closed issue is found the occurance count and time stamp will be
-   updated. The issue will be reopened and a 'Regression' tag will be
+   updated. The issue will be reopened and a 'regression' tag will be
 added.
 5. If the issue is marked as 'wontfix' the issue is not updated nor is
    a new issue created.
