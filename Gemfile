@@ -1,4 +1,4 @@
 source "http://rubygems.org"
 
 gemspec
- gem 'debugger'
+gem 'debugger'
