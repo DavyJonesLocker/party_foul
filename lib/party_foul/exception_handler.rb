@@ -20,13 +20,8 @@ class PartyFoul::ExceptionHandler
   end
 
   def find_issue
-    issue = PartyFoul.github.search.issues(owner: PartyFoul.owner, repo: PartyFoul.repo, state: 'open', keyword: issue_title).issues.first
-
-    if !issue || issue['title'] != issue_title
-      issue = PartyFoul.github.search.issues(owner: PartyFoul.owner, repo: PartyFoul.repo, state: 'closed', keyword: issue_title).issues.first
-      if !issue || issue['title'] != issue_title
-        issue = nil
-      end
+    unless issue = PartyFoul.github.search.issues(owner: PartyFoul.owner, repo: PartyFoul.repo, state: 'open', keyword: fingerprint).issues.first
+      issue = PartyFoul.github.search.issues(owner: PartyFoul.owner, repo: PartyFoul.repo, state: 'closed', keyword: fingerprint).issues.first
     end
 
     issue
@@ -62,11 +57,15 @@ class PartyFoul::ExceptionHandler
     "#{exception} - #{name_and_number}"
   end
 
+  def fingerprint
+    Digest::SHA1.hexdigest(issue_title)
+  end
+
   def update_body(body)
     begin
-      current_count = body.match(/^Count: (\d+)/)[1].to_i
-      body.sub!("Count: #{current_count}", "Count: #{current_count + 1}")
-      body.sub!(/Last Occurance: .+/, "Last Occurance: #{Time.now}")
+      current_count = body.match(/Count: `(\d+)`/)[1].to_i
+      body.sub!("Count: `#{current_count}`", "Count: `#{current_count + 1}`")
+      body.sub!(/Last Occurance: .+/, "Last Occurance: `#{Time.now}`")
       body
     rescue
       issue_body
@@ -79,8 +78,9 @@ class PartyFoul::ExceptionHandler
 
   def issue_body
     <<-BODY
-Count: 1
-Last Occurance: #{Time.now}
+Fingerprint: `#{fingerprint}`
+Count: `1`
+Last Occurance: `#{Time.now}`
 Params: `#{params}`
 Exception: `#{exception}`
 Stack Trace:

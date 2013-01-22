@@ -31,13 +31,14 @@ describe 'Party Foul Middleware' do
     PartyFoul.github.stubs(:search).returns(mock('Search'))
     PartyFoul.github.issues.stubs(:create)
     PartyFoul::ExceptionHandler.any_instance.stubs(:issue_title).returns('Test Title')
+    PartyFoul::ExceptionHandler.any_instance.stubs(:fingerprint).returns('test_fingerprint')
   end
 
   context 'when error is new' do
     it 'will open a new error on Github' do
       PartyFoul::ExceptionHandler.any_instance.stubs(:issue_body).returns('Test Body')
-      PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'Test Title', state: 'open').returns(Hashie::Mash.new(issues: []))
-      PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'Test Title', state: 'closed').returns(Hashie::Mash.new(issues: []))
+      PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'test_fingerprint', state: 'open').returns(Hashie::Mash.new(issues: []))
+      PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'test_fingerprint', state: 'closed').returns(Hashie::Mash.new(issues: []))
       PartyFoul.github.issues.expects(:create).with('test_owner', 'test_repo', title: 'Test Title', body: 'Test Body', :labels => ['bug'])
       lambda {
         get '/'
@@ -51,49 +52,19 @@ describe 'Party Foul Middleware' do
     end
 
     context 'and open' do
-      it 'will open the count on the body' do
-        PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'Test Title', state: 'open').returns(Hashie::Mash.new(issues: [{title: 'Test Title', body: 'Test Body', state: 'open', number: 1}]))
+      it 'will update the issue' do
+        PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'test_fingerprint', state: 'open').returns(Hashie::Mash.new(issues: [{title: 'Test Title', body: 'Test Body', state: 'open', number: 1}]))
         PartyFoul.github.issues.expects(:edit).with('test_owner', 'test_repo', 1, body: 'New Body', state: 'open')
         lambda {
           get '/'
         }.must_raise(Exception)
       end
-
-      context 'and title is not exact match' do
-        before do
-          PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'Test Title', state: 'open').returns(Hashie::Mash.new(issues: [{title: 'Test Title 2', body: 'Test Body', state: 'open', number: 1}]))
-        end
-
-        context 'closed issue is a match' do
-          before do
-            PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'Test Title', state: 'closed').returns(Hashie::Mash.new(issues: [{title: 'Test Title', body: 'Test Body', state: 'closed', number: 1}]))
-          end
-          it 'will update the count on the body and re-open the issue' do
-            PartyFoul.github.issues.expects(:edit).with('test_owner', 'test_repo', 1, body: 'New Body', state: 'open', labels: ['bug', 'regression'])
-            lambda {
-              get '/'
-            }.must_raise(Exception)
-          end
-        end
-        context 'no match' do
-          before do
-            PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'Test Title', state: 'closed').returns(Hashie::Mash.new(issues: [{title: 'Test Title 2', body: 'Test Body', state: 'closed', number: 1}]))
-            PartyFoul::ExceptionHandler.any_instance.stubs(:issue_body).returns('Test Body')
-          end
-          it 'will create a new issue' do
-            PartyFoul.github.issues.expects(:create).with('test_owner', 'test_repo', title: 'Test Title', body: 'Test Body', :labels => ['bug'])
-            lambda {
-              get '/'
-            }.must_raise(Exception)
-          end
-        end
-      end
     end
 
     context 'and closed' do
       it 'will update the count on the body and re-open the issue' do
-        PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'Test Title', state: 'open').returns(Hashie::Mash.new(issues: []))
-        PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'Test Title', state: 'closed').returns(Hashie::Mash.new(issues: [{title: 'Test Title', body: 'Test Body', state: 'closed', number: 1}]))
+        PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'test_fingerprint', state: 'open').returns(Hashie::Mash.new(issues: []))
+        PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'test_fingerprint', state: 'closed').returns(Hashie::Mash.new(issues: [{title: 'Test Title', body: 'Test Body', state: 'closed', number: 1}]))
         PartyFoul.github.issues.expects(:edit).with('test_owner', 'test_repo', 1, body: 'New Body', state: 'open', labels: ['bug', 'regression'])
         lambda {
           get '/'
@@ -102,7 +73,7 @@ describe 'Party Foul Middleware' do
     end
   end
 
-  context 'filtering' do
+  context 'filtering based upon exception' do
     before do
       PartyFoul.ignored_exceptions = ['StandardError']
       self.stubs(:error_to_raise).returns(StandardError)
@@ -110,8 +81,8 @@ describe 'Party Foul Middleware' do
 
     it 'does not handle exception' do
       PartyFoul::ExceptionHandler.any_instance.stubs(:issue_body).returns('Test Body')
-      PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'Test Title', state: 'open').returns(Hashie::Mash.new(issues: []))
-      PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'Test Title', state: 'closed').returns(Hashie::Mash.new(issues: []))
+      PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'test_fingerprint', state: 'open').returns(Hashie::Mash.new(issues: []))
+      PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'test_fingerprint', state: 'closed').returns(Hashie::Mash.new(issues: []))
       PartyFoul.github.issues.expects(:create).never
       lambda {
         get '/'

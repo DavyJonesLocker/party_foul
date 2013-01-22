@@ -9,6 +9,7 @@ describe 'Party Fould Exception Handler' do
     describe 'updating issue body' do
       before do
         @handler = PartyFoul::ExceptionHandler.new(nil, nil)
+        @handler.stubs(:fingerprint).returns('abcdefg1234567890')
         @handler.stubs(:stack_trace)
         @handler.stubs(:params)
         @handler.stubs(:exception)
@@ -16,8 +17,9 @@ describe 'Party Fould Exception Handler' do
 
       it 'updates count and timestamp' do
         body = <<-BODY
-Count: 1
-Last Occurance: #{Time.now}
+Fingerprint: `abcdefg1234567890`
+Count: `1`
+Last Occurance: `#{Time.now}`
 Params: ``
 Exception: ``
 Stack Trace:
@@ -29,8 +31,9 @@ Stack Trace:
         Time.stubs(:now).returns(Time.new(1985, 10, 25, 1, 22, 0, '-05:00'))
 
         expected_body = <<-BODY
-Count: 2
-Last Occurance: #{Time.now}
+Fingerprint: `abcdefg1234567890`
+Count: `2`
+Last Occurance: `#{Time.now}`
 Params: ``
 Exception: ``
 Stack Trace:
@@ -46,6 +49,7 @@ Stack Trace:
     describe 'empty body' do
       before do
         @handler = PartyFoul::ExceptionHandler.new(nil, nil)
+        @handler.stubs(:fingerprint).returns('abcdefg1234567890')
         @handler.stubs(:stack_trace)
         @handler.stubs(:params)
         @handler.stubs(:exception)
@@ -53,8 +57,9 @@ Stack Trace:
 
       it 'resets body' do
         expected_body = <<-BODY
-Count: 1
-Last Occurance: #{Time.now}
+Fingerprint: `abcdefg1234567890`
+Count: `1`
+Last Occurance: `#{Time.now}`
 Params: ``
 Exception: ``
 Stack Trace:
