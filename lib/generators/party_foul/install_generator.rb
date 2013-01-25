@@ -18,7 +18,7 @@ module PartyFoul
       @repo     = ask 'Repository name:'
       @endpoint = ask_with_default 'Endpoint:', 'https://api.github.com'
 
-      github = Github.new :login => username, :password => password, :endpoint => @endpoint, :client_id => client_id, :client_secret => client_secret
+      github = Github.new :login => username, :password => password, :endpoint => @endpoint
 
       begin
         github.oauth.create 'scopes' => ['repo']
