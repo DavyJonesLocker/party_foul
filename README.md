@@ -69,6 +69,9 @@ PartyFoul.configure do |config|
   # The constants here *must* be represented as strings
   config.ignored_exceptions = ['ActiveRecord::RecordNotFound', 'ActionController::RoutingError']
 
+  # The names of the HTTP headers to not report
+  config.filtered_http_headers = ['Cookie']
+
   # The OAuth token for the account that will be opening the issues on Github
   config.oauth_token        = 'abcdefgh1234567890'
 
