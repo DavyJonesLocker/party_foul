@@ -110,7 +110,7 @@ end
 class MyAsyncAdapter
   def self.handle(exception, env)
     # Enqueue the exception, then in your worker, call
-    # PartyFoul::Exception.new(exception, env).run
+    # PartyFoul::ExceptionHandler.new(exception, env).run
   end
 end
 
