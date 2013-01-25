@@ -4,7 +4,7 @@ require 'action_dispatch/http/parameter_filter'
 
 describe 'Party Foul Exception Handler' do
   before do
-    Time.stubs(:now).returns(Time.at(0))
+    Time.stubs(:now).returns(Time.new(1970, 1, 1, 0, 0, 0, '-05:00'))
   end
 
   after do
@@ -25,7 +25,7 @@ describe 'Party Foul Exception Handler' do
 <table>
 <tr><th>Exception</th><td>Test Exception</td></tr>
 <tr><th>Count</th><td>1</td></tr>
-<tr><th>Last Occurance</th><td>December 31, 1969 19:00:00 -0500</td></tr>
+<tr><th>Last Occurance</th><td>January 01, 1970 00:00:00 -0500</td></tr>
 </table>
 
 ## Stack Trace
@@ -64,7 +64,7 @@ Fingerprint: `abcdefg1234567890`
 <table>
 <tr><th>Exception</th><td>Test Exception</td></tr>
 <tr><th>Count</th><td>1</td></tr>
-<tr><th>Last Occurance</th><td>December 31, 1969 19:00:00 -0500</td></tr>
+<tr><th>Last Occurance</th><td>January 01, 1970 00:00:00 -0500</td></tr>
 </table>
 
 ## Stack Trace
@@ -115,7 +115,7 @@ Fingerprint: `abcdefg1234567890`
     it 'renders a new comment' do
       expected_comment = <<-COMMENT
 <table>
-<tr><th>Occurred at</th><td>December 31, 1969 19:00:00 -0500</td></tr>
+<tr><th>Occurred at</th><td>January 01, 1970 00:00:00 -0500</td></tr>
 <tr><th>Params</th><td><table><tr><th>controller</th><td>landing</td></tr><tr><th>action</th><td>index</td></tr></table></td></tr>
 <tr><th>IP Address</th><td>127.0.0.1</td></tr>
 <tr><th>Session</th><td><table><tr><th>id</th><td>1</td></tr></table></td></tr>
