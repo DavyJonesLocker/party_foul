@@ -94,8 +94,17 @@ class PartyFoul::ExceptionHandler
 
   def compile_template(template)
     template.gsub(/:\w+/) do |method|
-      self.send(method.split(':').last)
+      value = self.send(method.split(':').last)
+      if value.kind_of?(Hash)
+        hash_as_table(value)
+      else
+        value
+      end
     end
+  end
+
+  def hash_as_table(value)
+    "<table>#{value.map {|key, value| "<tr><th>#{key}</th><td>#{value}</td></tr>"}.join}</table>"
   end
 
   def occurred_at
@@ -107,17 +116,13 @@ class PartyFoul::ExceptionHandler
   end
 
   def http_headers
-    "<table>#{http_header_hash.map { |key, value| "<tr><th>#{key}</th><td>#{value}</td></tr>" }.join}</table>"
-  end
-
-  private
-
-  def http_header_hash
     env.keys.select { |key| key =~ /^HTTP_(\w+)/ && !(PartyFoul.filtered_http_headers || []).include?($1.split('_').map(&:capitalize).join('-')) }.sort.inject({}) do |hash, key|
       hash[key.split('HTTP_').last.split('_').map(&:capitalize).join('-')] = env[key]
       hash
     end
   end
+
+  private
 
   def app_root
     if defined?(Rails)
