@@ -106,7 +106,8 @@ Fingerprint: `abcdefg1234567890`
         'HTTP_USER_AGENT' => 'test_user_agent',
         'REMOTE_ADDR' => '127.0.0.1',
         'HTTP_HOST' => 'localhost:3000',
-        'QUERY_STRING' => { :controller => 'landing', :action => 'index' }
+        'QUERY_STRING' => { :controller => 'landing', :action => 'index' },
+        'rack.session' => { :id => 1 }
       }
       @handler = PartyFoul::ExceptionHandler.new(nil, env)
     end
@@ -117,6 +118,7 @@ Fingerprint: `abcdefg1234567890`
 <tr><th>Occurred at</th><td>December 31, 1969 19:00:00 -0500</td></tr>
 <tr><th>Params</th><td><table><tr><th>controller</th><td>landing</td></tr><tr><th>action</th><td>index</td></tr></table></td></tr>
 <tr><th>IP Address</th><td>127.0.0.1</td></tr>
+<tr><th>Session</th><td><table><tr><th>id</th><td>1</td></tr></table></td></tr>
 <tr><th>HTTP Headers</th><td><table><tr><th>Host</th><td>localhost:3000</td></tr><tr><th>User-Agent</th><td>test_user_agent</td></tr></table></td></tr>
 </table>
 COMMENT

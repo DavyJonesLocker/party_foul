@@ -115,6 +115,10 @@ class PartyFoul::ExceptionHandler
     env['REMOTE_ADDR']
   end
 
+  def session
+    env['rack.session']
+  end
+
   def http_headers
     env.keys.select { |key| key =~ /^HTTP_(\w+)/ && !(PartyFoul.filtered_http_headers || []).include?($1.split('_').map(&:capitalize).join('-')) }.sort.inject({}) do |hash, key|
       hash[key.split('HTTP_').last.split('_').map(&:capitalize).join('-')] = env[key]

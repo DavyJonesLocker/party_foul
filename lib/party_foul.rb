@@ -27,6 +27,7 @@ Fingerprint: `:fingerprint`
 <tr><th>Occurred at</th><td>:occurred_at</td></tr>
 <tr><th>Params</th><td>:params</td></tr>
 <tr><th>IP Address</th><td>:ip_address</td></tr>
+<tr><th>Session</th><td>:session</td></tr>
 <tr><th>HTTP Headers</th><td>:http_headers</td></tr>
 </table>
     TEMPLATE
