@@ -11,3 +11,4 @@ bin/*
 test/dummy/config/initializers/_environment.rb
 .yardoc
 doc/*
+test/tmp/*

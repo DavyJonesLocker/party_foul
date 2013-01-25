@@ -5,7 +5,6 @@ else
 end
 require 'rack/test'
 require 'mocha/setup'
-require 'bourne'
 require 'debugger'
 require 'party_foul'
 
