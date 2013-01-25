@@ -6,7 +6,7 @@ PartyFoul.configure do |config|
   # The names of the HTTP headers to not report
   config.filtered_http_headers = ['Cookie']
 
-  # The OAuth token for the account that will be opening the issues on Github
+  # The OAuth token for the account that is opening the issues on Github
   config.oauth_token           = '<%= @oauth_token %>'
 
   # The API endpoint for Github. Unless you are hosting a private

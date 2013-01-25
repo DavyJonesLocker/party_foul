@@ -8,23 +8,23 @@ Rails exceptions automatically opened as issues on Github
 
 ## About ##
 
-`PartyFoul` will capture exceptions in your application and will do the
+`PartyFoul` captures exceptions in your application and does the
 following:
 
-1. Will attempt to find a matching issue in your Github repo
-2. If no matching issue is found an new issue will be created with a
-   unique title, session information, and stack trace. The issue will be
-tagged as a `bug`. A new comment will be added with relevant data on the
+1. Attempt to find a matching issue in your Github repo
+2. If no matching issue is found an new issue is created with a
+   unique title, session information, and stack trace. The issue is
+tagged as a `bug`. A new comment is added with relevant data on the
 application state.
-3. If an open issue is found the occurance count and time stamp will be
-   updated. A new comment will be added with relevant data on the
+3. If an open issue is found the occurance count and time stamp is
+   updated. A new comment is added with relevant data on the
 application state.
-4. If a closed issue is found the occurance count and time stamp will be
-   updated. The issue will be reopened and a `regression` tag will be
-added. A new comment will be added with relevant data on the
+4. If a closed issue is found the occurance count and time stamp is
+   updated. The issue is reopened and a `regression` tag is
+added. A new comment is added with relevant data on the
 application state.
 5. If the issue is marked as `wontfix` the issue is not updated nor is
-   a new issue created. No comments will be added.
+   a new issue created. No comments are added.
 
 ## Installation ##
 
@@ -32,7 +32,7 @@ application state.
 a collaborator on your repository. Use this new account's credentials
 for the installation below. If you use your own account you will
 not receive emails when issues are created, updated, reopened, etc...
-because all of the work will be done as your account.
+because all of the work is done as your account.
 
 In your Gemfile add the following:
 
@@ -47,8 +47,8 @@ If you are using Rails you can run the install generator.
 rails g party_foul:install
 ```
 
-This will prompt you for the Github credentials of the account that will
-be opening the issues. The OAuth token for that account will be stored
+This prompts you for the Github credentials of the account that is
+opening the issues. The OAuth token for that account is stored
 in `config/initializers/party_foul.rb`. You may want to remove the token
 string and store in an environment variable. It is best not to store the
 token in version control.
@@ -60,8 +60,7 @@ config.middleware.use('PartyFoul::Middleware')
 ```
 ### Other ###
 
-You will need to initialize `PartyFoul`, you can use the following to do
-so:
+You need to initialize `PartyFoul`, use the following:
 
 ```ruby
 PartyFoul.configure do |config|
@@ -72,7 +71,7 @@ PartyFoul.configure do |config|
   # The names of the HTTP headers to not report
   config.filtered_http_headers = ['Cookie']
 
-  # The OAuth token for the account that will be opening the issues on Github
+  # The OAuth token for the account that is opening the issues on Github
   config.oauth_token        = 'abcdefgh1234567890'
 
   # The API endpoint for Github. Unless you are hosting a private
@@ -105,7 +104,7 @@ Add as the very last middleware in your production `Rack` stack.
 You can specify the adapter with which the exceptions should be
 handled. By default, PartyFoul includes the
 [`PartyFoul::SyncAdapter`](https://github.com/dockyard/party_foul/tree/master/lib/party_foul/sync_adapter.rb)
-which will handle the exception synchronously. To use your own adapter,
+which handles the exception synchronously. To use your own adapter,
 include the following in your `PartyFoul.configure` block:
 
 ```ruby
@@ -140,7 +139,7 @@ TEMPLATE
 ```
 
 In this over-simplistic example the words that start with `:` in the
-templates will be evaluated with the value of the corresponding named
+templates are evaluated with the value of the corresponding named
 instance method on the instance of `PartyFoul::ExceptionHandler`. If you
 want to add additional values for replacement you should open that class
 to add the methods.
