@@ -7,14 +7,6 @@ module PartyFoul
     source_root File.expand_path('../templates', __FILE__)
 
     def create_initializer_file
-      puts <<-MESSAGE
-A Github Application is required.
-If you do not already have one setup for your
-repo then you need to do so now.
-MESSAGE
-
-      client_id     = ask 'Github App Client ID:'
-      client_secret = ask 'Github App Client Secret:'
       username      = ask 'Github username:'
       password      = STDIN.noecho do
         ask 'Github password:'
@@ -22,25 +14,17 @@ MESSAGE
 
       say ''
 
-      @owner    = ask 'Repository owner:'
+      @owner    = ask_with_default 'Repository owner:', username
       @repo     = ask 'Repository name:'
-      @endpoint = ask_with_default 'Endpoint:', 'http://api.github.com'
-      auth_uri  = URI('https://api.github.com/authorizations')
+      @endpoint = ask_with_default 'Endpoint:', 'https://api.github.com'
 
-      response = nil
+      github = Github.new :login => username, :password => password, :endpoint => @endpoint, :client_id => client_id, :client_secret => client_secret
 
-      Net::HTTP.start(auth_uri.host, auth_uri.port, :use_ssl => auth_uri.scheme == 'https') do |http|
-        request      = Net::HTTP::Post.new auth_uri.request_uri
-        body         = { :scopes => ['repo'], :client_id => client_id, :client_secret => client_secret }
-        request.body = body.to_json
-        request.basic_auth username, password
-        response     = http.request request
-      end
-
-      if response.code == '201'
-        @oauth_token = JSON.parse(response.body)['token']
+      begin
+        github.oauth.create 'scopes' => ['repo']
+        @oauth_token = github.oauth_token
         template 'party_foul.rb', 'config/initializers/party_foul.rb'
-      else
+      rescue Github::Error::Unauthorized
         say 'There was an error retrieving your Github OAuth token'
       end
     end

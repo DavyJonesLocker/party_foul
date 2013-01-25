@@ -25,11 +25,6 @@ added.
 
 ## Installation ##
 
-Prior to installing the gem you will need to set up an OAuth application
-on Github to provide access to your repository. Once this OAuth
-application is setup you will have a `ClientID` and `ClientSecret` that
-you will need to complete the installation.
-
 **Note** We highly recommend that you create a new Github account that is
 a collaborator on your repository. Use this new account's credentials
 for the installation below. If you use your own account you will
@@ -58,7 +53,7 @@ token in version control.
 Add as the very last middleware in your production `Rack` stack in `config/environments/production.rb`
 
 ```ruby
-config.middleware.insert_before(-1, 'PartyFoul::Middleware')
+config.middleware.use('PartyFoul::Middleware')
 ```
 ### Other ###
 
