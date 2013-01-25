@@ -84,37 +84,12 @@ class PartyFoul::ExceptionHandler
     end
   end
 
-  def issue_template
-    <<-TEMPLATE
-<table>
-<tr><th>Exception</th><td>:exception</td></tr>
-<tr><th>Count</th><td>1</td></tr>
-<tr><th>Last Occurance</th><td>:occurred_at</td></tr>
-</table>
-
-## Stack Trace
-<pre>:stack_trace</pre>
-Fingerprint: `:fingerprint`
-    TEMPLATE
-  end
-
-  def comment_template
-    <<-TEMPLATE
-<table>
-<tr><th>Occurred at</th><td>:occurred_at</td></tr>
-<tr><th>Params</th><td>:params</td></tr>
-<tr><th>IP Address</th><td>:ip_address</td></tr>
-<tr><th>HTTP Headers</th><td>:http_headers</td></tr>
-</table>
-    TEMPLATE
-  end
-
   def issue_body
-    compile_template(issue_template)
+    compile_template(PartyFoul.issue_template)
   end
 
   def comment_body
-    compile_template(comment_template)
+    compile_template(PartyFoul.comment_template)
   end
 
   def compile_template(template)

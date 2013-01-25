@@ -2,7 +2,34 @@ require 'github_api'
 
 module PartyFoul
   class << self
-    attr_accessor :github, :oauth_token, :endpoint, :owner, :repo, :ignored_exceptions, :adapter
+    attr_accessor :github, :oauth_token, :endpoint, :owner, :repo, :ignored_exceptions, :adapter, :issue_template, :comment_template
+  end
+
+  def self.issue_template
+    @issue_template ||=
+    <<-TEMPLATE
+<table>
+<tr><th>Exception</th><td>:exception</td></tr>
+<tr><th>Count</th><td>1</td></tr>
+<tr><th>Last Occurance</th><td>:occurred_at</td></tr>
+</table>
+
+## Stack Trace
+<pre>:stack_trace</pre>
+Fingerprint: `:fingerprint`
+    TEMPLATE
+  end
+
+  def self.comment_template
+    @comment_template ||=
+    <<-TEMPLATE
+<table>
+<tr><th>Occurred at</th><td>:occurred_at</td></tr>
+<tr><th>Params</th><td>:params</td></tr>
+<tr><th>IP Address</th><td>:ip_address</td></tr>
+<tr><th>HTTP Headers</th><td>:http_headers</td></tr>
+</table>
+    TEMPLATE
   end
 
   def self.ignored_exceptions

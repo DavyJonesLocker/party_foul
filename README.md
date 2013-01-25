@@ -14,14 +14,17 @@ following:
 1. Will attempt to find a matching issue in your Github repo
 2. If no matching issue is found an new issue will be created with a
    unique title, session information, and stack trace. The issue will be
-tagged as a `bug`
+tagged as a `bug`. A new comment will be added with relevant data on the
+application state.
 3. If an open issue is found the occurance count and time stamp will be
-   updated
+   updated. A new comment will be added with relevant data on the
+application state.
 4. If a closed issue is found the occurance count and time stamp will be
    updated. The issue will be reopened and a `regression` tag will be
-added.
+added. A new comment will be added with relevant data on the
+application state.
 5. If the issue is marked as `wontfix` the issue is not updated nor is
-   a new issue created.
+   a new issue created. No comments will be added.
 
 ## Installation ##
 
@@ -115,6 +118,29 @@ class MyAsyncAdapter
 end
 
 ```
+
+## Changing How Issues Are Reported ##
+
+`PartyFoul` comes with default templates for what the body of issues and
+comments are. If you want to override these templates you simply need to
+add them as an option in your initializer:
+
+```ruby
+PartyFoul.configure do |config|
+  config.issue_body = <<-TEMPLATE
+:issue_title
+TEMPLATE
+
+  config.comment_body = <<-TEMPLATE
+:occurred_at
+TEMPLATE
+```
+
+In this over-simplistic example the words that start with `:` in the
+templates will be evaluated with the value of the corresponding named
+instance method on the instance of `PartyFoul::ExceptionHandler`. If you
+want to add additional values for replacement you should open that class
+to add the methods.
 
 ## Authors ##
 
