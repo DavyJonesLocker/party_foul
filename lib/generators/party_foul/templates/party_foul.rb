@@ -1,7 +1,7 @@
 PartyFoul.configure do |config|
   # the collection of exceptions to be ignored by PartyFoul
   # The constants here *must* be represented as strings
-  config.ignored_exceptions = ['ActiveRecord::RecordNotFound']
+  config.ignored_exceptions = ['ActiveRecord::RecordNotFound', 'ActionController::RoutingError']
 
   # The OAuth token for the account that will be opening the issues on Github
   config.oauth_token        = '<%= @oauth_token %>'

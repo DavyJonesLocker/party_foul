@@ -81,7 +81,40 @@ PartyFoul.configure do |config|
 end
 ```
 
+You can generate an OAuth token from via the
+[OAuth Authorizations API](http://developer.github.com/v3/oauth/#oauth-authorizations-api)
+with cURL:
+
+```bash
+curl -X POST -i -d "{ \"scopes\": [\"repo\"] }" \
+https://<github_login>:<github_password>@api.github.com/authorizations
+```
+
 Add as the very last middleware in your production `Rack` stack.
+
+## Customization ##
+
+### Async Adapters ###
+
+You can specify the adapter with which the exceptions should be
+handled. By default, PartyFoul includes the
+[`PartyFoul::SyncAdapter`](https://github.com/dockyard/party_foul/tree/master/lib/party_foul/sync_adapter.rb)
+which will handle the exception synchronously. To use your own adapter,
+include the following in your `PartyFoul.configure` block:
+
+```ruby
+PartyFoul.configure do |config|
+  config.adapter = MyAsyncAdatper
+end
+
+class MyAsyncAdapter
+  def self.handle(exception, env)
+    # Enqueue the exception, then in your worker, call
+    # PartyFoul::Exception.new(exception, env).run
+  end
+end
+
+```
 
 ## Authors ##
 
