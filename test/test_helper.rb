@@ -5,7 +5,9 @@ else
 end
 require 'rack/test'
 require 'mocha/setup'
-require 'debugger'
+unless ENV['CI']
+  require 'debugger'
+end
 require 'party_foul'
 
 class MiniTest::Spec
