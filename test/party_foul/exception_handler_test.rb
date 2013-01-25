@@ -21,7 +21,7 @@ describe 'Party Foul Exception Handler' do
 <table>
 <tr><th>Exception</th><td>Test Exception</td></tr>
 <tr><th>Count</th><td>1</td></tr>
-<tr><th>Last Occurance</th><td>#{Time.now}</td></tr>
+<tr><th>Last Occurance</th><td>December 31, 1969 19:00:00 -0500</td></tr>
 </table>
 
 ## Stack Trace
@@ -35,7 +35,7 @@ Fingerprint: `abcdefg1234567890`
 <table>
 <tr><th>Exception</th><td>Test Exception</td></tr>
 <tr><th>Count</th><td>2</td></tr>
-<tr><th>Last Occurance</th><td>#{Time.now}</td></tr>
+<tr><th>Last Occurance</th><td>October 25, 1985 01:22:00 -0500</td></tr>
 </table>
 
 ## Stack Trace
@@ -60,7 +60,7 @@ Fingerprint: `abcdefg1234567890`
 <table>
 <tr><th>Exception</th><td>Test Exception</td></tr>
 <tr><th>Count</th><td>1</td></tr>
-<tr><th>Last Occurance</th><td>#{Time.now}</td></tr>
+<tr><th>Last Occurance</th><td>December 31, 1969 19:00:00 -0500</td></tr>
 </table>
 
 ## Stack Trace
@@ -110,7 +110,7 @@ Fingerprint: `abcdefg1234567890`
     it 'renders a new comment' do
       expected_comment = <<-COMMENT
 <table>
-<tr><th>Occurred at</th><td>#{Time.now}</td></tr>
+<tr><th>Occurred at</th><td>December 31, 1969 19:00:00 -0500</td></tr>
 <tr><th>Params</th><td>{:controller=>"landing", :action=>"index"}</td></tr>
 <tr><th>IP Address</th><td>127.0.0.1</td></tr>
 <tr><th>HTTP Headers</th><td><table><tr><th>Host</th><td>localhost:3000</td></tr><tr><th>User Agent</th><td>test_user_agent</td></tr></table></td></tr>

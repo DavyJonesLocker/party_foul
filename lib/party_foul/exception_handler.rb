@@ -68,7 +68,7 @@ class PartyFoul::ExceptionHandler
     begin
       current_count = body.match(/<th>Count<\/th><td>(\d+)<\/td>/)[1].to_i
       body.sub!("<th>Count</th><td>#{current_count}</td>", "<th>Count</th><td>#{current_count + 1}</td>")
-      body.sub!(/<th>Last Occurance<\/th><td>.+<\/td>/, "<th>Last Occurance</th><td>#{Time.now}</td>")
+      body.sub!(/<th>Last Occurance<\/th><td>.+<\/td>/, "<th>Last Occurance</th><td>#{occurred_at}</td>")
       body
     rescue
       issue_body
@@ -124,7 +124,7 @@ Fingerprint: `:fingerprint`
   end
 
   def occurred_at
-    Time.now
+    Time.now.strftime('%B %d, %Y %H:%M:%S %z')
   end
 
   def ip_address
