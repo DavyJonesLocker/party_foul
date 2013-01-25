@@ -1,4 +1,6 @@
 source "http://rubygems.org"
 
 gemspec
-gem 'debugger'
+unless ENV['CI']
+  gem 'debugger'
+end
