@@ -6,7 +6,12 @@ module PartyFoul
   class InstallGenerator < Rails::Generators::Base
 
     def create_initializer_file
-      puts 'A Github Application is required'
+      source_paths << File.expand_path('../../templates/party_foul', __FILE__)
+
+      say 'A Github Application is required'
+
+      github_endpoint = ask('Github API endpoint: [https://api.github.com]')
+      github_endpoint = 'https://api.github.com' if github_endpoint.blank?
 
       client_id = ask 'Github App Client ID:'
       client_secret = ask 'Github App Client Secret:'
@@ -16,9 +21,11 @@ module PartyFoul
       end
       say ''
 
-      owner = ask 'Repository owner:'
+      owner = ask "Repository owner: [#{username}]"
+      owner = username if owner.blank?
+
       repo  = ask 'Repository name:'
-      auth_uri = URI("https://api.github.com/authorizations")
+      auth_uri = URI("#{github_endpoint}/authorizations")
 
       response = nil
       Net::HTTP.start(auth_uri.host, auth_uri.port, :use_ssl => auth_uri.scheme == 'https') do |http|
@@ -34,33 +41,11 @@ module PartyFoul
       if response.code == '201'
         oauth_token = JSON.parse(response.body)['token']
 
-        File.open('config/initializers/party_foul.rb', 'w') do |f|
-          f.puts <<-CONTENTS
-PartyFoul.configure do |config|
-  # the collection of exceptions to be ignored by PartyFoul
-  # The constants here *must* be represented as strings
-  config.ignored_exceptions = ['ActiveRecord::RecordNotFound']
-
-  # The OAuth token for the account that will be opening the issues on Github
-  config.oauth_token        = '#{oauth_token}'
-
-  # The API endpoint for Github. Unless you are hosting a private
-  # instance of Enterprise Github you do not need to include this
-  config.endpoint           = 'https://api.github.com'
-
-  # The organization or user that owns the target repository
-  config.owner              = '#{owner}'
-
-  # The repository for this application
-  config.repo               = '#{repo}'
-end
-CONTENTS
-        end
+        template 'initializer.rb', 'config/initializers/party_foul.rb',
+          :oauth_token => oauth_token, :github_endpoint => github_endpoint, :owner => owner, :repo => repo
       else
         say 'There was an error retrieving your Github OAuth token'
       end
-
-      say 'Done'
     end
 
     private
