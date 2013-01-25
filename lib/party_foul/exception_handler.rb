@@ -37,7 +37,8 @@ class PartyFoul::ExceptionHandler
   end
 
   def create_issue
-    PartyFoul.github.issues.create(PartyFoul.owner, PartyFoul.repo, title: issue_title, body: issue_body, labels: ['bug'])
+    issue = PartyFoul.github.issues.create(PartyFoul.owner, PartyFoul.repo, title: issue_title, body: issue_body, labels: ['bug'])
+    PartyFoul.github.issues.comments.create(PartyFoul.owner, PartyFoul.repo, issue['number'], body: comment_body)
   end
 
   def update_issue(issue)
@@ -49,6 +50,7 @@ class PartyFoul::ExceptionHandler
       end
 
       PartyFoul.github.issues.edit(PartyFoul.owner, PartyFoul.repo, issue['number'], params)
+      PartyFoul.github.issues.comments.create(PartyFoul.owner, PartyFoul.repo, issue['number'], body: comment_body)
     end
   end
 
@@ -82,19 +84,55 @@ class PartyFoul::ExceptionHandler
     end
   end
 
-  def issue_body
-    <<-BODY
+  def issue_template
+    <<-TEMPLATE
 <table>
+<tr><th>Exception</th><td>:exception</td></tr>
 <tr><th>Count</th><td>1</td></tr>
-<tr><th>Last Occurance</th><td>#{Time.now}</td></tr>
-<tr><th>Params</th><td>#{params}</td></tr>
-<tr><th>Exception</th><td>#{exception}</td></tr>
+<tr><th>Last Occurance</th><td>:occurred_at</td></tr>
 </table>
 
 ## Stack Trace
-<pre>#{stack_trace}</pre>
-Fingerprint: `#{fingerprint}`
-    BODY
+<pre>:stack_trace</pre>
+Fingerprint: `:fingerprint`
+    TEMPLATE
+  end
+
+  def comment_template
+    <<-TEMPLATE
+<table>
+<tr><th>Occurred at</th><td>:occurred_at</td></tr>
+<tr><th>Params</th><td>:params</td></tr>
+<tr><th>IP Address</th><td>:ip_address</td></tr>
+<tr><th>HTTP Headers</th><td>:http_headers</td></tr>
+</table>
+    TEMPLATE
+  end
+
+  def issue_body
+    compile_template(issue_template)
+  end
+
+  def comment_body
+    compile_template(comment_template)
+  end
+
+  def compile_template(template)
+    template.gsub(/:\w+/) do |method|
+      self.send(method.split(':').last)
+    end
+  end
+
+  def occurred_at
+    Time.now
+  end
+
+  def ip_address
+    env['REMOTE_ADDR']
+  end
+
+  def http_headers
+    "<table>#{env.keys.select { |k| k =~ /^HTTP_/ }.sort.map { |k| "<tr><th>#{k.split('HTTP_').last.capitalize}</th><td>#{env[k]}</td></tr>" }.join }</table>"
   end
 
   private
