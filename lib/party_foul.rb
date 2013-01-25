@@ -2,7 +2,7 @@ require 'github_api'
 
 module PartyFoul
   class << self
-    attr_accessor :github, :oauth_token, :endpoint, :owner, :repo, :ignored_exceptions, :adapter, :issue_template, :comment_template
+    attr_accessor :github, :oauth_token, :endpoint, :owner, :repo, :ignored_exceptions, :adapter, :issue_template, :comment_template, :filtered_http_headers
   end
 
   def self.issue_template

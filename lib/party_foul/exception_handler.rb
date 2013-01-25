@@ -107,10 +107,17 @@ class PartyFoul::ExceptionHandler
   end
 
   def http_headers
-    "<table>#{env.keys.select { |k| k =~ /^HTTP_/ }.sort.map { |k| "<tr><th>#{k.split('HTTP_').last.split('_').map(&:capitalize).join('-')}</th><td>#{env[k]}</td></tr>" }.join }</table>"
+    "<table>#{http_header_hash.map { |key, value| "<tr><th>#{key}</th><td>#{value}</td></tr>" }.join}</table>"
   end
 
   private
+
+  def http_header_hash
+    env.keys.select { |key| key =~ /^HTTP_(\w+)/ && !(PartyFoul.filtered_http_headers || []).include?($1.split('_').map(&:capitalize).join('-')) }.sort.inject({}) do |hash, key|
+      hash[key.split('HTTP_').last.split('_').map(&:capitalize).join('-')] = env[key]
+      hash
+    end
+  end
 
   def app_root
     if defined?(Rails)

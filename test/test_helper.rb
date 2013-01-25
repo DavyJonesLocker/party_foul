@@ -21,7 +21,7 @@ module MiniTest::Expectations
 end
 
 def clean_up_party
-  %w{github oauth_token endpoint owner repo ignored_exceptions}.each do |attr|
+  %w{github oauth_token endpoint owner repo ignored_exceptions adapter issue_template comment_template filtered_http_headers}.each do |attr|
     PartyFoul.send("#{attr}=", nil)
   end
 end

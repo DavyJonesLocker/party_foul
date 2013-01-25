@@ -7,6 +7,10 @@ describe 'Party Foul Exception Handler' do
     Time.stubs(:now).returns(Time.at(0))
   end
 
+  after do
+    clean_up_party
+  end
+
   describe '#body' do
     describe 'updating issue body' do
       before do
@@ -128,6 +132,21 @@ COMMENT
       @handler.stubs(:data1).returns('123')
       @handler.stubs(:data2).returns('abc')
       @handler.compile_template(template).must_equal '<span>123</span><div>abc</div>'
+    end
+  end
+
+  describe '#http_headers' do
+    before do
+      PartyFoul.filtered_http_headers = ['Cookie']
+      env = {
+        'HTTP_USER_AGENT' => 'test_user_agent',
+        'HTTP_COOKIE' => 'test_cookie',
+      }
+      @handler = PartyFoul::ExceptionHandler.new(nil, env)
+    end
+
+    it 'ignored Cookie' do
+      @handler.http_headers.must_equal '<table><tr><th>User-Agent</th><td>test_user_agent</td></tr></table>'
     end
   end
 end
