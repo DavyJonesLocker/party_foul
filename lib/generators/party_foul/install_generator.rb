@@ -15,7 +15,7 @@ module PartyFoul
 
       begin
         github       = Github.new :login => login, :password => password, :endpoint => @endpoint
-        @oauth_token = github.oauth.create('scopes' => ['repo']).token
+        @oauth_token = github.oauth.create(scopes: ['repo'], notes: "PartyFoul #{@owner}/#{@repo}").token
         template 'party_foul.rb', 'config/initializers/party_foul.rb'
       rescue Github::Error::Unauthorized
         say 'There was an error retrieving your Github OAuth token'
