@@ -113,7 +113,7 @@ Fingerprint: `abcdefg1234567890`
 <tr><th>Occurred at</th><td>#{Time.now}</td></tr>
 <tr><th>Params</th><td>{:controller=>"landing", :action=>"index"}</td></tr>
 <tr><th>IP Address</th><td>127.0.0.1</td></tr>
-<tr><th>HTTP Headers</th><td><table><tr><th>Host</th><td>localhost:3000</td></tr><tr><th>User_agent</th><td>test_user_agent</td></tr></table></td></tr>
+<tr><th>HTTP Headers</th><td><table><tr><th>Host</th><td>localhost:3000</td></tr><tr><th>User Agent</th><td>test_user_agent</td></tr></table></td></tr>
 </table>
 COMMENT
 

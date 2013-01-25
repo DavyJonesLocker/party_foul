@@ -132,7 +132,7 @@ Fingerprint: `:fingerprint`
   end
 
   def http_headers
-    "<table>#{env.keys.select { |k| k =~ /^HTTP_/ }.sort.map { |k| "<tr><th>#{k.split('HTTP_').last.capitalize}</th><td>#{env[k]}</td></tr>" }.join }</table>"
+    "<table>#{env.keys.select { |k| k =~ /^HTTP_/ }.sort.map { |k| "<tr><th>#{k.split('HTTP_').last.split('_').map(&:capitalize).join(' ')}</th><td>#{env[k]}</td></tr>" }.join }</table>"
   end
 
   private
