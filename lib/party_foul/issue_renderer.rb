@@ -7,9 +7,11 @@ class PartyFoul::IssueRenderer
   end
 
   def title
-    line = exception.backtrace.select {|p| p =~ /#{app_root}/ }.first
-    name_and_number = extract_file_name_and_line_number(line)[1]
-    "#{exception} - #{name_and_number}"
+    if env['action_dispatch.request.path_parameters'] && env['action_controller.instance']
+      %{#{env['action_controller.instance'].class}##{env['action_dispatch.request.path_parameters']['action']} (#{exception.class}) "#{exception.message}"}
+    else
+      %{(#{exception.class}) "#{exception.message}"}
+    end
   end
 
   def body

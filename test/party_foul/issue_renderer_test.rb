@@ -151,4 +151,31 @@ COMMENT
       @rendered_issue.http_headers.must_equal('User-Agent' => 'test_user_agent')
     end
   end
+
+  describe '#title' do
+    before do
+      @exception = Exception.new('message')
+    end
+    context 'with Rails' do
+      before do
+        controller_instance = mock('Controller')
+        controller_instance.stubs(:class).returns('LandingController')
+        env = {
+          'action_dispatch.request.path_parameters' => { 'controller' => 'landing', 'action' => 'index' },
+          'action_controller.instance' => controller_instance
+        }
+        @rendered_issue = PartyFoul::IssueRenderer.new(@exception, env)
+      end
+      it 'constructs the title with the controller and action' do
+        @rendered_issue.title.must_equal %{LandingController#index (Exception) "message"}
+      end
+    end
+
+    context 'not Rails' do
+      it 'constructs the title with the class and instance method' do
+        @rendered_issue = PartyFoul::IssueRenderer.new(@exception, {})
+        @rendered_issue.title.must_equal %{(Exception) "message"}
+      end
+    end
+  end
 end
