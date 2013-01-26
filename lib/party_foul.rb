@@ -2,7 +2,11 @@ require 'github_api'
 
 module PartyFoul
   class << self
-    attr_accessor :github, :oauth_token, :endpoint, :owner, :repo, :ignored_exceptions, :adapter, :issue_template, :comment_template, :filtered_http_headers
+    attr_accessor :github, :oauth_token, :endpoint, :owner, :repo, :ignored_exceptions, :adapter, :issue_template, :comment_template, :filtered_http_headers, :web_url
+  end
+
+  def self.web_url
+    @web_url ||= 'https://github.com'
   end
 
   def self.issue_template
@@ -35,6 +39,10 @@ Fingerprint: `:fingerprint`
 
   def self.ignored_exceptions
     @ignored_exceptions || []
+  end
+
+  def self.repo_url
+    "#{web_url}/#{owner}/#{repo}"
   end
 
   def self.configure(&block)

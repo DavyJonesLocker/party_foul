@@ -13,6 +13,10 @@ PartyFoul.configure do |config|
   # instance of Enterprise Github you do not need to include this
   config.endpoint              = '<%= @endpoint %>'
 
+  # The Web URL for Github. Unless you are hosting a private
+  # instance of Enterprise Github you do not need to include this
+  config.web_url               = '<%= @web_url %>'
+
   # The organization or user that owns the target repository
   config.owner                 = '<%= @owner %>'
 

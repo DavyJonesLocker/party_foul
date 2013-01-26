@@ -11,11 +11,12 @@ module PartyFoul
       password  = STDIN.noecho { ask 'Github password:' }
       @owner    = ask_with_default "\nRepository owner:", login
       @repo     = ask 'Repository name:'
-      @endpoint = ask_with_default 'Endpoint:', 'https://api.github.com'
+      @endpoint = ask_with_default 'Api Endpoint:', 'https://api.github.com'
+      @web_url  = ask_with_default 'Web URL:', 'https://github.com'
 
       begin
         github       = Github.new :login => login, :password => password, :endpoint => @endpoint
-        @oauth_token = github.oauth.create(scopes: ['repo'], notes: "PartyFoul #{@owner}/#{@repo}").token
+        @oauth_token = github.oauth.create(scopes: ['repo'], note: "PartyFoul #{@owner}/#{@repo}", note_url: "#{@web_url}/#{@owner}/#{@repo}").token
         template 'party_foul.rb', 'config/initializers/party_foul.rb'
       rescue Github::Error::Unauthorized
         say 'There was an error retrieving your Github OAuth token'

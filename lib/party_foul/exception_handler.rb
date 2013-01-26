@@ -29,7 +29,7 @@ class PartyFoul::ExceptionHandler
   def stack_trace
     exception.backtrace.map do |line|
       if matches = extract_file_name_and_line_number(line)
-        "<a href='../tree/master/#{matches[2]}#L#{matches[3]}'>#{line}</a>"
+        "<a href='#{PartyFoul.repo_url}/tree/master/#{matches[2]}#L#{matches[3]}'>#{line}</a>"
       else
         line
       end
