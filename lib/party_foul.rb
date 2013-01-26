@@ -58,5 +58,6 @@ Fingerprint: `:fingerprint`
 end
 
 require 'party_foul/exception_handler'
+require 'party_foul/issue_renderer'
 require 'party_foul/middleware'
 require 'party_foul/sync_adapter'
