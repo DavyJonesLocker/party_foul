@@ -147,9 +147,8 @@ the change in one of the [different issue renderer adapters](https://github.com/
 
 ## Authors ##
 
-[Brian Cardarella](http://twitter.com/bcardarella)
-
-[Dan McClain](http://twitter.com/_danmcclain)
+* [Brian Cardarella](http://twitter.com/bcardarella)
+* [Dan McClain](http://twitter.com/_danmcclain)
 
 [We are very thankful for the many contributors](https://github.com/dockyard/party_foul/graphs/contributors)
 
