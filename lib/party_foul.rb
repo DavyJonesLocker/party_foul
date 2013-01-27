@@ -47,7 +47,7 @@ Fingerprint: `:fingerprint`
 
   def self.configure(&block)
     yield self
-    self.adapter ||= SyncAdapter
+    self.adapter ||= PartyFoul::Processors::Sync
     _self = self
     self.github ||= Github.new do |config|
       %w{endpoint oauth_token}.each do |option|
@@ -60,4 +60,4 @@ end
 require 'party_foul/exception_handler'
 require 'party_foul/issue_renderer'
 require 'party_foul/middleware'
-require 'party_foul/sync_adapter'
+require 'party_foul/processors'
