@@ -14,14 +14,14 @@ describe 'Party Foul Exception Handler' do
     PartyFoul.github.issues.stubs(:edit)
     PartyFoul.github.issues.stubs(:comments).returns(mock('Comments'))
     PartyFoul.github.issues.comments.stubs(:create)
-    PartyFoul::IssueRenderer.any_instance.stubs(:title).returns('Test Title')
-    PartyFoul::IssueRenderer.any_instance.stubs(:fingerprint).returns('test_fingerprint')
+    PartyFoul::RailsIssueRenderer.any_instance.stubs(:title).returns('Test Title')
+    PartyFoul::RailsIssueRenderer.any_instance.stubs(:fingerprint).returns('test_fingerprint')
   end
 
   context 'when error is new' do
     it 'will open a new error on Github' do
-      PartyFoul::IssueRenderer.any_instance.stubs(:body).returns('Test Body')
-      PartyFoul::IssueRenderer.any_instance.stubs(:comment).returns('Test Comment')
+      PartyFoul::RailsIssueRenderer.any_instance.stubs(:body).returns('Test Body')
+      PartyFoul::RailsIssueRenderer.any_instance.stubs(:comment).returns('Test Comment')
       PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'test_fingerprint', state: 'open').returns(Hashie::Mash.new(issues: []))
       PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'test_fingerprint', state: 'closed').returns(Hashie::Mash.new(issues: []))
       PartyFoul.github.issues.expects(:create).with('test_owner', 'test_repo', title: 'Test Title', body: 'Test Body', :labels => ['bug']).returns(Hashie::Mash.new('number' => 1))
@@ -32,8 +32,8 @@ describe 'Party Foul Exception Handler' do
 
   context 'when error is not new' do
     before do
-      PartyFoul::IssueRenderer.any_instance.stubs(:update_body).returns('New Body')
-      PartyFoul::IssueRenderer.any_instance.stubs(:comment).returns('Test Comment')
+      PartyFoul::RailsIssueRenderer.any_instance.stubs(:update_body).returns('New Body')
+      PartyFoul::RailsIssueRenderer.any_instance.stubs(:comment).returns('Test Comment')
     end
 
     context 'and open' do
@@ -58,7 +58,7 @@ describe 'Party Foul Exception Handler' do
 
   context 'when issue is marked as "wontfix"' do
     it 'does nothing' do
-      PartyFoul::IssueRenderer.any_instance.stubs(:body).returns('Test Body')
+      PartyFoul::RailsIssueRenderer.any_instance.stubs(:body).returns('Test Body')
       PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'test_fingerprint', state: 'open').returns(Hashie::Mash.new(issues: []))
       PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'test_fingerprint', state: 'closed').returns(Hashie::Mash.new(issues: [{title: 'Test Title', body: 'Test Body', state: 'closed', number: 1, 'labels' => ['wontfix']}]))
       PartyFoul.github.issues.expects(:create).never

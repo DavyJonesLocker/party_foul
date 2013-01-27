@@ -6,7 +6,13 @@ class PartyFoul::ExceptionHandler
   end
 
   def initialize(exception, env)
-    self.rendered_issue = PartyFoul::IssueRenderer.new(exception, env)
+    renderer_klass = if defined?(Rails)
+                       PartyFoul::RailsIssueRenderer
+                     else
+                       PartyFoul::RackIssueRenderer
+                     end
+
+    self.rendered_issue = renderer_klass.new(exception, env)
   end
 
   def run

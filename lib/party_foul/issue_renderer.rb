@@ -7,11 +7,7 @@ class PartyFoul::IssueRenderer
   end
 
   def title
-    if env['action_dispatch.request.path_parameters'] && env['action_controller.instance']
-      %{#{env['action_controller.instance'].class}##{env['action_dispatch.request.path_parameters']['action']} (#{exception.class}) "#{exception.message}"}
-    else
-      %{(#{exception.class}) "#{exception.message}"}
-    end
+    raise NotImplementedError
   end
 
   def body
@@ -33,7 +29,7 @@ class PartyFoul::IssueRenderer
   end
 
   def fingerprint
-    Digest::SHA1.hexdigest(issue_title)
+    Digest::SHA1.hexdigest(title)
   end
 
   def update_body(old_body)
@@ -48,12 +44,7 @@ class PartyFoul::IssueRenderer
   end
 
   def params
-    if env["action_dispatch.parameter_filter"]
-      parameter_filter = ActionDispatch::Http::ParameterFilter.new(env["action_dispatch.parameter_filter"])
-      parameter_filter.filter(env['action_dispatch.request.path_parameters'])
-    else
-      env['QUERY_STRING']
-    end
+    raise NotImplementedError
   end
 
   def occurred_at
@@ -93,18 +84,13 @@ class PartyFoul::IssueRenderer
   end
 
   def app_root
-    if defined?(Rails)
-      Rails.root
-    else
-      Dir.pwd
-    end
-  end
-
-  def file_and_line_regex
-    /#{app_root}\/((.+?):(\d+))/
+    Dir.pwd
   end
 
   def extract_file_name_and_line_number(backtrace_line)
-    backtrace_line.match(file_and_line_regex)
+    backtrace_line.match(/#{app_root}\/((.+?):(\d+))/)
   end
 end
+
+require 'party_foul/issue_renderers/rack'
+require 'party_foul/issue_renderers/rails'
