@@ -2,7 +2,9 @@ require 'github_api'
 
 module PartyFoul
   class << self
-    attr_accessor :github, :oauth_token, :endpoint, :owner, :repo, :ignored_exceptions, :adapter, :issue_template, :comment_template, :filtered_http_headers, :web_url
+    attr_accessor :github, :oauth_token, :endpoint, :owner, :repo,
+      :ignored_exceptions, :processor, :issue_template,
+      :comment_template, :filtered_http_headers, :web_url
   end
 
   def self.web_url
@@ -47,7 +49,7 @@ Fingerprint: `:fingerprint`
 
   def self.configure(&block)
     yield self
-    self.adapter ||= PartyFoul::Processors::Sync
+    self.processor ||= PartyFoul::Processors::Sync
     _self = self
     self.github ||= Github.new do |config|
       %w{endpoint oauth_token}.each do |option|

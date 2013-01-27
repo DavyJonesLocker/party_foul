@@ -2,7 +2,7 @@ class PartyFoul::ExceptionHandler
   attr_accessor :rendered_issue
 
   def self.handle(exception, env)
-    PartyFoul.adapter.handle(exception, env)
+    PartyFoul.processor.handle(exception, env)
   end
 
   def initialize(exception, env)
