@@ -136,6 +136,7 @@ PartyFoul.configure do |config|
   config.issue_body = ':issue_title'
 
   config.comment_body = ':occurred_at'
+end
 ```
 
 In this over-simplistic example the words that start with `:` in the
