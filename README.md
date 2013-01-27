@@ -66,23 +66,27 @@ You need to initialize `PartyFoul`, use the following:
 PartyFoul.configure do |config|
   # the collection of exceptions to be ignored by PartyFoul
   # The constants here *must* be represented as strings
-  config.ignored_exceptions = ['ActiveRecord::RecordNotFound', 'ActionController::RoutingError']
+  config.ignored_exceptions    = ['ActiveRecord::RecordNotFound', 'ActionController::RoutingError']
 
   # The names of the HTTP headers to not report
   config.filtered_http_headers = ['Cookie']
 
   # The OAuth token for the account that is opening the issues on Github
-  config.oauth_token        = 'abcdefgh1234567890'
+  config.oauth_token           = 'abcdefgh1234567890'
 
   # The API endpoint for Github. Unless you are hosting a private
   # instance of Enterprise Github you do not need to include this
-  config.endpoint           = 'https://api.github.com'
+  config.endpoint              = 'https://api.github.com'
+
+  # The Web URL for Github. Unless you are hosting a private
+  # instance of Enterprise Github you do not need to include this
+  config.web_url               = 'https://github.com'
 
   # The organization or user that owns the target repository
-  config.owner              = 'owner_name'
+  config.owner                 = 'owner_name'
 
   # The repository for this application
-  config.repo               = 'repo_name'
+  config.repo                  = 'repo_name'
 end
 ```
 
@@ -99,7 +103,7 @@ Add as the very last middleware in your production `Rack` stack.
 
 ## Customization ##
 
-### Async Adapters ###
+### Background Processing ###
 
 You can specify the adapter with which the exceptions should be
 handled. By default, PartyFoul includes the
@@ -109,10 +113,10 @@ include the following in your `PartyFoul.configure` block:
 
 ```ruby
 PartyFoul.configure do |config|
-  config.adapter = MyAsyncAdatper
+  config.adapter = PartyFoul::Processors::MyBackgroundProcessor
 end
 
-class MyAsyncAdapter
+class PartyFoul::Processors::MyBackgroundProcessor
   def self.handle(exception, env)
     # Enqueue the exception, then in your worker, call
     # PartyFoul::ExceptionHandler.new(exception, env).run
@@ -121,7 +125,7 @@ end
 
 ```
 
-## Changing How Issues Are Reported ##
+### Changing How Issues Are Reported ###
 
 `PartyFoul` comes with default templates for what the body of issues and
 comments are. If you want to override these templates you simply need to
@@ -129,20 +133,17 @@ add them as an option in your initializer:
 
 ```ruby
 PartyFoul.configure do |config|
-  config.issue_body = <<-TEMPLATE
-:issue_title
-TEMPLATE
+  config.issue_body = ':issue_title'
 
-  config.comment_body = <<-TEMPLATE
-:occurred_at
-TEMPLATE
+  config.comment_body = ':occurred_at'
 ```
 
 In this over-simplistic example the words that start with `:` in the
 templates are evaluated with the value of the corresponding named
-instance method on the instance of `PartyFoul::ExceptionHandler`. If you
+instance method on the instance of `PartyFoul::IssueRenderer`. If you
 want to add additional values for replacement you should open that class
-to add the methods.
+to add the methods. Depending upon the data point you may want o make
+the change in one of the [different issue renderer adapters](https://github.com/dockyard/party_foul/tree/master/lib/party_foul/issue_renderers).
 
 ## Authors ##
 
