@@ -14,6 +14,7 @@ describe 'Party Foul Confg' do
       config.endpoint           = 'http://api.example.com'
       config.owner              = 'test_owner'
       config.repo               = 'test_repo'
+      config.branch             = 'master'
     end
 
     PartyFoul.ignored_exceptions.must_equal ['StandardError']
@@ -23,5 +24,11 @@ describe 'Party Foul Confg' do
     PartyFoul.owner.must_equal 'test_owner'
     PartyFoul.repo.must_equal 'test_repo'
     PartyFoul.repo_url.must_equal 'http://example.com/test_owner/test_repo'
+    PartyFoul.branch.must_equal 'master'
+  end
+
+  it 'has default values' do
+    PartyFoul.web_url.must_equal 'https://github.com'
+    PartyFoul.branch.must_equal  'master'
   end
 end

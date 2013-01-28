@@ -1,5 +1,5 @@
 class PartyFoul::IssueRenderer
-  attr_accessor :exception, :env
+  attr_accessor :exception, :env, :sha
 
   def initialize(exception, env)
     self.exception = exception
@@ -21,7 +21,7 @@ class PartyFoul::IssueRenderer
   def stack_trace
     exception.backtrace.map do |line|
       if matches = extract_file_name_and_line_number(line)
-        "<a href='#{PartyFoul.repo_url}/tree/master/#{matches[2]}#L#{matches[3]}'>#{line}</a>"
+        "<a href='#{PartyFoul.repo_url}/blob/#{sha}/#{matches[2]}#L#{matches[3]}'>#{line}</a>"
       else
         line
       end

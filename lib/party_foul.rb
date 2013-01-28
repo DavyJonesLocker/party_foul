@@ -4,7 +4,11 @@ module PartyFoul
   class << self
     attr_accessor :github, :oauth_token, :endpoint, :owner, :repo,
       :ignored_exceptions, :processor, :issue_template,
-      :comment_template, :filtered_http_headers, :web_url
+      :comment_template, :filtered_http_headers, :web_url, :branch
+  end
+
+  def self.branch
+    @branch ||= 'master'
   end
 
   def self.web_url

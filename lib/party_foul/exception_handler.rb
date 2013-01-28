@@ -32,6 +32,7 @@ class PartyFoul::ExceptionHandler
   end
 
   def create_issue
+    self.sha = PartyFoul.github.git_data.references.get(PartyFoul.owner, PartyFoul.repo, "heads/#{PartyFoul.branch}").object.sha
     issue = PartyFoul.github.issues.create(PartyFoul.owner, PartyFoul.repo, title: rendered_issue.title, body: rendered_issue.body, labels: ['bug'])
     PartyFoul.github.issues.comments.create(PartyFoul.owner, PartyFoul.repo, issue['number'], body: rendered_issue.comment)
   end
@@ -44,6 +45,7 @@ class PartyFoul::ExceptionHandler
         params[:labels] = ['bug', 'regression']
       end
 
+      self.sha = PartyFoul.github.git_data.references.get(PartyFoul.owner, PartyFoul.repo, "heads/#{PartyFoul.branch}").object.sha
       PartyFoul.github.issues.edit(PartyFoul.owner, PartyFoul.repo, issue['number'], params)
       PartyFoul.github.issues.comments.create(PartyFoul.owner, PartyFoul.repo, issue['number'], body: rendered_issue.comment)
     end
@@ -53,5 +55,9 @@ class PartyFoul::ExceptionHandler
 
   def fingerprint
     rendered_issue.fingerprint
+  end
+
+  def sha=(sha)
+    rendered_issue.sha = sha
   end
 end

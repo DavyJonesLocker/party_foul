@@ -8,8 +8,10 @@ describe 'Party Foul Exception Handler' do
       config.repo        = 'test_repo'
     end
 
+    PartyFoul.stubs(:branch).returns('deploy')
     PartyFoul.github.stubs(:issues).returns(mock('Issues'))
     PartyFoul.github.stubs(:search).returns(mock('Search'))
+    PartyFoul.github.git_data.references.stubs(:get)
     PartyFoul.github.issues.stubs(:create)
     PartyFoul.github.issues.stubs(:edit)
     PartyFoul.github.issues.stubs(:comments).returns(mock('Comments'))
@@ -25,6 +27,7 @@ describe 'Party Foul Exception Handler' do
       PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'test_fingerprint', state: 'open').returns(Hashie::Mash.new(issues: []))
       PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'test_fingerprint', state: 'closed').returns(Hashie::Mash.new(issues: []))
       PartyFoul.github.issues.expects(:create).with('test_owner', 'test_repo', title: 'Test Title', body: 'Test Body', :labels => ['bug']).returns(Hashie::Mash.new('number' => 1))
+      PartyFoul.github.git_data.references.expects(:get).with('test_owner', 'test_repo', 'heads/deploy').returns(Hashie::Mash.new(object: Hashie::Mash.new(sha: 'abcdefg1234567890')))
       PartyFoul.github.issues.comments.expects(:create).with('test_owner', 'test_repo', 1, body: 'Test Comment')
       PartyFoul::ExceptionHandler.new(nil, {}).run
     end
@@ -41,6 +44,7 @@ describe 'Party Foul Exception Handler' do
         PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'test_fingerprint', state: 'open').returns(Hashie::Mash.new(issues: [{title: 'Test Title', body: 'Test Body', state: 'open', number: 1}]))
         PartyFoul.github.issues.expects(:edit).with('test_owner', 'test_repo', 1, body: 'New Body', state: 'open')
         PartyFoul.github.issues.comments.expects(:create).with('test_owner', 'test_repo', 1, body: 'Test Comment')
+        PartyFoul.github.git_data.references.expects(:get).with('test_owner', 'test_repo', 'heads/deploy').returns(Hashie::Mash.new(object: Hashie::Mash.new(sha: 'abcdefg1234567890')))
         PartyFoul::ExceptionHandler.new(nil, {}).run
       end
     end
@@ -51,6 +55,7 @@ describe 'Party Foul Exception Handler' do
         PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'test_fingerprint', state: 'closed').returns(Hashie::Mash.new(issues: [{title: 'Test Title', body: 'Test Body', state: 'closed', number: 1}]))
         PartyFoul.github.issues.expects(:edit).with('test_owner', 'test_repo', 1, body: 'New Body', state: 'open', labels: ['bug', 'regression'])
         PartyFoul.github.issues.comments.expects(:create).with('test_owner', 'test_repo', 1, body: 'Test Comment')
+        PartyFoul.github.git_data.references.expects(:get).with('test_owner', 'test_repo', 'heads/deploy').returns(Hashie::Mash.new(object: Hashie::Mash.new(sha: 'abcdefg1234567890')))
         PartyFoul::ExceptionHandler.new(nil, {}).run
       end
     end
@@ -64,6 +69,7 @@ describe 'Party Foul Exception Handler' do
       PartyFoul.github.issues.expects(:create).never
       PartyFoul.github.issues.expects(:edit).never
       PartyFoul.github.issues.comments.expects(:create).never
+      PartyFoul.github.git_data.references.expects(:get).never
       PartyFoul::ExceptionHandler.new(nil, {}).run
     end
   end

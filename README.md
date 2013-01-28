@@ -87,6 +87,9 @@ PartyFoul.configure do |config|
 
   # The repository for this application
   config.repo                  = 'repo_name'
+
+  # The branch for your deployed code
+  # config.branch              = 'master'
 end
 ```
 
