@@ -22,11 +22,19 @@ module PartyFoul
     @web_url ||= 'https://github.com'
   end
 
+  # The api endpoint for Github. This is only interesting for Enterprise
+  # users
+  #
+  # @return [String] Defaults to 'https://api.github.com' if not set
+  def self.endpoint
+    @endpoint ||= 'https://api.github.com'
+  end
+
   # The processor to be used when handling the exception. Defaults to a
   # synchrons processor
   #
-  # @return [Class]
-  def processor
+  # @return [Class] Defaults to 'PartyFoul::Processors:Sync
+  def self.processor
     @processor ||= PartyFoul::Processors::Sync
   end
 
@@ -95,15 +103,12 @@ Fingerprint: `:fingerprint`
   #       config.oauth_token = ENV['oauth_token']
   #     end
   #
+  # Will also setup for Github api connections
+  #
   # @param [Block]
   def self.configure(&block)
     yield self
-    _self = self
-    self.github ||= Github.new do |config|
-      %w{endpoint oauth_token}.each do |option|
-        config.send("#{option}=", _self.send(option)) if !_self.send(option).nil?
-      end
-    end
+    self.github ||= Github.new oauth_token: oauth_token, endpoint: endpoint
   end
 end
 
