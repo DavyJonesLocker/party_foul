@@ -22,6 +22,14 @@ module PartyFoul
     @web_url ||= 'https://github.com'
   end
 
+  # The processor to be used when handling the exception. Defaults to a
+  # synchrons processor
+  #
+  # @return [Class]
+  def processor
+    @processor ||= PartyFoul::Processors::Sync
+  end
+
   # The template used for rendering the body of a new issue
   #
   # @return [String]
@@ -90,7 +98,6 @@ Fingerprint: `:fingerprint`
   # @param [Block]
   def self.configure(&block)
     yield self
-    self.processor ||= PartyFoul::Processors::Sync
     _self = self
     self.github ||= Github.new do |config|
       %w{endpoint oauth_token}.each do |option|
