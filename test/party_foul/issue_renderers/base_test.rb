@@ -83,7 +83,8 @@ Fingerprint: `abcdefg1234567890`
         'HTTP_USER_AGENT' => 'test_user_agent',
         'REMOTE_ADDR' => '127.0.0.1',
         'HTTP_HOST' => 'localhost:3000',
-        'rack.session' => { :id => 1 }
+        'rack.session' => { :id => 1 },
+        'action_dispatch.other' => 'noprint'
       }
       @rendered_issue = PartyFoul::IssueRenderers::Base.new(nil, env)
       @rendered_issue.stubs(:params).returns({})
