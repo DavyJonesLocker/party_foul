@@ -2,7 +2,7 @@ require 'test_helper'
 require 'active_support/core_ext/object/blank'
 require 'action_dispatch/http/parameter_filter'
 
-describe 'Party Foul Issue Renderer' do
+describe 'Party Foul Issue Renderer Base' do
   before do
     Time.stubs(:now).returns(Time.new(1970, 1, 1, 0, 0, 0, '-05:00'))
   end
@@ -14,7 +14,7 @@ describe 'Party Foul Issue Renderer' do
   describe '#body' do
     describe 'updating issue body' do
       before do
-        @rendered_issue = PartyFoul::IssueRenderer.new(nil, nil)
+        @rendered_issue = PartyFoul::IssueRenderers::Base.new(nil, nil)
         @rendered_issue.stubs(:exception).returns('Test Exception')
         @rendered_issue.stubs(:fingerprint).returns('abcdefg1234567890')
         @rendered_issue.stubs(:stack_trace)
@@ -53,7 +53,7 @@ Fingerprint: `abcdefg1234567890`
 
     describe 'empty body' do
       before do
-        @rendered_issue = PartyFoul::IssueRenderer.new(nil, nil)
+        @rendered_issue = PartyFoul::IssueRenderers::Base.new(nil, nil)
         @rendered_issue.stubs(:exception).returns('Test Exception')
         @rendered_issue.stubs(:fingerprint).returns('abcdefg1234567890')
         @rendered_issue.stubs(:stack_trace)
@@ -85,7 +85,7 @@ Fingerprint: `abcdefg1234567890`
         'HTTP_HOST' => 'localhost:3000',
         'rack.session' => { :id => 1 }
       }
-      @rendered_issue = PartyFoul::IssueRenderer.new(nil, env)
+      @rendered_issue = PartyFoul::IssueRenderers::Base.new(nil, env)
       @rendered_issue.stubs(:params).returns({})
     end
 
@@ -107,7 +107,7 @@ COMMENT
   describe '#compile_template' do
     it 'it parses the tags and inserts proper data' do
       template = '<span>:data1</span><div>:data2</div>'
-      @rendered_issue = PartyFoul::IssueRenderer.new(nil, nil)
+      @rendered_issue = PartyFoul::IssueRenderers::Base.new(nil, nil)
       @rendered_issue.stubs(:data1).returns('123')
       @rendered_issue.stubs(:data2).returns('abc')
       @rendered_issue.compile_template(template).must_equal '<span>123</span><div>abc</div>'
@@ -121,7 +121,7 @@ COMMENT
         'HTTP_USER_AGENT' => 'test_user_agent',
         'HTTP_COOKIE' => 'test_cookie',
       }
-      @rendered_issue = PartyFoul::IssueRenderer.new(nil, env)
+      @rendered_issue = PartyFoul::IssueRenderers::Base.new(nil, env)
     end
 
     it 'ignored Cookie' do
@@ -131,7 +131,7 @@ COMMENT
 
   describe '#fingerprint' do
     it 'SHA1s the title' do
-      rendered_issue = PartyFoul::IssueRenderer.new(nil, nil)
+      rendered_issue = PartyFoul::IssueRenderers::Base.new(nil, nil)
       rendered_issue.stubs(:title).returns('abcdefg1234567890')
       rendered_issue.fingerprint.must_equal Digest::SHA1.hexdigest(rendered_issue.title)
     end

@@ -16,9 +16,9 @@ class PartyFoul::ExceptionHandler
   # @param [Exception, Hash]
   def initialize(exception, env)
     renderer_klass = if defined?(Rails)
-                       PartyFoul::RailsIssueRenderer
+                       PartyFoul::IssueRenderers::Rails
                      else
-                       PartyFoul::RackIssueRenderer
+                       PartyFoul::IssueRenderers::Rack
                      end
 
     self.rendered_issue = renderer_klass.new(exception, env)

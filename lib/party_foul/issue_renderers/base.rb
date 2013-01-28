@@ -1,4 +1,4 @@
-class PartyFoul::IssueRenderer
+class PartyFoul::IssueRenderers::Base
   attr_accessor :exception, :env, :sha
 
   # A new renderer instance for Githug issues
