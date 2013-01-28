@@ -108,7 +108,7 @@ class PartyFoul::IssueRenderers::Base
   #
   # @return [Hash]
   def http_headers
-    env.keys.select { |key| key =~ /^HTTP_(\w+)/ && !(PartyFoul.filtered_http_headers || []).include?($1.split('_').map(&:capitalize).join('-')) }.sort.inject({}) do |hash, key|
+    env.keys.select { |key| key =~ /([A-Z|_]+)/ && !(PartyFoul.filtered_http_headers || []).include?($1.split('HTTP_').last.split('_').map(&:capitalize).join('-')) }.sort.inject({}) do |hash, key|
       hash[key.split('HTTP_').last.split('_').map(&:capitalize).join('-')] = env[key]
       hash
     end

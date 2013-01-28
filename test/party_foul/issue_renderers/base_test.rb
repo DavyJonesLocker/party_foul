@@ -94,9 +94,8 @@ Fingerprint: `abcdefg1234567890`
 <table>
 <tr><th>Occurred at</th><td>January 01, 1970 00:00:00 -0500</td></tr>
 <tr><th>Params</th><td><table></table></td></tr>
-<tr><th>IP Address</th><td>127.0.0.1</td></tr>
 <tr><th>Session</th><td><table><tr><th>id</th><td>1</td></tr></table></td></tr>
-<tr><th>HTTP Headers</th><td><table><tr><th>Host</th><td>localhost:3000</td></tr><tr><th>User-Agent</th><td>test_user_agent</td></tr></table></td></tr>
+<tr><th>HTTP Headers</th><td><table><tr><th>Host</th><td>localhost:3000</td></tr><tr><th>User-Agent</th><td>test_user_agent</td></tr><tr><th>Remote-Addr</th><td>127.0.0.1</td></tr><tr><th>Request-Uri</th><td>http://example.com/</td></tr></table></td></tr>
 </table>
 COMMENT
 
