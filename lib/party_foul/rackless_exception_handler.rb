@@ -1,4 +1,4 @@
-class RacklessExceptionHandler < ExceptionHandler
+class PartyFoul::RacklessExceptionHandler < PartyFoul::ExceptionHandler
   # This handler will pass the exception and working environment from Rack off to a processor.
   # The default PartyFoul processor will work synchronously. Processor adapters can be written
   # to push this logic to a background job if desired.
