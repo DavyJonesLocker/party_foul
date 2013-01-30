@@ -112,6 +112,7 @@ Fingerprint: `:fingerprint`
 end
 
 require 'party_foul/exception_handler'
+require 'party_foul/rackless_exception_handler'
 require 'party_foul/issue_renderers'
 require 'party_foul/middleware'
 require 'party_foul/processors'
