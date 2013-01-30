@@ -10,14 +10,14 @@ class PartyFoul::IssueRenderers::Rackless < PartyFoul::IssueRenderers::Base
   #
   # @return [Hash]
   def params
-    env['params']
+    env[:params]
   end
 
   # Title for the issue comprised of Controller#action (exception) "message"
   #
   # @return [String]
   def title
-    %{#{env['class']}##{env['method']} (#{exception.class}) "#{exception.message}"}
+    %{#{env[:class]}##{env[:method]} (#{exception.class}) "#{exception.message}"}
   end
 
   private
