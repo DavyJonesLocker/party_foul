@@ -19,10 +19,4 @@ class PartyFoul::IssueRenderers::Rackless < PartyFoul::IssueRenderers::Base
   def title
     %{#{env[:class]}##{env[:method]} (#{exception.class}) "#{exception.message}"}
   end
-
-  private
-
-  def app_root
-    Rails.root
-  end
 end
