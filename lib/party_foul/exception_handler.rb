@@ -7,7 +7,7 @@ class PartyFoul::ExceptionHandler
   #
   # @param [Exception, Hash]
   def self.handle(exception, env)
-    PartyFoul.processor.handle(exception, env)
+    PartyFoul.processor.handle(exception, clean_env(env))
   end
 
   # Makes an attempt to determine what framework is being used and will use the proper
@@ -68,6 +68,10 @@ class PartyFoul::ExceptionHandler
   end
 
   private
+
+  def self.clean_env(env)
+    env.select { |key, value| PartyFoul.whitelisted_rack_keys.include?(key) }
+  end
 
   def fingerprint
     rendered_issue.fingerprint
