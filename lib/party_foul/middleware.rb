@@ -16,8 +16,8 @@ module PartyFoul
     private
 
     def allow_handling?(captured_exception)
-      !PartyFoul.ignored_exceptions.find do |ignored_exception|
-        names = ignored_exception.split('::')
+      !PartyFoul.blacklisted_exceptions.find do |blacklisted_exception|
+        names = blacklisted_exception.split('::')
         names.shift if names.empty? || names.first.empty?
 
         constant = Object

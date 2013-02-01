@@ -116,7 +116,7 @@ COMMENT
 
   describe '#http_headers' do
     before do
-      PartyFoul.filtered_http_headers = ['Cookie']
+      PartyFoul.blacklisted_headers = ['Cookie']
       env = {
         'HTTP_USER_AGENT' => 'test_user_agent',
         'HTTP_COOKIE' => 'test_cookie',

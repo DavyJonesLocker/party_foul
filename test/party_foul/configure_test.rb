@@ -8,7 +8,7 @@ describe 'Party Foul Confg' do
 
   it 'sets the proper config variables' do
     PartyFoul.configure do |config|
-      config.ignored_exceptions = ['StandardError']
+      config.blacklisted_exceptions = ['StandardError']
       config.oauth_token        = 'test_token'
       config.web_url            = 'http://example.com'
       config.endpoint           = 'http://api.example.com'
@@ -17,7 +17,7 @@ describe 'Party Foul Confg' do
       config.branch             = 'master'
     end
 
-    PartyFoul.ignored_exceptions.must_equal ['StandardError']
+    PartyFoul.blacklisted_exceptions.must_equal ['StandardError']
     PartyFoul.github.must_be_instance_of Github::Client
     PartyFoul.github.oauth_token.must_equal 'test_token'
     PartyFoul.github.endpoint.must_equal 'http://api.example.com'

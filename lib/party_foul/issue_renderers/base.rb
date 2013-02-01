@@ -104,11 +104,11 @@ class PartyFoul::IssueRenderers::Base
   end
 
   # HTTP Headers hash from the request. Headers can be filtered out by
-  # adding matching key names to {PartyFoul.filtered_http_headers}
+  # adding matching key names to {PartyFoul.blacklisted_headers}
   #
   # @return [Hash]
   def http_headers
-    env.keys.select { |key| key =~ /([A-Z]+)/ && !(PartyFoul.filtered_http_headers || []).include?(key.split('HTTP_').last.split('_').map(&:capitalize).join('-')) }.sort.inject({}) do |hash, key|
+    env.keys.select { |key| key =~ /([A-Z]+)/ && !(PartyFoul.blacklisted_headers || []).include?(key.split('HTTP_').last.split('_').map(&:capitalize).join('-')) }.sort.inject({}) do |hash, key|
       hash[key.split('HTTP_').last.split('_').map(&:capitalize).join('-')] = env[key]
       hash
     end

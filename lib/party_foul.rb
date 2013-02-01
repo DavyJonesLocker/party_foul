@@ -3,8 +3,8 @@ require 'github_api'
 module PartyFoul
   class << self
     attr_accessor :github, :oauth_token, :endpoint, :owner, :repo,
-      :ignored_exceptions, :processor, :issue_template,
-      :comment_template, :filtered_http_headers, :web_url, :branch
+      :blacklisted_exceptions, :processor, :issue_template,
+      :comment_template, :blacklisted_headers, :web_url, :branch
   end
 
   # The git branch that is used for linking in the stack trace
@@ -82,8 +82,8 @@ Fingerprint: `:fingerprint`
   #     [ActiveRecord::RecordNotFound]
   #
   # @return [Array]
-  def self.ignored_exceptions
-    @ignored_exceptions || []
+  def self.blacklisted_exceptions
+    @blacklisted_exceptions || []
   end
 
   # The url of the repository. Built using the {.web_url}, {.owner}, and {.repo}

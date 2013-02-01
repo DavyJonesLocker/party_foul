@@ -33,7 +33,7 @@ describe 'Party Foul Middleware' do
 
   context 'filtering based upon exception' do
     before do
-      PartyFoul.ignored_exceptions = ['StandardError']
+      PartyFoul.blacklisted_exceptions = ['StandardError']
       self.stubs(:error_to_raise).returns(StandardError)
     end
 
