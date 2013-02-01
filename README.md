@@ -64,32 +64,32 @@ You need to initialize `PartyFoul`, use the following:
 
 ```ruby
 PartyFoul.configure do |config|
-  # the collection of exceptions to be ignored by PartyFoul
+  # The collection of exceptions PartyFoul should not be allowed to handle
   # The constants here *must* be represented as strings
-  config.ignored_exceptions    = ['ActiveRecord::RecordNotFound', 'ActionController::RoutingError']
+  config.blacklisted_exceptions = ['ActiveRecord::RecordNotFound', 'ActionController::RoutingError']
 
-  # The names of the HTTP headers to not report
-  config.filtered_http_headers = ['Cookie']
+  # The list of HTTP Headers that PartyFoul should be allowed to report
+  config.blacklisted_headers    = ['Cookie']
 
   # The OAuth token for the account that is opening the issues on Github
-  config.oauth_token           = 'abcdefgh1234567890'
+  config.oauth_token            = 'abcdefgh1234567890'
 
   # The API endpoint for Github. Unless you are hosting a private
   # instance of Enterprise Github you do not need to include this
-  config.endpoint              = 'https://api.github.com'
+  config.endpoint               = 'https://api.github.com'
 
   # The Web URL for Github. Unless you are hosting a private
   # instance of Enterprise Github you do not need to include this
-  config.web_url               = 'https://github.com'
+  config.web_url                = 'https://github.com'
 
   # The organization or user that owns the target repository
-  config.owner                 = 'owner_name'
+  config.owner                  = 'owner_name'
 
   # The repository for this application
-  config.repo                  = 'repo_name'
+  config.repo                   = 'repo_name'
 
   # The branch for your deployed code
-  # config.branch              = 'master'
+  # config.branch               = 'master'
 end
 ```
 
