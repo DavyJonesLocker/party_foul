@@ -148,6 +148,35 @@ want to add additional values for replacement you should open that class
 to add the methods. Depending upon the data point you may want o make
 the change in one of the [different issue renderer adapters](https://github.com/dockyard/party_foul/tree/master/lib/party_foul/issue_renderers).
 
+### Using PartyFoul with Sidekiq
+
+In order to use PartyFoul for exception handling with Sidekiq you will need to create an initializer with some middleware configuration. The following example is based on using [Sidekiq with another exception notifiier server](https://github.com/bugsnag/bugsnag-ruby/blob/master/lib/bugsnag/sidekiq.rb).
+
+File: config/initializers/partyfoul_sidekiq.rb
+
+```ruby
+module PartyFoul
+  class Sidekiq
+    def call(worker, msg, queue)
+      begin
+        yield
+      rescue => ex
+        PartyFoul::RacklessExceptionHandler.handle(ex, {class: worker.class.name, method: queue, params: msg})
+        raise
+      end
+    end
+  end
+end
+
+::Sidekiq.configure_server do |config|
+  config.server_middleware do |chain|
+    chain.add ::PartyFoul::Sidekiq
+  end
+end
+```
+
+This will pass the worker class name and queue as well as all worker-related parameters off to PartyFoul before passing on the exception.
+
 ## Authors ##
 
 * [Brian Cardarella](http://twitter.com/bcardarella)
