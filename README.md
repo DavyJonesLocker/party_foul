@@ -98,8 +98,8 @@ You can generate an OAuth token from via the
 with cURL:
 
 ```bash
-curl -X POST -i -d "{ \"scopes\": [\"repo\"] }" \
-https://<github_login>:<github_password>@api.github.com/authorizations
+curl -u <github_login> -i -d "{ \"scopes\": [\"repo\"] }" \
+https://api.github.com/authorizations
 ```
 
 Add as the very last middleware in your production `Rack` stack.
