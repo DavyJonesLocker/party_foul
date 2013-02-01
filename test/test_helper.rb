@@ -1,3 +1,5 @@
+require 'bundler/setup'
+
 if defined?(M)
   require 'minitest/spec'
 else
