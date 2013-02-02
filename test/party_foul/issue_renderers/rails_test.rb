@@ -12,6 +12,17 @@ describe 'Rails Issue Renderer' do
     end
   end
 
+  describe '#session' do
+    before do
+      @rendered_issue = PartyFoul::IssueRenderers::Rails.new(nil, {'action_dispatch.parameter_filter' => ['password'], 'rack.session' => { 'status' => 'ok', 'password' => 'test' }, 'QUERY_STRING' => { 'status' => 'fail' } })
+    end
+
+    it 'returns ok' do
+      @rendered_issue.session['status'].must_equal 'ok'
+      @rendered_issue.session['password'].must_equal '[FILTERED]'
+    end
+  end
+
   describe '#title' do
     before do
       @exception = Exception.new('message')
