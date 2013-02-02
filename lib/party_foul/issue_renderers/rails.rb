@@ -9,6 +9,14 @@ class PartyFoul::IssueRenderers::Rails < PartyFoul::IssueRenderers::Base
     parameter_filter.filter(env['action_dispatch.request.path_parameters'])
   end
 
+  # Rails session hash. Filtered parms are respected.
+  #
+  # @return [Hash]
+  def session
+    parameter_filter = ActionDispatch::Http::ParameterFilter.new(env['action_dispatch.parameter_filter'])
+    parameter_filter.filter(env['rack.session'])
+  end
+
   # Title for the issue comprised of Controller#action (exception) "message"
   #
   # @return [String]
