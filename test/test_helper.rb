@@ -7,8 +7,9 @@ else
 end
 require 'rack/test'
 require 'mocha/setup'
-unless ENV['CI']
+begin
   require 'debugger'
+rescue LoadError
 end
 require 'party_foul'
 
