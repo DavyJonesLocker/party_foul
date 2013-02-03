@@ -16,10 +16,10 @@ following:
    unique title, session information, and stack trace. The issue is
 tagged as a `bug`. A new comment is added with relevant data on the
 application state.
-3. If an open issue is found the occurance count and time stamp is
+3. If an open issue is found the occurence count and time stamp is
    updated. A new comment is added with relevant data on the
 application state.
-4. If a closed issue is found the occurance count and time stamp is
+4. If a closed issue is found the occurence count and time stamp is
    updated. The issue is reopened and a `regression` tag is
 added. A new comment is added with relevant data on the
 application state.
