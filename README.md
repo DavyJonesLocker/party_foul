@@ -107,7 +107,7 @@ Add as the very last middleware in your production `Rack` stack.
 
 You can specify the adapter with which the exceptions should be
 handled. By default, PartyFoul includes the
-[`PartyFoul::SyncAdapter`](https://github.com/dockyard/party_foul/tree/master/lib/party_foul/sync_adapter.rb)
+[`PartyFoul::Processors::SyncAdapter`](https://github.com/dockyard/party_foul/tree/master/lib/party_foul/processors/sync_adapter.rb)
 which handles the exception synchronously. To use your own adapter,
 include the following in your `PartyFoul.configure` block:
 
