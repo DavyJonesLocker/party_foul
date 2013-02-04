@@ -125,8 +125,40 @@ end
 
 ```
 
-### Using PartyFoul with Sidekiq
+`PartyFoul` comes with the following background processing adapters:
 
+* [PartyFoul::Processors::Sidekiq](https://github.com/dockyard/party_foul/blob/master/lib/party_foul/processors/sidekiq.rb)
+* [PartyFoul::Processors::Resque](https://github.com/dockyard/party_foul/blob/master/lib/party_foul/processors/resque.rb)
+
+These adapters are not loaded by default. You must explicitly require if
+you want to use:
+
+```ruby
+require 'party_foul/processors/sidekiq'
+
+PartyFoul.configure do |config|
+  config.adapter = PartyFoul::Processors::Sidekiq
+end
+```
+
+## Tracking errors outside of an HTTP request
+
+You may want to track errors outside of a reqular HTTP stack. In that
+case you will need to make sure of the
+`PartyFoul::RacklessExceptionHandler`.
+
+The code that you want to handle should be wrapped like so:
+
+```ruby
+begin
+  ... # some code that might raise an error
+rescue => e
+  PartyFoul::RacklessExceptionHandler.handle(e, {class: class_name, method: method_name, params: message)
+  raise e
+end
+```
+
+### Tracking errors in a Sidekiq worker
 In order to use PartyFoul for exception handling with Sidekiq you will need to create an initializer with some middleware configuration. The following example is based on using [Sidekiq with another exception notifiier server](https://github.com/bugsnag/bugsnag-ruby/blob/master/lib/bugsnag/sidekiq.rb).
 
 File: config/initializers/partyfoul_sidekiq.rb
