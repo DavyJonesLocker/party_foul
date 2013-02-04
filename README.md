@@ -12,7 +12,7 @@ If it is a bug [please open an issue on
 Github](https://github.com/dockyard/party_foul/issues). If you need help using
 the gem please ask the question on
 [Stack Overflow](http://stackoverflow.com). Be sure to tag the
-question with `DockYard` and `party_foul` so we can find it.
+question with `DockYard` so we can find it.
 
 ## About ##
 
