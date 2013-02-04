@@ -99,8 +99,6 @@ curl -u <github_login> -i -d "{ \"scopes\": [\"repo\"] }" \
 https://api.github.com/authorizations
 ```
 
-Add as the very last middleware in your production `Rack` stack.
-
 ## Customization ##
 
 ### Background Processing ###
@@ -129,6 +127,7 @@ end
 
 * [PartyFoul::Processors::Sidekiq](https://github.com/dockyard/party_foul/blob/master/lib/party_foul/processors/sidekiq.rb)
 * [PartyFoul::Processors::Resque](https://github.com/dockyard/party_foul/blob/master/lib/party_foul/processors/resque.rb)
+* [PartyFoul::Processors::DelayedJob](https://github.com/dockyard/party_foul/blob/master/lib/party_foul/processors/delayed_job.rb)
 
 These adapters are not loaded by default. You must explicitly require if
 you want to use:
