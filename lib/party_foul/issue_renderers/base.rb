@@ -16,18 +16,27 @@ class PartyFoul::IssueRenderers::Base
     raise NotImplementedError
   end
 
-  # Will compile the template for an issue body as defined in
-  # {PartyFoul.issue_template}
+  # Renders the issue body
+  #
+  # Customize by overriding {#body_options}
   #
   # @return [String]
   def body
-    compile_template(PartyFoul.issue_template)
+    <<-BODY
+#{build_table_from_hash(body_options)}
+
+## Stack Trace
+<pre>#{stack_trace}</pre>
+Fingerprint: `#{fingerprint}`
+BODY
   end
 
-  # Will compile the template for a comment body as defined in
-  # {PartyFoul.comment_template}
+  # Renderes the issue comment
+  #
+  # Customize by overriding {#comment_options}
+  #
   def comment
-    compile_template(PartyFoul.comment_template)
+    build_table_from_hash(comment_options)
   end
 
   # Compiles the stack trace for use in the issue body. Lines in the
@@ -67,19 +76,11 @@ class PartyFoul::IssueRenderers::Base
     begin
       current_count = old_body.match(/<th>Count<\/th><td>(\d+)<\/td>/)[1].to_i
       old_body.sub!("<th>Count</th><td>#{current_count}</td>", "<th>Count</th><td>#{current_count + 1}</td>")
-      old_body.sub!(/<th>Last Occurance<\/th><td>.+<\/td>/, "<th>Last Occurance</th><td>#{occurred_at}</td>")
+      old_body.sub!(/<th>Last Occurrence<\/th><td>.+<\/td>/, "<th>Last Occurrence</th><td>#{occurred_at}</td>")
       old_body
     rescue
       self.body
     end
-  end
-
-  # The params hash at the time the exception occurred. This method is
-  # overriden for each framework adapter. It should return a hash.
-  #
-  # @return [NotImplementedError]
-  def params
-    raise NotImplementedError
   end
 
   # The timestamp when the exception occurred.
@@ -89,47 +90,44 @@ class PartyFoul::IssueRenderers::Base
     Time.now.strftime('%B %d, %Y %H:%M:%S %z')
   end
 
-  # IP address of the client who triggered the exception
+  # The hash used for building the table in issue body
+  #
+  # @return [Hash]
+  def body_options(count = 0)
+    { Exception: exception, 'Last Occurrence' => occurred_at, Count: count + 1 }
+  end
+
+  # The hash used for building the table in the comment body
+  #
+  # @return [Hash]
+  def comment_options
+    { 'Occurred At' => occurred_at }
+  end
+
+
+  # Builds an HTML table from hash
   #
   # @return [String]
-  def ip_address
-    env['REMOTE_ADDR']
+  def build_table_from_hash(hash)
+    "<table>#{rows_for_table_from_hash(hash)}</table>"
   end
 
-  # The session hash for the client at the time of the exception
+  # Builds the rows of an HTML table from hash.
+  # Keys as Headers cells and Values as Data cells
+  # If the Value is a Hash it will be rendered as a table
   #
-  # @return [Hash]
-  def session
-    env['rack.session']
-  end
-
-  # HTTP Headers hash from the request. Headers can be filtered out by
-  # adding matching key names to {PartyFoul.blacklisted_headers}
-  #
-  # @return [Hash]
-  def http_headers
-    env.keys.select { |key| key =~ /([A-Z]+)/ && !(PartyFoul.blacklisted_headers || []).include?(key.split('HTTP_').last.split('_').map(&:capitalize).join('-')) }.sort.inject({}) do |hash, key|
-      hash[key.split('HTTP_').last.split('_').map(&:capitalize).join('-')] = env[key]
-      hash
-    end
-  end
-
-  def compile_template(template)
-    template.gsub(/:\w+/) do |method|
-      value = self.send(method.split(':').last)
-      if value.kind_of?(Hash)
-        hash_as_table(value)
-      else
-        value
+  # @return [String]
+  def rows_for_table_from_hash(hash)
+    hash.inject('') do |rows, row|
+      key, value = row
+      if row[1].kind_of?(Hash)
+        value = build_table_from_hash(row[1])
       end
+      rows << "<tr><th>#{key}</th><td>#{value}</td></tr>"
     end
   end
 
   private
-
-  def hash_as_table(value)
-    "<table>#{value.map {|key, value| "<tr><th>#{key}</th><td>#{value}</td></tr>"}.join}</table>"
-  end
 
   def app_root
     Dir.pwd
@@ -139,6 +137,3 @@ class PartyFoul::IssueRenderers::Base
     backtrace_line.match(/#{app_root}\/((.+?):(\d+))/)
   end
 end
-
-require 'party_foul/issue_renderers/rack'
-require 'party_foul/issue_renderers/rails'

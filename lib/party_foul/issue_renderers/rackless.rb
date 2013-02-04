@@ -19,4 +19,8 @@ class PartyFoul::IssueRenderers::Rackless < PartyFoul::IssueRenderers::Base
   def title
     %{#{env[:class]}##{env[:method]} (#{exception.class}) "#{exception.message}"}
   end
+
+  def comment_options
+    super.merge(Params: params)
+  end
 end

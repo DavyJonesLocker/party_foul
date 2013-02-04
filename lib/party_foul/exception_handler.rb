@@ -70,7 +70,7 @@ class PartyFoul::ExceptionHandler
   private
 
   def self.clean_env(env)
-    env.select { |key, value| PartyFoul.whitelisted_rack_keys.include?(key) }
+    env.select { |key, value| PartyFoul.whitelisted_rack_variables.include?(key) }
   end
 
   def fingerprint
