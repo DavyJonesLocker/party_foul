@@ -99,8 +99,6 @@ curl -u <github_login> -i -d "{ \"scopes\": [\"repo\"] }" \
 https://api.github.com/authorizations
 ```
 
-Add as the very last middleware in your production `Rack` stack.
-
 ## Customization ##
 
 ### Background Processing ###
