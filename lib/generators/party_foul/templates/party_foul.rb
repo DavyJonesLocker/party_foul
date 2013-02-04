@@ -3,9 +3,6 @@ PartyFoul.configure do |config|
   # The constants here *must* be represented as strings
   config.blacklisted_exceptions = ['ActiveRecord::RecordNotFound', 'ActionController::RoutingError']
 
-  # The list of HTTP Headers that PartyFoul should be allowed to report
-  config.blacklisted_headers    = ['Cookie']
-
   # The OAuth token for the account that is opening the issues on Github
   config.oauth_token            = '<%= @oauth_token %>'
 

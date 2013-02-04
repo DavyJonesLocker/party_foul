@@ -68,9 +68,6 @@ PartyFoul.configure do |config|
   # The constants here *must* be represented as strings
   config.blacklisted_exceptions = ['ActiveRecord::RecordNotFound', 'ActionController::RoutingError']
 
-  # The list of HTTP Headers that PartyFoul should be allowed to report
-  config.blacklisted_headers    = ['Cookie']
-
   # The OAuth token for the account that is opening the issues on Github
   config.oauth_token            = 'abcdefgh1234567890'
 
@@ -127,26 +124,6 @@ class PartyFoul::Processors::MyBackgroundProcessor
 end
 
 ```
-
-### Changing How Issues Are Reported ###
-
-`PartyFoul` comes with default templates for what the body of issues and
-comments are. If you want to override these templates you simply need to
-add them as an option in your initializer:
-
-```ruby
-PartyFoul.configure do |config|
-  config.issue_body   = ':issue_title'
-  config.comment_body = ':occurred_at'
-end
-```
-
-In this over-simplistic example the words that start with `:` in the
-templates are evaluated with the value of the corresponding named
-instance method on the instance of `PartyFoul::IssueRenderer`. If you
-want to add additional values for replacement you should open that class
-to add the methods. Depending upon the data point you may want o make
-the change in one of the [different issue renderer adapters](https://github.com/dockyard/party_foul/tree/master/lib/party_foul/issue_renderers).
 
 ### Using PartyFoul with Sidekiq
 
