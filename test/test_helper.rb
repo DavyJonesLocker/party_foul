@@ -5,12 +5,12 @@ if defined?(M)
 else
   require 'minitest/autorun'
 end
-require 'rack/test'
-require 'mocha/setup'
 begin
   require 'debugger'
 rescue LoadError
 end
+require 'rack/test'
+require 'mocha/setup'
 require 'party_foul'
 
 class MiniTest::Spec
