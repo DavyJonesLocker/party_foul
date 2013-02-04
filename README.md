@@ -113,7 +113,7 @@ include the following in your `PartyFoul.configure` block:
 
 ```ruby
 PartyFoul.configure do |config|
-  config.adapter = PartyFoul::Processors::MyBackgroundProcessor
+  config.processor = PartyFoul::Processors::MyBackgroundProcessor
 end
 
 class PartyFoul::Processors::MyBackgroundProcessor
@@ -137,7 +137,7 @@ you want to use:
 require 'party_foul/processors/sidekiq'
 
 PartyFoul.configure do |config|
-  config.adapter = PartyFoul::Processors::Sidekiq
+  config.processor = PartyFoul::Processors::Sidekiq
 end
 ```
 
