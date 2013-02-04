@@ -129,6 +129,7 @@ end
 
 * [PartyFoul::Processors::Sidekiq](https://github.com/dockyard/party_foul/blob/master/lib/party_foul/processors/sidekiq.rb)
 * [PartyFoul::Processors::Resque](https://github.com/dockyard/party_foul/blob/master/lib/party_foul/processors/resque.rb)
+* [PartyFoul::Processors::DelayedJob](https://github.com/dockyard/party_foul/blob/master/lib/party_foul/processors/delayed_job.rb)
 
 These adapters are not loaded by default. You must explicitly require if
 you want to use:
