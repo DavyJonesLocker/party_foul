@@ -26,7 +26,7 @@ PartyFoul.configure do |config|
   # Additional labels to add to issues created
   # config.additional_labels    = ['production']
   # or
-  # config.additional_labels    = Prod.new do |exception, env|
+  # config.additional_labels    = Proc.new do |exception, env|
   #   []
   # end
 end
