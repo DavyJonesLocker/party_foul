@@ -109,6 +109,34 @@ https://api.github.com/authorizations
 
 ## Customization ##
 
+### Labels ###
+
+You can specify an additional array of labels that will be applied to the issues PartyFoul creates.
+
+```ruby
+PartyFoul.configure do |config|
+  config.additional_labels = ['front-end']
+end
+```
+
+You can also provide a Proc that is passed the exception and the environment.
+
+```ruby
+PartyFoul.configure do |config|
+  config.additional_labels = Proc.new do |exception, env|
+    labels = if env["HTTP_HOST"] =~ /beta\./
+      ['beta']
+    else
+      ['production']
+    end
+    if exception.message =~ /PG::Error/
+      labels << 'database'
+    end
+    labels
+  end
+end
+```
+
 ### Background Processing ###
 
 You can specify the adapter with which the exceptions should be
