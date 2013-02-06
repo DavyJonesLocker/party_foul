@@ -57,12 +57,10 @@ describe 'Party Foul Exception Handler' do
       before do
         PartyFoul.configure do |config|
           config.additional_labels = Proc.new do |exception, env|
-            if env[:test]
-              ['test']
+            if env[:http_host] =~ /beta\./
+              ['beta']
             elsif exception.message =~ /Database/
               ['database_error']
-            else
-              ['production']
             end
           end
         end
@@ -77,8 +75,8 @@ describe 'Party Foul Exception Handler' do
         clean_up_party
       end
 
-      it 'will open a new error on Github with the additional labels from the proc' do
-        PartyFoul.github.issues.expects(:create).with('test_owner', 'test_repo', title: 'Test Title', body: 'Test Body', :labels => ['bug', 'production']).returns(Hashie::Mash.new('number' => 1))
+      it 'will open a new error on Github with the default labels if no additional labels are returned from the proc' do
+        PartyFoul.github.issues.expects(:create).with('test_owner', 'test_repo', title: 'Test Title', body: 'Test Body', :labels => ['bug']).returns(Hashie::Mash.new('number' => 1))
         PartyFoul::ExceptionHandler.new(stub(:message => ''), {}).run
       end
 
@@ -88,8 +86,8 @@ describe 'Party Foul Exception Handler' do
       end
 
       it 'will open a new error on Github with the additional labels based on the env' do
-        PartyFoul.github.issues.expects(:create).with('test_owner', 'test_repo', title: 'Test Title', body: 'Test Body', :labels => ['bug', 'test']).returns(Hashie::Mash.new('number' => 1))
-        PartyFoul::ExceptionHandler.new(stub(:message => ''), {:test => true}).run
+        PartyFoul.github.issues.expects(:create).with('test_owner', 'test_repo', title: 'Test Title', body: 'Test Body', :labels => ['bug', 'beta']).returns(Hashie::Mash.new('number' => 1))
+        PartyFoul::ExceptionHandler.new(stub(:message => ''), {:http_host => 'beta.example.com'}).run
       end
     end
   end
