@@ -22,4 +22,11 @@ PartyFoul.configure do |config|
 
   # The branch for your deployed code
   # config.branch               = 'master'
+
+  # Additional labels to add to issues created
+  # config.additional_labels    = ['production']
+  # or
+  # config.additional_labels    = Prod.new do |exception, env|
+  #   []
+  # end
 end

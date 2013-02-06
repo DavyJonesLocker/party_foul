@@ -46,7 +46,7 @@ class PartyFoul::ExceptionHandler
   # Will create a new issue and a comment with the proper details. All issues are labeled as 'bug'.
   def create_issue
     self.sha = PartyFoul.github.git_data.references.get(PartyFoul.owner, PartyFoul.repo, "heads/#{PartyFoul.branch}").object.sha
-    issue = PartyFoul.github.issues.create(PartyFoul.owner, PartyFoul.repo, title: rendered_issue.title, body: rendered_issue.body, labels: ['bug'])
+    issue = PartyFoul.github.issues.create(PartyFoul.owner, PartyFoul.repo, title: rendered_issue.title, body: rendered_issue.body, labels: ['bug'] + rendered_issue.labels)
     PartyFoul.github.issues.comments.create(PartyFoul.owner, PartyFoul.repo, issue['number'], body: rendered_issue.comment)
   end
 

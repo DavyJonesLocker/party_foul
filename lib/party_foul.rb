@@ -2,7 +2,7 @@ require 'github_api'
 
 module PartyFoul
   class << self
-    attr_accessor :github, :oauth_token, :endpoint, :owner, :repo, :blacklisted_exceptions, :processor, :web_url, :branch, :whitelisted_rack_variables
+    attr_accessor :github, :oauth_token, :endpoint, :owner, :repo, :blacklisted_exceptions, :processor, :web_url, :branch, :whitelisted_rack_variables, :additional_labels
   end
 
   def self.whitelisted_rack_variables
