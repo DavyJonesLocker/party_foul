@@ -113,8 +113,8 @@ describe 'Party Foul Exception Handler' do
     context 'and closed' do
       it 'will update the count on the body and re-open the issue' do
         PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'test_fingerprint', state: 'open').returns(Hashie::Mash.new(issues: []))
-        PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'test_fingerprint', state: 'closed').returns(Hashie::Mash.new(issues: [{title: 'Test Title', body: 'Test Body', state: 'closed', number: 1}]))
-        PartyFoul.github.issues.expects(:edit).with('test_owner', 'test_repo', 1, body: 'New Body', state: 'open', labels: ['bug', 'regression'])
+        PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'test_fingerprint', state: 'closed').returns(Hashie::Mash.new(issues: [{title: 'Test Title', body: 'Test Body', state: 'closed', number: 1, labels: ['staging']}]))
+        PartyFoul.github.issues.expects(:edit).with('test_owner', 'test_repo', 1, body: 'New Body', state: 'open', labels: ['bug', 'regression', 'staging'])
         PartyFoul.github.issues.comments.expects(:create).with('test_owner', 'test_repo', 1, body: 'Test Comment')
         PartyFoul.github.git_data.references.expects(:get).with('test_owner', 'test_repo', 'heads/deploy').returns(Hashie::Mash.new(object: Hashie::Mash.new(sha: 'abcdefg1234567890')))
         PartyFoul::ExceptionHandler.new(nil, {}).run
