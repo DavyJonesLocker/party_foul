@@ -127,6 +127,17 @@ BODY
     end
   end
 
+  # Provides additional labels using the configured options
+  #
+  # @return [Array]
+  def labels
+    if PartyFoul.additional_labels.respond_to? :call
+      PartyFoul.additional_labels.call(self.exception, self.env)
+    else
+      PartyFoul.additional_labels || []
+    end
+  end
+
   private
 
   def app_root
