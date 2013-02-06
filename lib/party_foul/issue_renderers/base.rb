@@ -132,7 +132,7 @@ BODY
   # @return [Array]
   def labels
     if PartyFoul.additional_labels.respond_to? :call
-      PartyFoul.additional_labels.call(self.exception, self.env)
+      PartyFoul.additional_labels.call(self.exception, self.env) || []
     else
       PartyFoul.additional_labels || []
     end
