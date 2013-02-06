@@ -58,7 +58,7 @@ class PartyFoul::ExceptionHandler
       params = {body: rendered_issue.update_body(issue['body']), state: 'open'}
 
       if issue['state'] == 'closed'
-        params[:labels] = ['bug', 'regression']
+        params[:labels] = (['bug', 'regression'] + issue['labels']).uniq
       end
 
       self.sha = PartyFoul.github.git_data.references.get(PartyFoul.owner, PartyFoul.repo, "heads/#{PartyFoul.branch}").object.sha
