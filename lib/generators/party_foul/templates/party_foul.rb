@@ -3,15 +3,15 @@ PartyFoul.configure do |config|
   # The constants here *must* be represented as strings
   config.blacklisted_exceptions = ['ActiveRecord::RecordNotFound', 'ActionController::RoutingError']
 
-  # The OAuth token for the account that is opening the issues on Github
+  # The OAuth token for the account that is opening the issues on GitHub
   config.oauth_token            = '<%= @oauth_token %>'
 
-  # The API endpoint for Github. Unless you are hosting a private
-  # instance of Enterprise Github you do not need to include this
+  # The API endpoint for GitHub. Unless you are hosting a private
+  # instance of Enterprise GitHub you do not need to include this
   config.endpoint               = '<%= @endpoint %>'
 
-  # The Web URL for Github. Unless you are hosting a private
-  # instance of Enterprise Github you do not need to include this
+  # The Web URL for GitHub. Unless you are hosting a private
+  # instance of Enterprise GitHub you do not need to include this
   config.web_url                = '<%= @web_url %>'
 
   # The organization or user that owns the target repository

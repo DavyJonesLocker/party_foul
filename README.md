@@ -4,12 +4,12 @@
 [![Dependency Status](https://gemnasium.com/dockyard/party_foul.png?travis)](https://gemnasium.com/dockyard/party_foul)
 [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/dockyard/party_foul)
 
-Rails exceptions automatically opened as issues on Github
+Rails exceptions automatically opened as issues on GitHub
 
 ## Looking for help? ##
 
 If it is a bug [please open an issue on
-Github](https://github.com/dockyard/party_foul/issues). If you need help using
+GitHub](https://github.com/dockyard/party_foul/issues). If you need help using
 the gem please ask the question on
 [Stack Overflow](http://stackoverflow.com). Be sure to tag the
 question with `DockYard` so we can find it.
@@ -19,7 +19,7 @@ question with `DockYard` so we can find it.
 `PartyFoul` captures exceptions in your application and does the
 following:
 
-1. Attempt to find a matching issue in your Github repo
+1. Attempt to find a matching issue in your GitHub repo
 2. If no matching issue is found an new issue is created with a
    unique title, session information, and stack trace. The issue is
 tagged as a `bug`. A new comment is added with relevant data on the
@@ -36,7 +36,7 @@ application state.
 
 ## Installation ##
 
-**Note** We highly recommend that you create a new Github account that is
+**Note** We highly recommend that you create a new GitHub account that is
 a collaborator on your repository. Use this new account's credentials
 for the installation below. If you use your own account you will
 not receive emails when issues are created, updated, reopened, etc...
@@ -55,7 +55,7 @@ If you are using Rails you can run the install generator.
 rails g party_foul:install
 ```
 
-This prompts you for the Github credentials of the account that is
+This prompts you for the GitHub credentials of the account that is
 opening the issues. The OAuth token for that account is stored
 in `config/initializers/party_foul.rb`. You may want to remove the token
 string and store in an environment variable. It is best not to store the
@@ -76,15 +76,15 @@ PartyFoul.configure do |config|
   # The constants here *must* be represented as strings
   config.blacklisted_exceptions = ['ActiveRecord::RecordNotFound', 'ActionController::RoutingError']
 
-  # The OAuth token for the account that is opening the issues on Github
+  # The OAuth token for the account that is opening the issues on GitHub
   config.oauth_token            = 'abcdefgh1234567890'
 
-  # The API endpoint for Github. Unless you are hosting a private
-  # instance of Enterprise Github you do not need to include this
+  # The API endpoint for GitHub. Unless you are hosting a private
+  # instance of Enterprise GitHub you do not need to include this
   config.endpoint               = 'https://api.github.com'
 
-  # The Web URL for Github. Unless you are hosting a private
-  # instance of Enterprise Github you do not need to include this
+  # The Web URL for GitHub. Unless you are hosting a private
+  # instance of Enterprise GitHub you do not need to include this
   config.web_url                = 'https://github.com'
 
   # The organization or user that owns the target repository

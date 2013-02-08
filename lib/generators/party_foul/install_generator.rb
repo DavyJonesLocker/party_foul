@@ -7,8 +7,8 @@ module PartyFoul
     source_root File.expand_path('../templates', __FILE__)
 
     def create_initializer_file
-      login     = ask 'Github login:'
-      password  = STDIN.noecho { ask 'Github password:' }
+      login     = ask 'GitHub login:'
+      password  = STDIN.noecho { ask 'GitHub password:' }
       @owner    = ask_with_default "\nRepository owner:", login
       @repo     = ask 'Repository name:'
       @endpoint = ask_with_default 'Api Endpoint:', 'https://api.github.com'
@@ -19,7 +19,7 @@ module PartyFoul
         @oauth_token = github.oauth.create(scopes: ['repo'], note: "PartyFoul #{@owner}/#{@repo}", note_url: "#{@web_url}/#{@owner}/#{@repo}").token
         template 'party_foul.rb', 'config/initializers/party_foul.rb'
       rescue Github::Error::Unauthorized
-        say 'There was an error retrieving your Github OAuth token'
+        say 'There was an error retrieving your GitHub OAuth token'
       end
     end
 
