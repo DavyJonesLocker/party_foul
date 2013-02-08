@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.authors     = ['Brian Cardarella', 'Dan McClain']
   s.email       = ['bcardarella@gmail.com', 'rubygems@danmcclain.net']
   s.homepage    = 'https://github.com/dockyard/party_foul'
-  s.summary     = 'Auto-submit Rails exceptions as new isues on Github'
-  s.description = 'Auto-submit Rails exceptions as new isues on Github'
+  s.summary     = 'Auto-submit Rails exceptions as new isues on GitHub'
+  s.description = 'Auto-submit Rails exceptions as new isues on GitHub'
 
   s.files = Dir['{app,config,db,lib}/**/*'] + ['Rakefile', 'README.md']
   s.test_files = Dir['test/**/*']

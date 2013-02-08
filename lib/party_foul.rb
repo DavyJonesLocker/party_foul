@@ -16,7 +16,7 @@ module PartyFoul
     @branch ||= 'master'
   end
 
-  # The web url for Github. This is only interesting for Enterprise
+  # The web url for GitHub. This is only interesting for Enterprise
   # users
   #
   # @return [String] Defaults to 'https://github.com' if not set
@@ -24,7 +24,7 @@ module PartyFoul
     @web_url ||= 'https://github.com'
   end
 
-  # The api endpoint for Github. This is only interesting for Enterprise
+  # The api endpoint for GitHub. This is only interesting for Enterprise
   # users
   #
   # @return [String] Defaults to 'https://api.github.com' if not set
@@ -71,7 +71,7 @@ module PartyFoul
   #       config.oauth_token = ENV['oauth_token']
   #     end
   #
-  # Will also setup for Github api connections
+  # Will also setup for GitHub api connections
   #
   # @param [Block]
   def self.configure(&block)

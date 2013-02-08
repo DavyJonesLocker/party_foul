@@ -1,7 +1,7 @@
 class PartyFoul::IssueRenderers::Base
   attr_accessor :exception, :env, :sha
 
-  # A new renderer instance for Githug issues
+  # A new renderer instance for GitHub issues
   #
   # @param [Exception, Hash]
   def initialize(exception, env)
@@ -41,7 +41,7 @@ BODY
 
   # Compiles the stack trace for use in the issue body. Lines in the
   # stack trace that are part of the application will be rendered as
-  # links to the relative file and line on Github based upon
+  # links to the relative file and line on GitHub based upon
   # {PartyFoul.web_url}, {PartyFoul.owner}, {PartyFoul.repo}, and
   # {PartyFoul.branch}. The branch will be used at the time the
   # exception happens to grab the SHA for that branch at that time for

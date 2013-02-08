@@ -21,7 +21,7 @@ describe 'Party Foul Exception Handler' do
   end
 
   context 'when error is new' do
-    it 'will open a new error on Github' do
+    it 'will open a new error on GitHub' do
       PartyFoul::IssueRenderers::Rails.any_instance.stubs(:body).returns('Test Body')
       PartyFoul::IssueRenderers::Rails.any_instance.stubs(:comment).returns('Test Comment')
       PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'test_fingerprint', state: 'open').returns(Hashie::Mash.new(issues: []))
@@ -41,7 +41,7 @@ describe 'Party Foul Exception Handler' do
       after do
         clean_up_party
       end
-      it 'will open a new error on Github with the additional labels' do
+      it 'will open a new error on GitHub with the additional labels' do
         PartyFoul::IssueRenderers::Rails.any_instance.stubs(:body).returns('Test Body')
         PartyFoul::IssueRenderers::Rails.any_instance.stubs(:comment).returns('Test Comment')
         PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'test_fingerprint', state: 'open').returns(Hashie::Mash.new(issues: []))
@@ -75,17 +75,17 @@ describe 'Party Foul Exception Handler' do
         clean_up_party
       end
 
-      it 'will open a new error on Github with the default labels if no additional labels are returned from the proc' do
+      it 'will open a new error on GitHub with the default labels if no additional labels are returned from the proc' do
         PartyFoul.github.issues.expects(:create).with('test_owner', 'test_repo', title: 'Test Title', body: 'Test Body', :labels => ['bug']).returns(Hashie::Mash.new('number' => 1))
         PartyFoul::ExceptionHandler.new(stub(:message => ''), {}).run
       end
 
-      it 'will open a new error on Github with the additional labels based on the exception message' do
+      it 'will open a new error on GitHub with the additional labels based on the exception message' do
         PartyFoul.github.issues.expects(:create).with('test_owner', 'test_repo', title: 'Test Title', body: 'Test Body', :labels => ['bug', 'database_error']).returns(Hashie::Mash.new('number' => 1))
         PartyFoul::ExceptionHandler.new(stub(:message => 'Database'), {}).run
       end
 
-      it 'will open a new error on Github with the additional labels based on the env' do
+      it 'will open a new error on GitHub with the additional labels based on the env' do
         PartyFoul.github.issues.expects(:create).with('test_owner', 'test_repo', title: 'Test Title', body: 'Test Body', :labels => ['bug', 'beta']).returns(Hashie::Mash.new('number' => 1))
         PartyFoul::ExceptionHandler.new(stub(:message => ''), {:http_host => 'beta.example.com'}).run
       end
