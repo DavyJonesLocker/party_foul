@@ -24,7 +24,7 @@ class PartyFoul::ExceptionHandler
     self.rendered_issue = renderer_klass.new(exception, env)
   end
 
-  # Begins to process the exception for Github Issues. Makes an attempt
+  # Begins to process the exception for GitHub Issues. Makes an attempt
   # to find the issue. If found will update the issue. If not found will create a new issue.
   def run
     if issue = find_issue
@@ -34,7 +34,7 @@ class PartyFoul::ExceptionHandler
     end
   end
 
-  # Hits the Github API to find the matching issue using the fingerprint.
+  # Hits the GitHub API to find the matching issue using the fingerprint.
   def find_issue
     unless issue = PartyFoul.github.search.issues(owner: PartyFoul.owner, repo: PartyFoul.repo, state: 'open', keyword: fingerprint).issues.first
       issue = PartyFoul.github.search.issues(owner: PartyFoul.owner, repo: PartyFoul.repo, state: 'closed', keyword: fingerprint).issues.first
