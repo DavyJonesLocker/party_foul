@@ -78,7 +78,7 @@ BODY
     begin
       current_count = old_body.match(/<th>Count<\/th><td>(\d+)<\/td>/)[1].to_i
       old_body.sub!("<th>Count</th><td>#{current_count}</td>", "<th>Count</th><td>#{current_count + 1}</td>")
-      old_body.sub!(/<th>Last Occurrence<\/th><td>.+<\/td>/, "<th>Last Occurrence</th><td>#{occurred_at}</td>")
+      old_body.sub!(/<th>Last Occurrence<\/th><td>.+?<\/td>/, "<th>Last Occurrence</th><td>#{occurred_at}</td>")
       old_body
     rescue
       self.body
