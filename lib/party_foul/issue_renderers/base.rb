@@ -1,3 +1,5 @@
+require 'cgi'
+
 class PartyFoul::IssueRenderers::Base
   attr_accessor :exception, :env, :sha
 
@@ -122,6 +124,8 @@ BODY
       key, value = row
       if row[1].kind_of?(Hash)
         value = build_table_from_hash(row[1])
+      else
+        value = CGI.escapeHTML(value.to_s)
       end
       rows << "<tr><th>#{key}</th><td>#{value}</td></tr>"
     end
