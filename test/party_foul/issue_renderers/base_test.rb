@@ -79,6 +79,13 @@ Fingerprint: `abcdefg1234567890`
       expected = '<table><tr><th>Value 1</th><td>abc</td></tr><tr><th>Value 2</th><td><table><tr><th>Value A</th><td>123</td></tr><tr><th>Value B</th><td>456</td></tr></table></td></tr></table>'
       rendered_issue.build_table_from_hash(hash).must_equal expected
     end
+
+    it 'escapes HTML entities' do
+      rendered_issue = PartyFoul::IssueRenderers::Base.new(nil, nil)
+      hash = { 'Value 1' => 'Error in #<Foo>' }
+      expected = '<table><tr><th>Value 1</th><td>Error in #&lt;Foo&gt;</td></tr></table>'
+      rendered_issue.build_table_from_hash(hash).must_equal expected
+    end
   end
 
   describe '#fingerprint' do
