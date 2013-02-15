@@ -95,4 +95,13 @@ Fingerprint: `abcdefg1234567890`
       rendered_issue.fingerprint.must_equal Digest::SHA1.hexdigest(rendered_issue.title)
     end
   end
+
+  describe '#occurred_at' do
+    it 'memoizes the time' do
+      rendered_issue = PartyFoul::IssueRenderers::Base.new(nil, nil)
+      expected = rendered_issue.occurred_at
+      Time.stubs(:now).returns(Time.new(1970, 1, 1, 0, 0, 1, '-05:00'))
+      rendered_issue.occurred_at.must_equal expected
+    end
+  end
 end
