@@ -89,7 +89,7 @@ BODY
   #
   # @return [String]
   def occurred_at
-    Time.now.strftime('%B %d, %Y %H:%M:%S %z')
+    @occurred_at ||= Time.now.strftime('%B %d, %Y %H:%M:%S %z')
   end
 
   # The hash used for building the table in issue body
