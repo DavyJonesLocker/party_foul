@@ -21,11 +21,11 @@ describe 'Party Foul Issue Renderer Base' do
       end
 
       it 'updates count and timestamp' do
-        body = <<-BODY
+        body = <<-BODY.gsub(/\n/, '')
 <table>
 <tr><th>Exception</th><td>Test Exception</td></tr>
-<tr><th>Count</th><td>1</td></tr>
 <tr><th>Last Occurrence</th><td>January 01, 1970 00:00:00 -0500</td></tr>
+<tr><th>Count</th><td>1</td></tr>
 </table>
 
 ## Stack Trace
@@ -35,11 +35,11 @@ Fingerprint: `abcdefg1234567890`
 
         Time.stubs(:now).returns(Time.new(1985, 10, 25, 1, 22, 0, '-05:00'))
 
-        expected_body = <<-BODY
+        expected_body = <<-BODY.gsub(/\n/, '')
 <table>
 <tr><th>Exception</th><td>Test Exception</td></tr>
-<tr><th>Count</th><td>2</td></tr>
 <tr><th>Last Occurrence</th><td>October 25, 1985 01:22:00 -0500</td></tr>
+<tr><th>Count</th><td>2</td></tr>
 </table>
 
 ## Stack Trace
