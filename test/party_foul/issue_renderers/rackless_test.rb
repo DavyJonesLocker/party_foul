@@ -16,14 +16,14 @@ describe 'Rackless Issue Renderer' do
     end
   end
 
-  describe '#title' do
+  describe '#raw_title' do
     before do
       @exception = Exception.new('message')
       @rendered_issue = PartyFoul::IssueRenderers::Rackless.new(@exception, @env)
     end
 
     it 'constructs the title with the controller and action' do
-      @rendered_issue.title.must_equal %{Worker#perform (Exception) "message"}
+      @rendered_issue.send(:raw_title).must_equal %{Worker#perform (Exception) "message"}
     end
   end
 end

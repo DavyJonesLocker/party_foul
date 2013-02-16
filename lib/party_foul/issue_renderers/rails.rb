@@ -1,11 +1,4 @@
 class PartyFoul::IssueRenderers::Rails < PartyFoul::IssueRenderers::Rack
-  # Title for the issue comprised of Controller#action (exception) "message"
-  #
-  # @return [String]
-  def title
-    %{#{env['action_controller.instance'].class}##{env['action_dispatch.request.path_parameters']['action']} (#{exception.class}) "#{exception.message}"}
-  end
-
   # Rails params hash. Filtered parms are respected.
   #
   # @return [Hash]
@@ -26,5 +19,12 @@ class PartyFoul::IssueRenderers::Rails < PartyFoul::IssueRenderers::Rack
 
   def app_root
     Rails.root
+  end
+
+  # Title for the issue comprised of Controller#action (exception) "message"
+  #
+  # @return [String]
+  def raw_title
+    %{#{env['action_controller.instance'].class}##{env['action_dispatch.request.path_parameters']['action']} (#{exception.class}) "#{exception.message}"}
   end
 end

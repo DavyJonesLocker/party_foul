@@ -11,13 +11,6 @@ class PartyFoul::IssueRenderers::Base
     self.env       = env
   end
 
-  # Derived title of the issue. Must be implemented by the adapter class
-  #
-  # @return [NotImplementedError]
-  def title
-    raise NotImplementedError
-  end
-
   # Renders the issue body
   #
   # Customize by overriding {#body_options}
@@ -150,5 +143,12 @@ BODY
 
   def extract_file_name_and_line_number(backtrace_line)
     backtrace_line.match(/#{app_root}\/((.+?):(\d+))/)
+  end
+
+  # Derived title of the issue. Must be implemented by the adapter class
+  #
+  # @return [NotImplementedError]
+  def raw_title
+    raise NotImplementedError
   end
 end

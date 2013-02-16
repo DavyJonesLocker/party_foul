@@ -13,14 +13,16 @@ class PartyFoul::IssueRenderers::Rackless < PartyFoul::IssueRenderers::Base
     env[:params]
   end
 
+  def comment_options
+    super.merge(Params: params)
+  end
+
+  private
+
   # Title for the issue comprised of Controller#action (exception) "message"
   #
   # @return [String]
-  def title
+  def raw_title
     %{#{env[:class]}##{env[:method]} (#{exception.class}) "#{exception.message}"}
-  end
-
-  def comment_options
-    super.merge(Params: params)
   end
 end
