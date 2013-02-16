@@ -63,7 +63,9 @@ class PartyFoul::ExceptionHandler
 
       self.sha = PartyFoul.github.git_data.references.get(PartyFoul.owner, PartyFoul.repo, "heads/#{PartyFoul.branch}").object.sha
       PartyFoul.github.issues.edit(PartyFoul.owner, PartyFoul.repo, issue['number'], params)
-      PartyFoul.github.issues.comments.create(PartyFoul.owner, PartyFoul.repo, issue['number'], body: rendered_issue.comment)
+      unless comment_limit_met?(issue['body'])
+        PartyFoul.github.issues.comments.create(PartyFoul.owner, PartyFoul.repo, issue['number'], body: rendered_issue.comment)
+      end
     end
   end
 
@@ -79,5 +81,14 @@ class PartyFoul::ExceptionHandler
 
   def sha=(sha)
     rendered_issue.sha = sha
+  end
+
+  def occurrence_count(body)
+    result = body.match(/<th>Count<\/th><td>(\d+)<\/td>/)
+    result.nil? ? 0 : result[1].to_i
+  end
+
+  def comment_limit_met?(body)
+    !!PartyFoul.comment_limit && PartyFoul.comment_limit <= occurrence_count(body)
   end
 end

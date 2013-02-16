@@ -99,11 +99,24 @@ describe 'Party Foul Exception Handler' do
     end
 
     context 'and open' do
-      it 'will update the issue' do
+      before do
         PartyFoul.github.search.stubs(:issues).with(owner: 'test_owner', repo: 'test_repo', keyword: 'test_fingerprint', state: 'open').returns(Hashie::Mash.new(issues: [{title: 'Test Title', body: 'Test Body', state: 'open', number: 1}]))
         PartyFoul.github.issues.expects(:edit).with('test_owner', 'test_repo', 1, body: 'New Body', state: 'open')
         PartyFoul.github.issues.comments.expects(:create).with('test_owner', 'test_repo', 1, body: 'Test Comment')
         PartyFoul.github.git_data.references.expects(:get).with('test_owner', 'test_repo', 'heads/deploy').returns(Hashie::Mash.new(object: Hashie::Mash.new(sha: 'abcdefg1234567890')))
+      end
+
+      it 'will update the issue' do
+        PartyFoul::ExceptionHandler.new(nil, {}).run
+      end
+
+      it "doesn't post a comment if the limit has been met" do
+        PartyFoul.configure do |config|
+          config.comment_limit = 10
+        end
+        PartyFoul::ExceptionHandler.any_instance.expects(:occurrence_count).returns(10)
+        PartyFoul.github.issues.comments.unstub(:create) # Necessary for the `never` expectation to work.
+        PartyFoul.github.issues.comments.expects(:create).never
         PartyFoul::ExceptionHandler.new(nil, {}).run
       end
     end
@@ -130,6 +143,53 @@ describe 'Party Foul Exception Handler' do
       PartyFoul.github.issues.comments.expects(:create).never
       PartyFoul.github.git_data.references.expects(:get).never
       PartyFoul::ExceptionHandler.new(nil, {}).run
+    end
+  end
+
+  describe '#occurrence_count' do
+    before do
+      @handler = PartyFoul::ExceptionHandler.new(nil, {})
+    end
+
+    it "returns the count" do
+      @handler.send(:occurrence_count, "<th>Count</th><td>1</td>").must_equal 1
+    end
+
+    it "returns 0 if no count is found" do
+      @handler.send(:occurrence_count, "Unexpected Body").must_equal 0
+    end
+  end
+
+  describe '#comment_limit_met?' do
+    before do
+      @handler = PartyFoul::ExceptionHandler.new(nil, {})
+    end
+
+    context "with no limit" do
+      it "returns false when there is no limit" do
+        PartyFoul.configure do |config|
+          config.comment_limit = nil
+        end
+        @handler.send(:comment_limit_met?, "").must_equal false
+      end
+    end
+
+    context "with a limit" do
+      before do
+        PartyFoul.configure do |config|
+          config.comment_limit = 10
+        end
+      end
+
+      it "returns false when there is a limit that has not been hit" do
+        @handler.stubs(:occurrence_count).returns(1)
+        @handler.send(:comment_limit_met?, "").must_equal false
+      end
+
+      it "returns true if the limit has been hit" do
+        @handler.stubs(:occurrence_count).returns(10)
+        @handler.send(:comment_limit_met?, "").must_equal true
+      end
     end
   end
 end
