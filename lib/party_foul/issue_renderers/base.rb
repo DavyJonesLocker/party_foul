@@ -11,6 +11,13 @@ class PartyFoul::IssueRenderers::Base
     self.env       = env
   end
 
+  # Title of the issue with any object ids masked
+  #
+  # @return [String]
+  def title
+    raw_title.gsub(/#<(\w+):0x\w+?>/, "#<\\1:0xXXXXXX>")
+  end
+
   # Renders the issue body
   #
   # Customize by overriding {#body_options}
