@@ -1,11 +1,4 @@
 class PartyFoul::IssueRenderers::Rack < PartyFoul::IssueRenderers::Base
-  # Title for the issue comprised of (exception) "message"
-  #
-  # @return [String]
-  def title
-    %{(#{exception.class}) "#{exception.message}"}
-  end
-
   def comment_options
     super.merge(URL: url, Params: params, Session: session, 'IP Address' => ip_address, 'HTTP Headers' => http_headers)
   end
@@ -41,5 +34,11 @@ class PartyFoul::IssueRenderers::Rack < PartyFoul::IssueRenderers::Base
   # @return [Hash]
   def http_headers
     { Version: env['HTTP_VERSION'], 'User Agent' => env['HTTP_USER_AGENT'], 'Accept Encoding' => env['HTTP_ACCEPT_ENCODING'], Accept: env['HTTP_ACCEPT'] }
+  end
+
+  private
+
+  def raw_title
+    %{(#{exception.class}) "#{exception.message}"}
   end
 end

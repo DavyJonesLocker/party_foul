@@ -11,14 +11,14 @@ describe 'Rack Issue Renderer' do
     end
   end
 
-  describe '#title' do
+  describe '#raw_title' do
     before do
       @exception = Exception.new('message')
     end
 
     it 'constructs the title with the class and instance method' do
       @rendered_issue = PartyFoul::IssueRenderers::Rack.new(@exception, {})
-      @rendered_issue.title.must_equal %{(Exception) "message"}
+      @rendered_issue.send(:raw_title).must_equal %{(Exception) "message"}
     end
   end
 end
