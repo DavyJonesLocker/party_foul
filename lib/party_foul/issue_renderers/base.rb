@@ -152,9 +152,6 @@ BODY
     backtrace_line.match(/#{app_root}\/((.+?):(\d+))/)
   end
 
-  # Derived title of the issue. Must be implemented by the adapter class
-  #
-  # @return [NotImplementedError]
   def raw_title
     raise NotImplementedError
   end

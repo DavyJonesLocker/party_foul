@@ -19,9 +19,6 @@ class PartyFoul::IssueRenderers::Rackless < PartyFoul::IssueRenderers::Base
 
   private
 
-  # Title for the issue comprised of Controller#action (exception) "message"
-  #
-  # @return [String]
   def raw_title
     %{#{env[:class]}##{env[:method]} (#{exception.class}) "#{exception.message}"}
   end

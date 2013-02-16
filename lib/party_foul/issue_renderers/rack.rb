@@ -38,9 +38,6 @@ class PartyFoul::IssueRenderers::Rack < PartyFoul::IssueRenderers::Base
 
   private
 
-  # Title for the issue comprised of (exception) "message"
-  #
-  # @return [String]
   def raw_title
     %{(#{exception.class}) "#{exception.message}"}
   end
