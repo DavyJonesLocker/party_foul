@@ -29,4 +29,7 @@ PartyFoul.configure do |config|
   # config.additional_labels    = Proc.new do |exception, env|
   #   []
   # end
+
+  # Limit the number of comments per issue
+  # config.comment_limit        = 10
 end

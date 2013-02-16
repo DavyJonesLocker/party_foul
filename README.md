@@ -176,6 +176,17 @@ PartyFoul.configure do |config|
 end
 ```
 
+### Limiting Comments
+
+You can specify a limit on the number of comments added to each issue. The main issue will still be updated
+with a count and time for each occurrence, regardless of the limit.
+
+```ruby
+PartyFoul.configure do |config|
+  config.comment_limit = 10
+end
+```
+
 ## Tracking errors outside of an HTTP request
 
 You may want to track errors outside of a reqular HTTP stack. In that
