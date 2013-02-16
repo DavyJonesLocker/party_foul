@@ -2,6 +2,7 @@ require 'cgi'
 
 class PartyFoul::IssueRenderers::Base
   attr_accessor :exception, :env, :sha
+  attr_reader :body
 
   # A new renderer instance for GitHub issues
   #
@@ -24,7 +25,7 @@ class PartyFoul::IssueRenderers::Base
   #
   # @return [String]
   def body
-    <<-BODY
+    @body ||= <<-BODY
 #{build_table_from_hash(body_options)}
 
 ## Stack Trace
