@@ -85,4 +85,8 @@ class PartyFoul::ExceptionHandler
     result = body.match(/<th>Count<\/th><td>(\d+)<\/td>/)
     result.nil? ? 0 : result[1].to_i
   end
+
+  def comment_limit_met?(body)
+    !!PartyFoul.comment_limit && PartyFoul.comment_limit <= occurrence_count(body)
+  end
 end

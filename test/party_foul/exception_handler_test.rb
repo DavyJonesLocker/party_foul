@@ -146,4 +146,37 @@ describe 'Party Foul Exception Handler' do
       @handler.send(:occurrence_count, "Unexpected Body").must_equal 0
     end
   end
+
+  describe '#comment_limit_met?' do
+    before do
+      @handler = PartyFoul::ExceptionHandler.new(nil, {})
+    end
+
+    context "with no limit" do
+      it "returns false when there is no limit" do
+        PartyFoul.configure do |config|
+          config.comment_limit = nil
+        end
+        @handler.send(:comment_limit_met?, "").must_equal false
+      end
+    end
+
+    context "with a limit" do
+      before do
+        PartyFoul.configure do |config|
+          config.comment_limit = 10
+        end
+      end
+
+      it "returns false when there is a limit that has not been hit" do
+        @handler.stubs(:occurrence_count).returns(1)
+        @handler.send(:comment_limit_met?, "").must_equal false
+      end
+
+      it "returns true if the limit has been hit" do
+        @handler.stubs(:occurrence_count).returns(10)
+        @handler.send(:comment_limit_met?, "").must_equal true
+      end
+    end
+  end
 end
