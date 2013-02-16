@@ -23,7 +23,7 @@ describe 'Rails Issue Renderer' do
     end
   end
 
-  describe '#title' do
+  describe '#raw_title' do
     before do
       @exception = Exception.new('message')
       controller_instance = mock('Controller')
@@ -36,7 +36,7 @@ describe 'Rails Issue Renderer' do
     end
 
     it 'constructs the title with the controller and action' do
-      @rendered_issue.title.must_equal %{LandingController#index (Exception) "message"}
+      @rendered_issue.send(:raw_title).must_equal %{LandingController#index (Exception) "message"}
     end
   end
 end
