@@ -15,6 +15,7 @@ describe 'Party Foul Confg' do
       config.owner              = 'test_owner'
       config.repo               = 'test_repo'
       config.branch             = 'master'
+      config.comment_limit      = 10
     end
 
     PartyFoul.blacklisted_exceptions.must_equal ['StandardError']
@@ -25,6 +26,7 @@ describe 'Party Foul Confg' do
     PartyFoul.repo.must_equal 'test_repo'
     PartyFoul.repo_url.must_equal 'http://example.com/test_owner/test_repo'
     PartyFoul.branch.must_equal 'master'
+    PartyFoul.comment_limit.must_equal 10
   end
 
   it 'has default values' do
