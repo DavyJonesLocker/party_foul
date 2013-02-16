@@ -132,4 +132,18 @@ describe 'Party Foul Exception Handler' do
       PartyFoul::ExceptionHandler.new(nil, {}).run
     end
   end
+
+  describe '#occurrence_count' do
+    before do
+      @handler = PartyFoul::ExceptionHandler.new(nil, {})
+    end
+
+    it "returns the count" do
+      @handler.send(:occurrence_count, "<th>Count</th><td>1</td>").must_equal 1
+    end
+
+    it "returns 0 if no count is found" do
+      @handler.send(:occurrence_count, "Unexpected Body").must_equal 0
+    end
+  end
 end

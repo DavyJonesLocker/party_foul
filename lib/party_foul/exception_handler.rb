@@ -80,4 +80,9 @@ class PartyFoul::ExceptionHandler
   def sha=(sha)
     rendered_issue.sha = sha
   end
+
+  def occurrence_count(body)
+    result = body.match(/<th>Count<\/th><td>(\d+)<\/td>/)
+    result.nil? ? 0 : result[1].to_i
+  end
 end
