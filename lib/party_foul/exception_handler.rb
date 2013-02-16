@@ -63,7 +63,9 @@ class PartyFoul::ExceptionHandler
 
       self.sha = PartyFoul.github.git_data.references.get(PartyFoul.owner, PartyFoul.repo, "heads/#{PartyFoul.branch}").object.sha
       PartyFoul.github.issues.edit(PartyFoul.owner, PartyFoul.repo, issue['number'], params)
-      PartyFoul.github.issues.comments.create(PartyFoul.owner, PartyFoul.repo, issue['number'], body: rendered_issue.comment)
+      unless comment_limit_met?(issue['body'])
+        PartyFoul.github.issues.comments.create(PartyFoul.owner, PartyFoul.repo, issue['number'], body: rendered_issue.comment)
+      end
     end
   end
 
