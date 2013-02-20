@@ -14,6 +14,14 @@ describe 'Party Foul Rackless Exception Handler' do
       PartyFoul::RacklessExceptionHandler.any_instance.expects(:run)
       PartyFoul::RacklessExceptionHandler.handle(nil, {})
     end
+
+    it 'should pass parameters required by the renderer to the initializer' do
+      params = {:class => Object, :method => :to_s, :params => {:one => "One", :two => "Two"}}
+      expected_exception_handler = PartyFoul::RacklessExceptionHandler.new(nil, params)
+      expected_exception_handler.expects(:run)
+      PartyFoul::RacklessExceptionHandler.expects(:new).with(nil, params).returns(expected_exception_handler)
+      PartyFoul::RacklessExceptionHandler.handle(nil, params)      
+    end
   end
 
   describe '#initialize' do
