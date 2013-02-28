@@ -1,6 +1,11 @@
 require 'rails/generators'
-require 'io/console'
 require 'net/http'
+
+begin
+  require 'io/console'
+rescue LoadError => e
+  raise LoadError, "Error: io-console is not installed. Please add `gem 'io-console', '~> 0.3.0'` to your bundle before running the generator"
+end
 
 module PartyFoul
   class InstallGenerator < Rails::Generators::Base
