@@ -8,7 +8,7 @@ module PartyFoul
 
     def create_initializer_file
       login     = ask 'GitHub login:'
-      password  = STDIN.noecho { ask 'GitHub password:' }
+      password  = ask 'GitHub password:'
       @owner    = ask_with_default "\nRepository owner:", login
       @repo     = ask 'Repository name:'
       @endpoint = ask_with_default 'Api Endpoint:', 'https://api.github.com'
