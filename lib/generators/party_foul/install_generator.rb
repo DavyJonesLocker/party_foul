@@ -1,5 +1,4 @@
 require 'rails/generators'
-require 'io/console'
 require 'net/http'
 
 module PartyFoul
