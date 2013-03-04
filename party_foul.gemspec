@@ -11,6 +11,8 @@ Gem::Specification.new do |s|
   s.summary     = 'Auto-submit Rails exceptions as new isues on GitHub'
   s.description = 'Auto-submit Rails exceptions as new isues on GitHub'
 
+  s.required_ruby_version = '>= 1.9'
+
   s.files = Dir['{app,config,db,lib}/**/*'] + ['Rakefile', 'README.md']
   s.test_files = Dir['test/**/*']
 
