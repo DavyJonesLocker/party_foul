@@ -18,9 +18,9 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'github_api', '~> 0.9'
 
-  s.add_development_dependency 'actionpack', '~> 4.0.0.b1'
-  s.add_development_dependency 'activesupport', '~> 4.0.0.b1'
-  s.add_development_dependency 'railties', '~> 4.0.0.b1'
+  s.add_development_dependency 'actionpack', '~> 3.2'
+  s.add_development_dependency 'activesupport', '~> 3.2'
+  s.add_development_dependency 'railties', '~> 3.2'
   s.add_development_dependency 'minitest'
   s.add_development_dependency 'webmock'
   s.add_development_dependency 'rack-test'
