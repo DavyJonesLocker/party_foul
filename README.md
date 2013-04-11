@@ -2,7 +2,7 @@
 
 [![Build Status](https://secure.travis-ci.org/dockyard/party_foul.png?branch=master)](http://travis-ci.org/dockyard/party_foul)
 [![Dependency Status](https://gemnasium.com/dockyard/party_foul.png?travis)](https://gemnasium.com/dockyard/party_foul)
-[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/dockyard/party_foul)
+[![Code Climate](https://codeclimate.com/github/dockyard/party_foul.png)](https://codeclimate.com/github/dockyard/party_foul)
 
 Rails exceptions automatically opened as issues on GitHub
 
