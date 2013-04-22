@@ -112,4 +112,33 @@ Fingerprint: `abcdefg1234567890`
       rendered_issue.title.must_equal 'Error for #<ClassName:0xXXXXXX>'
     end
   end
+
+  describe '#stack_trace' do
+    it 'returns the stack trace' do
+      exception = mock do
+        stubs backtrace: ['/path/to/gems/gem-name/lib/some/file.rb:123 in `method`']
+      end
+      rendered_issue = PartyFoul::IssueRenderers::Base.new(exception, nil)
+      rendered_issue.stack_trace.must_equal exception.backtrace.first
+    end
+
+    it 'formats the stack trace with shortened bundle paths' do
+      exception = mock do
+        stubs backtrace: ["#{Bundler.bundle_path}/some_gem/lib/some/file.rb:123 in `method`"]
+      end
+      rendered_issue = PartyFoul::IssueRenderers::Base.new(exception, nil)
+      rendered_issue.stack_trace.must_equal '[bundle].../some_gem/lib/some/file.rb:123 in `method`'
+    end
+
+    it 'formats the stack trace with link to shortened application path' do
+      exception = mock do
+        stubs backtrace: ['/path/to/app/lib/some/file.rb:123 in `method`']
+      end
+      rendered_issue = PartyFoul::IssueRenderers::Base.new(exception, nil)
+      rendered_issue.stubs app_root: '/path/to/app'
+      rendered_issue.stack_trace.must_match "<a href='https://github.com/"
+      rendered_issue.stack_trace.must_match ">[app].../lib/some/file.rb:123 in `method`</a>"
+    end
+  end
+
 end
