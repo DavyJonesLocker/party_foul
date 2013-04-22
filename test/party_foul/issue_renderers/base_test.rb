@@ -124,10 +124,10 @@ Fingerprint: `abcdefg1234567890`
 
     it 'formats the stack trace with shortened bundle paths' do
       exception = mock do
-        stubs backtrace: ["#{Bundler.bundle_path}/lib/some/file.rb:123 in `method`"]
+        stubs backtrace: ["#{Bundler.bundle_path}/some_gem/lib/some/file.rb:123 in `method`"]
       end
       rendered_issue = PartyFoul::IssueRenderers::Base.new(exception, nil)
-      rendered_issue.stack_trace.must_equal '[bundle].../lib/some/file.rb:123 in `method`'
+      rendered_issue.stack_trace.must_equal '[bundle].../some_gem/lib/some/file.rb:123 in `method`'
     end
 
     it 'formats the stack trace with link to shortened application path' do
