@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'actionpack', '~> 3.2'
   s.add_development_dependency 'activesupport', '~> 3.2'
   s.add_development_dependency 'railties', '~> 3.2'
-  s.add_development_dependency 'minitest'
+  s.add_development_dependency 'minitest', '~> 4.7'
   s.add_development_dependency 'webmock'
   s.add_development_dependency 'rack-test'
   s.add_development_dependency 'mocha'
