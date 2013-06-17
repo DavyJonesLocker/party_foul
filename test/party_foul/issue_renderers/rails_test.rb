@@ -13,14 +13,27 @@ describe 'Rails Issue Renderer' do
   end
 
   describe '#session' do
+    let(:params) { {'action_dispatch.parameter_filter' => ['password'], 'rack.session' => { 'status' => 'ok', 'password' => 'test' }, 'QUERY_STRING' => { 'status' => 'fail' } } }
+    
     before do
-      @rendered_issue = PartyFoul::IssueRenderers::Rails.new(nil, {'action_dispatch.parameter_filter' => ['password'], 'rack.session' => { 'status' => 'ok', 'password' => 'test' }, 'QUERY_STRING' => { 'status' => 'fail' } })
+      @rendered_issue = PartyFoul::IssueRenderers::Rails.new(nil, params)
     end
 
     it 'returns ok' do
       @rendered_issue.session['status'].must_equal 'ok'
       @rendered_issue.session['password'].must_equal '[FILTERED]'
     end
+
+    context "without session" do
+     
+      let(:params) { {'action_dispatch.parameter_filter' => ['password'], 'QUERY_STRING' => { 'status' => 'fail' } } }
+
+      it 'returns empty hash' do
+        @rendered_issue.session.must_be_empty
+      end
+    end
+
+
   end
 
   describe '#raw_title' do
