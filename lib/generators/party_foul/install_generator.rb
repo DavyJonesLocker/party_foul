@@ -6,16 +6,16 @@ module PartyFoul
     source_root File.expand_path('../templates', __FILE__)
 
     def create_initializer_file
-      login     = ask 'GitHub login:'
-      password  = ask 'GitHub password:'
-      @owner    = ask_with_default "\nRepository owner:", login
-      @repo     = ask 'Repository name:'
-      @endpoint = ask_with_default 'Api Endpoint:', 'https://api.github.com'
-      @web_url  = ask_with_default 'Web URL:', 'https://github.com'
+      login         = ask 'GitHub login:'
+      password      = ask 'GitHub password:'
+      @owner        = ask_with_default "\nRepository owner:", login
+      @repo         = ask 'Repository name:'
+      @api_endpoint = ask_with_default 'Api Endpoint:', 'https://api.github.com'
+      @web_url      = ask_with_default 'Web URL:', 'https://github.com'
 
       begin
-        github       = Github.new :login => login, :password => password, :endpoint => @endpoint
-        @oauth_token = github.oauth.create(scopes: ['repo'], note: "PartyFoul #{@owner}/#{@repo}", note_url: "#{@web_url}/#{@owner}/#{@repo}").token
+        octokit      = Octokit.new :login => login, :password => password, :api_endpoint => @api_endpoint
+        @oauth_token = octokit.create_authorization(scopes: ['repo'], note: "PartyFoul #{@owner}/#{@repo}", note_url: "#{@web_url}/#{@owner}/#{@repo}").token
         template 'party_foul.rb', 'config/initializers/party_foul.rb'
       rescue Github::Error::Unauthorized
         say 'There was an error retrieving your GitHub OAuth token'

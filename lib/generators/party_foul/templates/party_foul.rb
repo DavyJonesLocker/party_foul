@@ -6,9 +6,9 @@ PartyFoul.configure do |config|
   # The OAuth token for the account that is opening the issues on GitHub
   config.oauth_token            = '<%= @oauth_token %>'
 
-  # The API endpoint for GitHub. Unless you are hosting a private
+  # The API api_endpoint for GitHub. Unless you are hosting a private
   # instance of Enterprise GitHub you do not need to include this
-  config.endpoint               = '<%= @endpoint %>'
+  config.api_endpoint           = '<%= @api_endpoint %>'
 
   # The Web URL for GitHub. Unless you are hosting a private
   # instance of Enterprise GitHub you do not need to include this

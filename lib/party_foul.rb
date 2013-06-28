@@ -1,8 +1,8 @@
-require 'github_api'
+require 'octokit'
 
 module PartyFoul
   class << self
-    attr_accessor :github, :oauth_token, :endpoint, :owner, :repo, :blacklisted_exceptions, :processor, :web_url, :branch, :whitelisted_rack_variables, :additional_labels, :comment_limit
+    attr_accessor :github, :oauth_token, :api_endpoint, :owner, :repo, :blacklisted_exceptions, :processor, :web_url, :branch, :whitelisted_rack_variables, :additional_labels, :comment_limit
   end
 
   # The git branch that is used for linking in the stack trace
@@ -24,8 +24,8 @@ module PartyFoul
   # users
   #
   # @return [String] Defaults to 'https://api.github.com' if not set
-  def self.endpoint
-    @endpoint ||= 'https://api.github.com'
+  def self.api_endpoint
+    @api_endpoint ||= 'https://api.github.com'
   end
 
   # The processor to be used when handling the exception. Defaults to a
@@ -51,12 +51,20 @@ module PartyFoul
     @blacklisted_exceptions || []
   end
 
-  # The url of the repository. Built using the {.web_url}, {.owner}, and {.repo}
+  # The GitHub path to the repo
+  # Built using {.owner} and {.repo}
+  #
+  # @return [String]
+  def self.repo_path
+    "#{owner}/#{repo}"
+  end
+
+  # The url of the repository. Built using the {.web_url} and {.repo_path}
   # values
   #
   # @return [String]
   def self.repo_url
-    "#{web_url}/#{owner}/#{repo}"
+    "#{web_url}/#{repo_path}"
   end
 
   # The configure block for PartyFoul. Use to initialize settings
@@ -72,7 +80,7 @@ module PartyFoul
   # @param [Block]
   def self.configure(&block)
     yield self
-    self.github ||= Github.new oauth_token: oauth_token, endpoint: endpoint
+    self.github ||= Octokit.new oauth_token: oauth_token, api_endpoint: api_endpoint
   end
 end
 

@@ -36,8 +36,8 @@ class PartyFoul::ExceptionHandler
 
   # Hits the GitHub API to find the matching issue using the fingerprint.
   def find_issue
-    unless issue = PartyFoul.github.search.issues(owner: PartyFoul.owner, repo: PartyFoul.repo, state: 'open', keyword: fingerprint).issues.first
-      issue = PartyFoul.github.search.issues(owner: PartyFoul.owner, repo: PartyFoul.repo, state: 'closed', keyword: fingerprint).issues.first
+    unless issue = PartyFoul.github.search_issues(PartyFoul.repo_path, fingerprint, 'open').first
+      issue = PartyFoul.github.search_issues(PartyFoul.repo_path, fingerprint, 'closed').first
     end
 
     issue
@@ -45,9 +45,9 @@ class PartyFoul::ExceptionHandler
 
   # Will create a new issue and a comment with the proper details. All issues are labeled as 'bug'.
   def create_issue
-    self.sha = PartyFoul.github.git_data.references.get(PartyFoul.owner, PartyFoul.repo, "heads/#{PartyFoul.branch}").object.sha
-    issue = PartyFoul.github.issues.create(PartyFoul.owner, PartyFoul.repo, title: rendered_issue.title, body: rendered_issue.body, labels: ['bug'] + rendered_issue.labels)
-    PartyFoul.github.issues.comments.create(PartyFoul.owner, PartyFoul.repo, issue['number'], body: rendered_issue.comment)
+    self.sha = PartyFoul.github.references(PartyFoul.repo_path, "heads/#{PartyFoul.branch}").object.sha
+    issue = PartyFoul.github.create_issue(PartyFoul.repo_path, rendered_issue.title, rendered_issue.body, labels: ['bug'] + rendered_issue.labels)
+    PartyFoul.github.add_comment(PartyFoul.repo_path, issue['number'], rendered_issue.comment)
   end
 
   # Updates the given issue. If the issue is labeled as 'wontfix' nothing is done. If the issue is closed the issue is reopened and labeled as 'regression'.
@@ -55,16 +55,18 @@ class PartyFoul::ExceptionHandler
   # @param [Hashie::Mash]
   def update_issue(issue)
     unless issue.key?('labels') && issue['labels'].include?('wontfix')
-      params = {body: rendered_issue.update_body(issue['body']), state: 'open'}
+      body = rendered_issue.update_body(issue['body'])
+      params = {state: 'open'}
 
       if issue['state'] == 'closed'
         params[:labels] = (['bug', 'regression'] + issue['labels']).uniq
       end
 
-      self.sha = PartyFoul.github.git_data.references.get(PartyFoul.owner, PartyFoul.repo, "heads/#{PartyFoul.branch}").object.sha
-      PartyFoul.github.issues.edit(PartyFoul.owner, PartyFoul.repo, issue['number'], params)
+      self.sha = PartyFoul.github.references(PartyFoul.repo_path, "heads/#{PartyFoul.branch}").object.sha
+      PartyFoul.github.update_issue(PartyFoul.repo_path, issue['number'], issue.title, body, params)
+
       unless comment_limit_met?(issue['body'])
-        PartyFoul.github.issues.comments.create(PartyFoul.owner, PartyFoul.repo, issue['number'], body: rendered_issue.comment)
+        PartyFoul.github.add_comment(PartyFoul.repo_path, issue['number'], rendered_issue.comment)
       end
     end
   end

@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.files = Dir['{app,config,db,lib}/**/*'] + ['Rakefile', 'README.md']
   s.test_files = Dir['test/**/*']
 
-  s.add_dependency 'github_api', '~> 0.9'
+  s.add_dependency 'octokit'
 
   s.add_development_dependency 'actionpack', '~> 3.2'
   s.add_development_dependency 'activesupport', '~> 3.2'
