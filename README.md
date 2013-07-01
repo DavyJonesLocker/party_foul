@@ -81,7 +81,7 @@ PartyFoul.configure do |config|
 
   # The API endpoint for GitHub. Unless you are hosting a private
   # instance of Enterprise GitHub you do not need to include this
-  config.endpoint               = 'https://api.github.com'
+  config.api_endpoint           = 'https://api.github.com'
 
   # The Web URL for GitHub. Unless you are hosting a private
   # instance of Enterprise GitHub you do not need to include this
@@ -198,9 +198,9 @@ The code that you want to handle should be wrapped like so:
 ```ruby
 begin
   ... # some code that might raise an error
-rescue => e
-  PartyFoul::RacklessExceptionHandler.handle(e, {class: class_name, method: method_name, params: message)
-  raise e
+rescue => error
+  PartyFoul::RacklessExceptionHandler.handle(error, {class: class_name, method: method_name, params: message)
+  raise error
 end
 ```
 
@@ -215,9 +215,9 @@ module PartyFoul
     def call(worker, msg, queue)
       begin
         yield
-      rescue => ex
-        PartyFoul::RacklessExceptionHandler.handle(ex, {class: worker.class.name, method: queue, params: msg})
-        raise
+      rescue => error
+        PartyFoul::RacklessExceptionHandler.handle(error, {class: worker.class.name, method: queue, params: msg})
+        raise error
       end
     end
   end
