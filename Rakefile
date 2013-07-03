@@ -8,6 +8,7 @@ end
 Bundler::GemHelper.install_tasks
 
 require 'rake/testtask'
+require 'appraisal'
 
 Rake::TestTask.new(:test) do |t|
   t.libs << 'lib'

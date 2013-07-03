@@ -23,3 +23,12 @@ Failure to do so will result in an immediate closing of the pull
 request. If you update and rebase the pull request to follow the
 guidelines your pull request will be re-opened and considered for
 inclusion.
+
+## Development ##
+
+We are using appraisal to test against different gem dependencies. 
+To run all appraisals:
+
+```
+rake appraisal test
+```
