@@ -17,7 +17,7 @@ module PartyFoul
         octokit      = Octokit.new :login => login, :password => password, :api_endpoint => @api_endpoint
         @oauth_token = octokit.create_authorization(scopes: ['repo'], note: "PartyFoul #{@owner}/#{@repo}", note_url: "#{@web_url}/#{@owner}/#{@repo}").token
         template 'party_foul.rb', 'config/initializers/party_foul.rb'
-      rescue Github::Error::Unauthorized
+      rescue Octokit::Unauthorized
         say 'There was an error retrieving your GitHub OAuth token'
       end
     end
