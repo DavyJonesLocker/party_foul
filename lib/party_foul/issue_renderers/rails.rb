@@ -18,7 +18,7 @@ class PartyFoul::IssueRenderers::Rails < PartyFoul::IssueRenderers::Rack
   private
 
   def app_root
-    Rails.root
+    Rails.root.to_s
   end
 
   def raw_title

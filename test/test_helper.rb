@@ -6,7 +6,7 @@ else
   require 'minitest/autorun'
 end
 begin
-  require 'debugger'
+  require 'byebug'
 rescue LoadError
 end
 require 'rack/test'
