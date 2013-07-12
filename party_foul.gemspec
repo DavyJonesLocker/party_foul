@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/dockyard/party_foul'
   s.summary     = 'Auto-submit Rails exceptions as new issues on GitHub'
   s.description = 'Auto-submit Rails exceptions as new issues on GitHub'
+  s.license     = 'MIT'
 
   s.required_ruby_version = '>= 1.9.3'
 
