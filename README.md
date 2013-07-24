@@ -9,10 +9,7 @@ Rails exceptions automatically opened as issues on GitHub
 ## Looking for help? ##
 
 If it is a bug [please open an issue on
-GitHub](https://github.com/dockyard/party_foul/issues). If you need help using
-the gem please ask the question on
-[Stack Overflow](http://stackoverflow.com). Be sure to tag the
-question with `DockYard` so we can find it.
+GitHub](https://github.com/dockyard/party_foul/issues).
 
 ## About ##
 
