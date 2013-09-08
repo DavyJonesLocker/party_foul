@@ -47,26 +47,26 @@ class PartyFoul::ExceptionHandler
   def create_issue
     self.sha = PartyFoul.github.references(PartyFoul.repo_path, "heads/#{PartyFoul.branch}").object.sha
     issue = PartyFoul.github.create_issue(PartyFoul.repo_path, rendered_issue.title, rendered_issue.body, labels: ['bug'] + rendered_issue.labels)
-    PartyFoul.github.add_comment(PartyFoul.repo_path, issue['number'], rendered_issue.comment)
+    PartyFoul.github.add_comment(PartyFoul.repo_path, issue[:number], rendered_issue.comment)
   end
 
   # Updates the given issue. If the issue is labeled as 'wontfix' nothing is done. If the issue is closed the issue is reopened and labeled as 'regression'.
   #
-  # @param [Hashie::Mash]
+  # @param [Sawyer::Resource]
   def update_issue(issue)
-    unless issue.key?('labels') && issue['labels'].include?('wontfix')
-      body = rendered_issue.update_body(issue['body'])
+    unless issue.key?(:labels) && issue[:labels].include?('wontfix')
+      body = rendered_issue.update_body(issue[:body])
       params = {state: 'open'}
 
-      if issue['state'] == 'closed'
-        params[:labels] = (['bug', 'regression'] + issue['labels']).uniq
+      if issue[:state] == 'closed'
+        params[:labels] = (['bug', 'regression'] + issue[:labels]).uniq
       end
 
       self.sha = PartyFoul.github.references(PartyFoul.repo_path, "heads/#{PartyFoul.branch}").object.sha
-      PartyFoul.github.update_issue(PartyFoul.repo_path, issue['number'], issue.title, body, params)
+      PartyFoul.github.update_issue(PartyFoul.repo_path, issue[:number], issue.title, body, params)
 
-      unless comment_limit_met?(issue['body'])
-        PartyFoul.github.add_comment(PartyFoul.repo_path, issue['number'], rendered_issue.comment)
+      unless comment_limit_met?(issue[:body])
+        PartyFoul.github.add_comment(PartyFoul.repo_path, issue[:number], rendered_issue.comment)
       end
     end
   end
