@@ -36,8 +36,8 @@ class PartyFoul::ExceptionHandler
 
   # Hits the GitHub API to find the matching issue using the fingerprint.
   def find_issue
-    unless issue = PartyFoul.github.search_issues(PartyFoul.repo_path, fingerprint, 'open').first
-      issue = PartyFoul.github.search_issues(PartyFoul.repo_path, fingerprint, 'closed').first
+    unless issue = PartyFoul.github.legacy_search_issues(PartyFoul.repo_path, fingerprint, 'open').first
+      issue = PartyFoul.github.legacy_search_issues(PartyFoul.repo_path, fingerprint, 'closed').first
     end
 
     issue
