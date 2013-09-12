@@ -36,11 +36,7 @@ class PartyFoul::ExceptionHandler
 
   # Hits the GitHub API to find the matching issue using the fingerprint.
   def find_issue
-    unless issue = PartyFoul.github.legacy_search_issues(PartyFoul.repo_path, fingerprint, 'open').first
-      issue = PartyFoul.github.legacy_search_issues(PartyFoul.repo_path, fingerprint, 'closed').first
-    end
-
-    issue
+    find_first_issue('open') || find_first_issue('closed')
   end
 
   # Will create a new issue and a comment with the proper details. All issues are labeled as 'bug'.
@@ -93,4 +89,8 @@ class PartyFoul::ExceptionHandler
   def comment_limit_met?(body)
     !!PartyFoul.comment_limit && PartyFoul.comment_limit <= occurrence_count(body)
   end
+  
+  def find_first_issue(state)
+    PartyFoul.github.legacy_search_issues(PartyFoul.repo_path, fingerprint, state).first
+  end  
 end
