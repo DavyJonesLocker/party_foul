@@ -17,10 +17,10 @@ describe 'Party Foul Exception Handler' do
     it 'will open a new error on GitHub' do
       PartyFoul::IssueRenderers::Rails.any_instance.stubs(:body).returns('Test Body')
       PartyFoul::IssueRenderers::Rails.any_instance.stubs(:comment).returns('Test Comment')
-      PartyFoul.github.expects(:search_issues).with('test_owner/test_repo', 'test_fingerprint', 'open').returns([])
-      PartyFoul.github.expects(:search_issues).with('test_owner/test_repo', 'test_fingerprint', 'closed').returns([])
-      PartyFoul.github.expects(:create_issue).with('test_owner/test_repo', 'Test Title', 'Test Body', :labels => ['bug']).returns(Hashie::Mash.new('number' => 1))
-      PartyFoul.github.expects(:references).with('test_owner/test_repo', 'heads/deploy').returns(Hashie::Mash.new(object: Hashie::Mash.new(sha: 'abcdefg1234567890')))
+      PartyFoul.github.expects(:legacy_search_issues).with('test_owner/test_repo', 'test_fingerprint', 'open').returns([])
+      PartyFoul.github.expects(:legacy_search_issues).with('test_owner/test_repo', 'test_fingerprint', 'closed').returns([])
+      PartyFoul.github.expects(:create_issue).with('test_owner/test_repo', 'Test Title', 'Test Body', labels: ['bug']).returns( {number: 1} )
+      PartyFoul.github.expects(:references).with('test_owner/test_repo', 'heads/deploy').returns( sawyer_resource({object: {sha: 'abcdefg1234567890'}}) )
       PartyFoul.github.expects(:add_comment).with('test_owner/test_repo', 1, 'Test Comment')
       PartyFoul::ExceptionHandler.new(nil, {}).run
     end
@@ -37,10 +37,10 @@ describe 'Party Foul Exception Handler' do
       it 'will open a new error on GitHub with the additional labels' do
         PartyFoul::IssueRenderers::Rails.any_instance.stubs(:body).returns('Test Body')
         PartyFoul::IssueRenderers::Rails.any_instance.stubs(:comment).returns('Test Comment')
-        PartyFoul.github.expects(:search_issues).with('test_owner/test_repo', 'test_fingerprint', 'open').returns([])
-        PartyFoul.github.expects(:search_issues).with('test_owner/test_repo', 'test_fingerprint', 'closed').returns([])
-        PartyFoul.github.expects(:create_issue).with('test_owner/test_repo', 'Test Title', 'Test Body', :labels => ['bug', 'custom', 'label']).returns(Hashie::Mash.new('number' => 1))
-        PartyFoul.github.expects(:references).with('test_owner/test_repo', 'heads/deploy').returns(Hashie::Mash.new(object: Hashie::Mash.new(sha: 'abcdefg1234567890')))
+        PartyFoul.github.expects(:legacy_search_issues).with('test_owner/test_repo', 'test_fingerprint', 'open').returns([])
+        PartyFoul.github.expects(:legacy_search_issues).with('test_owner/test_repo', 'test_fingerprint', 'closed').returns([])
+        PartyFoul.github.expects(:create_issue).with('test_owner/test_repo', 'Test Title', 'Test Body', :labels => ['bug', 'custom', 'label']).returns( { number: 1 } )
+        PartyFoul.github.expects(:references).with('test_owner/test_repo', 'heads/deploy').returns( sawyer_resource({object: {sha: 'abcdefg1234567890'}}) )
         PartyFoul.github.expects(:add_comment).with('test_owner/test_repo', 1, 'Test Comment')
         PartyFoul::ExceptionHandler.new(nil, {}).run
       end
@@ -59,9 +59,9 @@ describe 'Party Foul Exception Handler' do
         end
         PartyFoul::IssueRenderers::Rails.any_instance.stubs(:body).returns('Test Body')
         PartyFoul::IssueRenderers::Rails.any_instance.stubs(:comment).returns('Test Comment')
-        PartyFoul.github.expects(:search_issues).with('test_owner/test_repo', 'test_fingerprint', 'open').returns([])
-        PartyFoul.github.expects(:search_issues).with('test_owner/test_repo', 'test_fingerprint', 'closed').returns([])
-        PartyFoul.github.expects(:references).with('test_owner/test_repo', 'heads/deploy').returns(Hashie::Mash.new(object: Hashie::Mash.new(sha: 'abcdefg1234567890')))
+        PartyFoul.github.expects(:legacy_search_issues).with('test_owner/test_repo', 'test_fingerprint', 'open').returns([])
+        PartyFoul.github.expects(:legacy_search_issues).with('test_owner/test_repo', 'test_fingerprint', 'closed').returns([])
+        PartyFoul.github.expects(:references).with('test_owner/test_repo', 'heads/deploy').returns( sawyer_resource({object: {sha: 'abcdefg1234567890'}}) )
         PartyFoul.github.expects(:add_comment).with('test_owner/test_repo', 1, 'Test Comment')
       end
       after do
@@ -69,17 +69,17 @@ describe 'Party Foul Exception Handler' do
       end
 
       it 'will open a new error on GitHub with the default labels if no additional labels are returned from the proc' do
-        PartyFoul.github.expects(:create_issue).with('test_owner/test_repo', 'Test Title', 'Test Body', :labels => ['bug']).returns(Hashie::Mash.new('number' => 1))
+        PartyFoul.github.expects(:create_issue).with('test_owner/test_repo', 'Test Title', 'Test Body', :labels => ['bug']).returns({ number: 1 })
         PartyFoul::ExceptionHandler.new(stub(:message => ''), {}).run
       end
 
       it 'will open a new error on GitHub with the additional labels based on the exception message' do
-        PartyFoul.github.expects(:create_issue).with('test_owner/test_repo', 'Test Title', 'Test Body', :labels => ['bug', 'database_error']).returns(Hashie::Mash.new('number' => 1))
+        PartyFoul.github.expects(:create_issue).with('test_owner/test_repo', 'Test Title', 'Test Body', :labels => ['bug', 'database_error']).returns({ number: 1 })
         PartyFoul::ExceptionHandler.new(stub(:message => 'Database'), {}).run
       end
 
       it 'will open a new error on GitHub with the additional labels based on the env' do
-        PartyFoul.github.expects(:create_issue).with('test_owner/test_repo', 'Test Title', 'Test Body', :labels => ['bug', 'beta']).returns(Hashie::Mash.new('number' => 1))
+        PartyFoul.github.expects(:create_issue).with('test_owner/test_repo', 'Test Title', 'Test Body', :labels => ['bug', 'beta']).returns({ number: 1 })
         PartyFoul::ExceptionHandler.new(stub(:message => ''), {:http_host => 'beta.example.com'}).run
       end
     end
@@ -93,9 +93,11 @@ describe 'Party Foul Exception Handler' do
 
     context 'and open' do
       before do
-        PartyFoul.github.expects(:search_issues).with('test_owner/test_repo', 'test_fingerprint', 'open').returns([Hashie::Mash.new(title: 'Test Title', body: 'Test Body', state: 'open', number: 1)])
+        PartyFoul.github.expects(:legacy_search_issues).with('test_owner/test_repo', 'test_fingerprint', 'open').returns(
+          [sawyer_resource({title: 'Test Title', body: 'Test Body', state: 'open', number: 1})] )
         PartyFoul.github.expects(:update_issue).with('test_owner/test_repo', 1, 'Test Title', 'New Body', state: 'open')
-        PartyFoul.github.expects(:references).with('test_owner/test_repo', 'heads/deploy').returns(Hashie::Mash.new(object: Hashie::Mash.new(sha: 'abcdefg1234567890')))
+        PartyFoul.github.expects(:references).with('test_owner/test_repo', 'heads/deploy').returns(
+          sawyer_resource({object: {sha: 'abcdefg1234567890'}}) )
       end
 
       it 'will update the issue' do
@@ -115,11 +117,12 @@ describe 'Party Foul Exception Handler' do
 
     context 'and closed' do
       it 'will update the count on the body and re-open the issue' do
-        PartyFoul.github.expects(:search_issues).with('test_owner/test_repo', 'test_fingerprint', 'open').returns([])
-        PartyFoul.github.expects(:search_issues).with('test_owner/test_repo', 'test_fingerprint', 'closed').returns([Hashie::Mash.new(title: 'Test Title', body: 'Test Body', state: 'closed', number: 1, labels: ['staging'])])
+        PartyFoul.github.expects(:legacy_search_issues).with('test_owner/test_repo', 'test_fingerprint', 'open').returns([])
+        PartyFoul.github.expects(:legacy_search_issues).with('test_owner/test_repo', 'test_fingerprint', 'closed').returns(
+          [sawyer_resource({title: 'Test Title', body: 'Test Body', state: 'closed', number: 1, labels: ['staging']})] )
         PartyFoul.github.expects(:update_issue).with('test_owner/test_repo', 1, 'Test Title', 'New Body', state: 'open', labels: ['bug', 'regression', 'staging'])
         PartyFoul.github.expects(:add_comment).with('test_owner/test_repo', 1, 'Test Comment')
-        PartyFoul.github.expects(:references).with('test_owner/test_repo', 'heads/deploy').returns(Hashie::Mash.new(object: Hashie::Mash.new(sha: 'abcdefg1234567890')))
+        PartyFoul.github.expects(:references).with('test_owner/test_repo', 'heads/deploy').returns(sawyer_resource({object: {sha: 'abcdefg1234567890'}}))
         PartyFoul::ExceptionHandler.new(nil, {}).run
       end
     end
@@ -128,8 +131,9 @@ describe 'Party Foul Exception Handler' do
   context 'when issue is marked as "wontfix"' do
     it 'does nothing' do
       PartyFoul::IssueRenderers::Rails.any_instance.stubs(:body).returns('Test Body')
-      PartyFoul.github.expects(:search_issues).with('test_owner/test_repo', 'test_fingerprint', 'open').returns([])
-      PartyFoul.github.expects(:search_issues).with('test_owner/test_repo', 'test_fingerprint', 'closed').returns([Hashie::Mash.new(title: 'Test Title', body: 'Test Body', state: 'closed', number: 1, labels: ['wontfix'])])
+      PartyFoul.github.expects(:legacy_search_issues).with('test_owner/test_repo', 'test_fingerprint', 'open').returns([])
+      PartyFoul.github.expects(:legacy_search_issues).with('test_owner/test_repo', 'test_fingerprint', 'closed').returns(
+        [sawyer_resource({title: 'Test Title', body: 'Test Body', state: 'closed', number: 1, labels: ['wontfix']})] )
       PartyFoul.github.expects(:create_issue).never
       PartyFoul.github.expects(:update_issue).never
       PartyFoul.github.expects(:add_comment).never

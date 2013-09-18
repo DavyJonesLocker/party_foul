@@ -20,8 +20,8 @@ describe 'Party Foul Confg' do
 
     PartyFoul.blacklisted_exceptions.must_equal ['StandardError']
     PartyFoul.github.must_be_instance_of Octokit::Client
-    PartyFoul.github.oauth_token.must_equal 'test_token'
-    PartyFoul.github.api_endpoint.must_equal 'http://api.example.com'
+    PartyFoul.github.access_token.must_equal 'test_token'
+    PartyFoul.github.api_endpoint.must_equal 'http://api.example.com/'
     PartyFoul.owner.must_equal 'test_owner'
     PartyFoul.repo.must_equal 'test_repo'
     PartyFoul.repo_path.must_equal 'test_owner/test_repo'
