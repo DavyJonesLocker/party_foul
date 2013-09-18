@@ -80,7 +80,7 @@ module PartyFoul
   # @param [Block]
   def self.configure(&block)
     yield self
-    self.github ||= Octokit.new oauth_token: oauth_token, api_endpoint: api_endpoint
+    self.github ||= Octokit::Client.new access_token: oauth_token, api_endpoint: api_endpoint
   end
 end
 

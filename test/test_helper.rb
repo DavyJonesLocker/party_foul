@@ -12,7 +12,7 @@ end
 require 'rack/test'
 require 'mocha/setup'
 require 'party_foul'
-require 'hashie/mash'
+
 
 class MiniTest::Spec
   class << self
@@ -28,4 +28,9 @@ def clean_up_party
   %w{github oauth_token api_endpoint owner repo blacklisted_exceptions processor web_url branch additional_labels comment_limit}.each do |attr|
     PartyFoul.send("#{attr}=", nil)
   end
+end
+
+def sawyer_resource(attrs)
+  agent = Sawyer::Agent.new(PartyFoul.api_endpoint)
+  Sawyer::Resource.new(agent, attrs)
 end

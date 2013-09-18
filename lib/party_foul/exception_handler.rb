@@ -36,37 +36,33 @@ class PartyFoul::ExceptionHandler
 
   # Hits the GitHub API to find the matching issue using the fingerprint.
   def find_issue
-    unless issue = PartyFoul.github.search_issues(PartyFoul.repo_path, fingerprint, 'open').first
-      issue = PartyFoul.github.search_issues(PartyFoul.repo_path, fingerprint, 'closed').first
-    end
-
-    issue
+    find_first_issue('open') || find_first_issue('closed')
   end
 
   # Will create a new issue and a comment with the proper details. All issues are labeled as 'bug'.
   def create_issue
     self.sha = PartyFoul.github.references(PartyFoul.repo_path, "heads/#{PartyFoul.branch}").object.sha
     issue = PartyFoul.github.create_issue(PartyFoul.repo_path, rendered_issue.title, rendered_issue.body, labels: ['bug'] + rendered_issue.labels)
-    PartyFoul.github.add_comment(PartyFoul.repo_path, issue['number'], rendered_issue.comment)
+    PartyFoul.github.add_comment(PartyFoul.repo_path, issue[:number], rendered_issue.comment)
   end
 
   # Updates the given issue. If the issue is labeled as 'wontfix' nothing is done. If the issue is closed the issue is reopened and labeled as 'regression'.
   #
-  # @param [Hashie::Mash]
+  # @param [Sawyer::Resource]
   def update_issue(issue)
-    unless issue.key?('labels') && issue['labels'].include?('wontfix')
-      body = rendered_issue.update_body(issue['body'])
+    unless issue.key?(:labels) && issue[:labels].include?('wontfix')
+      body = rendered_issue.update_body(issue[:body])
       params = {state: 'open'}
 
-      if issue['state'] == 'closed'
-        params[:labels] = (['bug', 'regression'] + issue['labels']).uniq
+      if issue[:state] == 'closed'
+        params[:labels] = (['bug', 'regression'] + issue[:labels]).uniq
       end
 
       self.sha = PartyFoul.github.references(PartyFoul.repo_path, "heads/#{PartyFoul.branch}").object.sha
-      PartyFoul.github.update_issue(PartyFoul.repo_path, issue['number'], issue.title, body, params)
+      PartyFoul.github.update_issue(PartyFoul.repo_path, issue[:number], issue.title, body, params)
 
-      unless comment_limit_met?(issue['body'])
-        PartyFoul.github.add_comment(PartyFoul.repo_path, issue['number'], rendered_issue.comment)
+      unless comment_limit_met?(issue[:body])
+        PartyFoul.github.add_comment(PartyFoul.repo_path, issue[:number], rendered_issue.comment)
       end
     end
   end
@@ -93,4 +89,8 @@ class PartyFoul::ExceptionHandler
   def comment_limit_met?(body)
     !!PartyFoul.comment_limit && PartyFoul.comment_limit <= occurrence_count(body)
   end
+  
+  def find_first_issue(state)
+    PartyFoul.github.legacy_search_issues(PartyFoul.repo_path, fingerprint, state).first
+  end  
 end
