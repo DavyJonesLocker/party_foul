@@ -56,6 +56,23 @@ describe 'Rack Issue Renderer' do
       issue_renderer = PartyFoul::IssueRenderers::Rack.new(nil, { 'rack.session' => 'abc:123' })
       issue_renderer.session.must_equal 'abc:123'
     end    
-  end  
+  end
+  
+  describe '#http_headers' do
+    it 'returns http headers' do
+      issue_renderer = PartyFoul::IssueRenderers::Rack.new(nil, 
+        { 
+          'HTTP_VERSION' => 'version',
+          'HTTP_USER_AGENT' => 'user agent',
+          'HTTP_ACCEPT_ENCODING' => 'accept encoding',
+          'HTTP_ACCEPT' => 'accept' 
+        })
+        
+      issue_renderer.http_headers[:Version].must_equal 'version'
+      issue_renderer.http_headers['User Agent'].must_equal 'user agent'
+      issue_renderer.http_headers['Accept Encoding'].must_equal 'accept encoding'
+      issue_renderer.http_headers[:Accept].must_equal 'accept'
+    end    
+  end
       
 end

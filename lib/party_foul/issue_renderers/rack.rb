@@ -38,7 +38,12 @@ class PartyFoul::IssueRenderers::Rack < PartyFoul::IssueRenderers::Base
   #
   # @return [Hash]
   def http_headers
-    { Version: env['HTTP_VERSION'], 'User Agent' => env['HTTP_USER_AGENT'], 'Accept Encoding' => env['HTTP_ACCEPT_ENCODING'], Accept: env['HTTP_ACCEPT'] }
+    {
+      Version: env['HTTP_VERSION'], 
+      'User Agent' => request.user_agent, 
+      'Accept Encoding' => env['HTTP_ACCEPT_ENCODING'], 
+      Accept: env['HTTP_ACCEPT'], 
+    }
   end
 
   private
