@@ -23,7 +23,7 @@ class PartyFoul::IssueRenderers::Rack < PartyFoul::IssueRenderers::Base
   end
 
   def url
-    "[#{env['REQUEST_METHOD']}] #{env['REQUEST_URI']}"
+    "[#{request.request_method}] #{env['REQUEST_URI']}"
   end
 
   # The session hash for the client at the time of the exception

@@ -44,4 +44,11 @@ describe 'Rack Issue Renderer' do
     end
   end
   
+  describe '#url' do
+    it 'returns the method and uri' do
+      issue = PartyFoul::IssueRenderers::Rack.new(nil, {'REQUEST_METHOD' => 'GET', 'REQUEST_URI' => '/something' })
+      issue.url.must_equal '[GET] /something'
+    end    
+  end  
+  
 end
