@@ -1,4 +1,9 @@
 class PartyFoul::IssueRenderers::Rack < PartyFoul::IssueRenderers::Base
+    
+  def request
+    @request ||= ::Rack::Request.new(env)
+  end      
+  
   def comment_options
     super.merge(URL: url, Params: params, Session: session, 'IP Address' => ip_address, 'HTTP Headers' => http_headers)
   end
@@ -14,7 +19,7 @@ class PartyFoul::IssueRenderers::Rack < PartyFoul::IssueRenderers::Base
   #
   # @return [String]
   def ip_address
-    env['REMOTE_ADDR']
+    request.ip
   end
 
   def url
