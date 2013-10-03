@@ -12,7 +12,7 @@ class PartyFoul::IssueRenderers::Rack < PartyFoul::IssueRenderers::Base
   #
   # @return [Hash]
   def params
-    env['QUERY_STRING']
+    request.params
   end
 
   # IP address of the client who triggered the exception
