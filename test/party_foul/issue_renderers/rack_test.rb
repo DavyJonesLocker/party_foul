@@ -50,5 +50,12 @@ describe 'Rack Issue Renderer' do
       issue_renderer.url.must_equal '[GET] /something'
     end    
   end  
-    
+  
+  describe '#session' do
+    it 'returns the session' do
+      issue_renderer = PartyFoul::IssueRenderers::Rack.new(nil, { 'rack.session' => 'abc:123' })
+      issue_renderer.session.must_equal 'abc:123'
+    end    
+  end  
+      
 end

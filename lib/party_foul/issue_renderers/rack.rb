@@ -30,7 +30,7 @@ class PartyFoul::IssueRenderers::Rack < PartyFoul::IssueRenderers::Base
   #
   # @return [Hash]
   def session
-    env['rack.session']
+    request.session
   end
 
   # HTTP Headers hash from the request. Headers can be filtered out by
