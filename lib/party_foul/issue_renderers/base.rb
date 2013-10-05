@@ -16,7 +16,7 @@ class PartyFoul::IssueRenderers::Base
   #
   # @return [String]
   def title
-    raw_title.gsub(/#<(\w+):0x\w+?>/, "#<\\1:0xXXXXXX>")
+    raw_title.gsub(/0x(\w+)/, "0xXXXXXX")
   end
 
   # Renders the issue body
