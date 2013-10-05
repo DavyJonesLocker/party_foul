@@ -1,4 +1,9 @@
 class PartyFoul::IssueRenderers::Rack < PartyFoul::IssueRenderers::Base
+    
+  def request
+    @request ||= ::Rack::Request.new(env)
+  end      
+  
   def comment_options
     super.merge(URL: url, Params: params, Session: session, 'IP Address' => ip_address, 'HTTP Headers' => http_headers)
   end
@@ -7,25 +12,25 @@ class PartyFoul::IssueRenderers::Rack < PartyFoul::IssueRenderers::Base
   #
   # @return [Hash]
   def params
-    env['QUERY_STRING']
+    request.params
   end
 
   # IP address of the client who triggered the exception
   #
   # @return [String]
   def ip_address
-    env['REMOTE_ADDR']
+    request.ip
   end
 
   def url
-    "[#{env['REQUEST_METHOD']}] #{env['REQUEST_URI']}"
+    "[#{request.request_method}] #{env['REQUEST_URI']}"
   end
 
   # The session hash for the client at the time of the exception
   #
   # @return [Hash]
   def session
-    env['rack.session']
+    request.session
   end
 
   # HTTP Headers hash from the request. Headers can be filtered out by
@@ -33,7 +38,12 @@ class PartyFoul::IssueRenderers::Rack < PartyFoul::IssueRenderers::Base
   #
   # @return [Hash]
   def http_headers
-    { Version: env['HTTP_VERSION'], 'User Agent' => env['HTTP_USER_AGENT'], 'Accept Encoding' => env['HTTP_ACCEPT_ENCODING'], Accept: env['HTTP_ACCEPT'] }
+    {
+      Version: env['HTTP_VERSION'], 
+      'User Agent' => request.user_agent, 
+      'Accept Encoding' => env['HTTP_ACCEPT_ENCODING'], 
+      Accept: env['HTTP_ACCEPT'], 
+    }
   end
 
   private
