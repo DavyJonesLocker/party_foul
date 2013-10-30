@@ -14,7 +14,7 @@ module PartyFoul
       @web_url      = ask_with_default 'Web URL:', 'https://github.com'
 
       begin
-        octokit      = Octokit.new :login => login, :password => password, :api_endpoint => @api_endpoint
+        octokit      = Octokit::Client.new :login => login, :password => password, :api_endpoint => @api_endpoint
         @oauth_token = octokit.create_authorization(scopes: ['repo'], note: "PartyFoul #{@owner}/#{@repo}", note_url: "#{@web_url}/#{@owner}/#{@repo}").token
         template 'party_foul.rb', 'config/initializers/party_foul.rb'
       rescue Octokit::Unauthorized
