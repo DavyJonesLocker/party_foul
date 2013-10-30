@@ -9,9 +9,9 @@ class PartyFoul::GeneratorTest < Rails::Generators::TestCase
   test 'it copies the initializer' do
     owner = 'test_owner'
     repo  = 'test_repo'
-    octokit = mock('Octokit')
+    octokit = mock('Octokit::Client')
     octokit.expects(:create_authorization).with(scopes: ['repo'], note: 'PartyFoul test_owner/test_repo', note_url: 'http://example.com/test_owner/test_repo').returns(sawyer_resource({token: 'test_token'}))
-    Octokit.stubs(:new).with(:login => 'test_login', :password => 'test_password', :api_endpoint => 'http://api.example.com').returns(octokit)
+    Octokit::Client.stubs(:new).with(:login => 'test_login', :password => 'test_password', :api_endpoint => 'http://api.example.com').returns(octokit)
     $stdin.stubs(:gets).returns('test_login').then.returns('test_password').then.returns(owner).then.returns(repo).then.returns('http://api.example.com').then.returns('http://example.com').then.returns('')
     run_generator
 
