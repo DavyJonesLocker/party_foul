@@ -12,6 +12,17 @@ describe 'Rails Issue Renderer' do
     end
   end
 
+  describe '#occurred_at' do
+    it 'uses current when possible' do
+      Time.stubs(:now).returns(Time.new(1970, 1, 1, 0, 0, 1, '-08:00'))
+      Time.stubs(:current).returns(Time.new(1970, 1, 1, 0, 0, 1, '-05:00'))
+      current_as_string = Time.current.strftime('%B %d, %Y %H:%M:%S %z')
+      rendered_issue = PartyFoul::IssueRenderers::Rails.new(nil, nil)
+      expected = rendered_issue.occurred_at
+      rendered_issue.occurred_at.must_equal current_as_string
+    end
+  end
+
   describe '#session' do
     let(:params) { {'action_dispatch.parameter_filter' => ['password'], 'rack.session' => { 'status' => 'ok', 'password' => 'test' }, 'QUERY_STRING' => { 'status' => 'fail' } } }
 
