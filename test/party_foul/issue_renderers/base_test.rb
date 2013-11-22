@@ -118,7 +118,7 @@ Fingerprint: `abcdefg1234567890`
       rendered_issue.title.must_equal 'Error for #<#<ClassName:0xXXXXXX>:0xXXXXXX>'
     end
 
-    context 'when a custom prefix is configured' do
+    context 'when a custom title prefix is configured' do
       before do
         PartyFoul.configure do |config|
           config.title_prefix = 'PRODUCTION'
@@ -129,6 +129,18 @@ Fingerprint: `abcdefg1234567890`
         rendered_issue = PartyFoul::IssueRenderers::Base.new(nil, nil)
         rendered_issue.stubs(:raw_title).returns('Error')
         rendered_issue.title.must_equal '[PRODUCTION] Error'
+      end
+
+      it 'generated unique fingerprints' do
+        rendered_issue = PartyFoul::IssueRenderers::Base.new(nil, nil)
+        rendered_issue.stubs(:raw_title).returns('Error')
+        fingerprint = rendered_issue.fingerprint
+
+        PartyFoul.configure do |config|
+          config.title_prefix = 'STAGING'
+        end
+
+        fingerprint.wont_equal rendered_issue.fingerprint
       end
     end
   end
