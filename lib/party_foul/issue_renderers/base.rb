@@ -16,7 +16,11 @@ class PartyFoul::IssueRenderers::Base
   #
   # @return [String]
   def title
-    raw_title.gsub(/0x(\w+)/, "0xXXXXXX")
+    if PartyFoul.title_prefix
+      "[#{PartyFoul.title_prefix}] #{masked_title}"
+    else
+      masked_title
+    end
   end
 
   # Renders the issue body
@@ -158,6 +162,10 @@ BODY
 
   def raw_title
     raise NotImplementedError
+  end
+
+  def masked_title
+    raw_title.gsub(/0x(\w+)/, "0xXXXXXX")
   end
 
   def format_line(line)

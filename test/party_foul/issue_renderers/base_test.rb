@@ -117,6 +117,20 @@ Fingerprint: `abcdefg1234567890`
       rendered_issue.stubs(:raw_title).returns('Error for #<#<ClassName:0x007fbddbdcd340>:0x007fbddf6be0a0>')
       rendered_issue.title.must_equal 'Error for #<#<ClassName:0xXXXXXX>:0xXXXXXX>'
     end
+
+    context 'when a custom prefix is configured' do
+      before do
+        PartyFoul.configure do |config|
+          config.title_prefix = 'PRODUCTION'
+        end
+      end
+
+      it 'adds a custom prefix' do
+        rendered_issue = PartyFoul::IssueRenderers::Base.new(nil, nil)
+        rendered_issue.stubs(:raw_title).returns('Error')
+        rendered_issue.title.must_equal '[PRODUCTION] Error'
+      end
+    end
   end
 
   describe '#stack_trace' do
