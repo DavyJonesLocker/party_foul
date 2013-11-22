@@ -57,7 +57,9 @@ BODY
   # @return [String]
   def stack_trace
     exception.backtrace.map do |line|
-      if (matches = extract_file_name_and_line_number(line))
+      if from_bundler?(line)
+        format_line(line)
+      elsif (matches = extract_file_name_and_line_number(line))
         "<a href='#{PartyFoul.repo_url}/blob/#{sha}/#{matches[2]}#L#{matches[3]}'>#{format_line(line)}</a>"
       else
         format_line(line)
@@ -156,8 +158,14 @@ BODY
     Bundler.bundle_path.to_s if defined?(Bundler)
   end
 
-  def extract_file_name_and_line_number(backtrace_line)
-    backtrace_line.match(/#{app_root}\/((.+?):(\d+))/)
+  def from_bundler?(line)
+    if bundle_root
+      line.match(bundle_root)
+    end
+  end
+
+  def extract_file_name_and_line_number(line)
+    line.match(/#{app_root}\/((.+?):(\d+))/)
   end
 
   def raw_title
@@ -169,11 +177,10 @@ BODY
   end
 
   def format_line(line)
-    if bundle_root
-      line.sub(app_root, '[app]...').sub(bundle_root, '[bundle]...')
+    if from_bundler?(line)
+      line.sub(bundle_root, '[bundle]...')
     else
       line.sub(app_root, '[app]...')
     end
   end
-
 end
