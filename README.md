@@ -92,6 +92,10 @@ PartyFoul.configure do |config|
 
   # The branch for your deployed code
   # config.branch               = 'master'
+
+  # Setting your title prefix can help with 
+  # distinguising the issue between environments
+  # config.title_prefix         = Rails.env
 end
 ```
 
