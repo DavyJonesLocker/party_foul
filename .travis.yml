@@ -1,8 +1,10 @@
 rvm:
-  - 1.9.3
-  - 2.0.0
-
+- 1.9.3
+- 2.0.0
 notifications:
   email:
-    - brian@dockyard.com
-    - git@danmcclain.net
+  - brian@dockyard.com
+  - git@danmcclain.net
+  hipchat:
+    rooms:
+      secure: ag8hARoAz81cn1qKaLvATzXhfuNEIX5dEO2nog3H6WBxj4FO2YjDRLM5J3D8fj3J2KwFnF868Xig9cEZOJA1D7Uj/MUYWUP70ptkuSiMXIzYX6ekRbDYu7MAK3dYkqdHHEdh1xCjghH4L5Z06fUXpyj5xmbIBT+ppQ3cigEeLjU=
