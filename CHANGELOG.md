@@ -1,4 +1,4 @@
-## Master
+## 1.4.1 (unreleased)
 
  * Uses `Time.current` in `PartyFoul::IssueRenderer::Rails` to use the
    application time instead of server time
