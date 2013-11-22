@@ -15,6 +15,14 @@ class PartyFoul::IssueRenderers::Rails < PartyFoul::IssueRenderers::Rack
     parameter_filter.filter(env['rack.session'] || { } )
   end
 
+  # The timestamp when the exception occurred. Will use Time.current when available to record
+  # the time with the proper timezone
+  #
+  # @return [String]
+  def occurred_at
+    @occurred_at ||= Time.current.strftime('%B %d, %Y %H:%M:%S %z')
+  end
+
   private
 
   def app_root
