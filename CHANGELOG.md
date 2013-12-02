@@ -1,3 +1,9 @@
+## 1.5.1
+ 
+ * Uses `env['action_dispatch.request.parameters']` instead of
+   `path_parameters` in rails renderer to fix missing params issue
+   ([Bug #82](https://github.com/dockyard/party_foul/issues/82)) - Dan McClain
+
 ## 1.5.0
 
  * Uses `Time.current` in `PartyFoul::IssueRenderer::Rails` to use the
