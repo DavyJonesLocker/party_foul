@@ -17,7 +17,7 @@ GitHub](https://github.com/dockyard/party_foul/issues).
 following:
 
 1. Attempt to find a matching issue in your GitHub repo
-2. If no matching issue is found an new issue is created with a
+2. If no matching issue is found a new issue is created with a
    unique title, session information, and stack trace. The issue is
 tagged as a `bug`. A new comment is added with relevant data on the
 application state.
