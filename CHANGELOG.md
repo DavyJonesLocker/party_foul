@@ -1,3 +1,6 @@
+## 1.5.2
+ * Changes the dependency on Octokit to pessimistic minor version, as
+   opposed to pessimistic patch version - Rodrigo Pinto
 ## 1.5.1
  
  * Uses `env['action_dispatch.request.parameters']` instead of
