@@ -17,14 +17,14 @@ GitHub](https://github.com/dockyard/party_foul/issues).
 following:
 
 1. Attempt to find a matching issue in your GitHub repo
-2. If no matching issue is found a new issue is created with a
+2. If no matching issue is found, a new issue is created with a
    unique title, session information, and stack trace. The issue is
 tagged as a `bug`. A new comment is added with relevant data on the
 application state.
-3. If an open issue is found the occurence count and time stamp is
+3. If an open issue is found, the occurence count and time stamp is
    updated. A new comment is added with relevant data on the
 application state.
-4. If a closed issue is found the occurence count and time stamp is
+4. If a closed issue is found, the occurence count and time stamp is
    updated. The issue is reopened and a `regression` tag is
 added. A new comment is added with relevant data on the
 application state.
@@ -190,7 +190,7 @@ end
 
 ## Tracking errors outside of an HTTP request
 
-You may want to track errors outside of a reqular HTTP stack. In that
+You may want to track errors outside of a regular HTTP stack. In that
 case you will need to make sure of the
 `PartyFoul::RacklessExceptionHandler`.
 
