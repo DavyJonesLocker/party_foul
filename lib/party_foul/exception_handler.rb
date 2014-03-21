@@ -89,8 +89,8 @@ class PartyFoul::ExceptionHandler
   def comment_limit_met?(body)
     !!PartyFoul.comment_limit && PartyFoul.comment_limit <= occurrence_count(body)
   end
-  
+
   def find_first_issue(state)
-    PartyFoul.github.legacy_search_issues(PartyFoul.repo_path, fingerprint, state).first
-  end  
+    PartyFoul.github.search_issues(fingerprint, repo: PartyFoul.repo_path, state: state).first
+  end
 end

@@ -1,3 +1,7 @@
+## 1.5.3
+ * All issue searches are now performed against the v3 GitHub API rather than
+   using the legacy API.
+
 ## 1.5.2
  * Changes the dependency on Octokit to pessimistic minor version, as
    opposed to pessimistic patch version - Rodrigo Pinto
