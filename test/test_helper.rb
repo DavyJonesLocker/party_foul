@@ -34,3 +34,7 @@ def sawyer_resource(attrs)
   agent = Sawyer::Agent.new(PartyFoul.api_endpoint)
   Sawyer::Resource.new(agent, attrs)
 end
+
+def no_search_results
+  sawyer_resource(total_count: 0, incomplete_results: false, items: [])
+end
