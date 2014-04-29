@@ -91,6 +91,6 @@ class PartyFoul::ExceptionHandler
   end
 
   def find_first_issue(state)
-    PartyFoul.github.search_issues(fingerprint, repo: PartyFoul.repo_path, state: state).first
+    PartyFoul.github.search_issues("#{fingerprint} repo:#{PartyFoul.repo_path} state:#{state}").items.first
   end
 end
