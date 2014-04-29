@@ -1,6 +1,7 @@
 ## 1.5.4
  * Fix test hanging
  * Updated to Octokit 3.1
+ * Use proper search API
 
 ## 1.5.3
  * All issue searches are now performed against the v3 GitHub API rather than
