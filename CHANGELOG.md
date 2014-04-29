@@ -1,3 +1,6 @@
+## 1.5.4
+ * Fix test hanging
+
 ## 1.5.3
  * All issue searches are now performed against the v3 GitHub API rather than
    using the legacy API.
