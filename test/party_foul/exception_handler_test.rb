@@ -119,7 +119,7 @@ describe 'Party Foul Exception Handler' do
       it 'will update the count on the body and re-open the issue' do
         PartyFoul.github.expects(:search_issues).with('test_fingerprint repo:test_owner/test_repo state:open').returns(no_search_results)
         PartyFoul.github.expects(:search_issues).with('test_fingerprint repo:test_owner/test_repo state:closed').returns(
-          sawyer_resource({total_count: 1, incomplete_results: false, items:[{title: 'Test Title', body: 'Test Body', state: 'closed', number: 1, labels: ['staging']}]}) )
+          sawyer_resource({total_count: 1, incomplete_results: false, items:[{title: 'Test Title', body: 'Test Body', state: 'closed', number: 1, labels: [{url: 'https://api.github.com/repos/test_owner/test_repo/labels/staging', name: 'staging', color: 'f29513'}]}]}) )
         PartyFoul.github.expects(:update_issue).with('test_owner/test_repo', 1, 'Test Title', 'New Body', state: 'open', labels: ['bug', 'regression', 'staging'])
         PartyFoul.github.expects(:add_comment).with('test_owner/test_repo', 1, 'Test Comment')
         PartyFoul.github.expects(:references).with('test_owner/test_repo', 'heads/deploy').returns(sawyer_resource({object: {sha: 'abcdefg1234567890'}}))
@@ -133,7 +133,7 @@ describe 'Party Foul Exception Handler' do
       PartyFoul::IssueRenderers::Rails.any_instance.stubs(:body).returns('Test Body')
       PartyFoul.github.expects(:search_issues).with('test_fingerprint repo:test_owner/test_repo state:open').returns(no_search_results)
       PartyFoul.github.expects(:search_issues).with('test_fingerprint repo:test_owner/test_repo state:closed').returns(
-        sawyer_resource({total_count: 1, incomplete_results: false, items:[{title: 'Test Title', body: 'Test Body', state: 'closed', number: 1, labels: ['wontfix']}]}) )
+        sawyer_resource({total_count: 1, incomplete_results: false, items:[{title: 'Test Title', body: 'Test Body', state: 'closed', number: 1, labels: [{url: 'https://api.github.com/repos/test_owner/test_repo/labels/wontfix', name: 'wontfix', color: 'f29513'}]}]}) )
       PartyFoul.github.expects(:create_issue).never
       PartyFoul.github.expects(:update_issue).never
       PartyFoul.github.expects(:add_comment).never
