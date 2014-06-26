@@ -4,7 +4,11 @@ class PartyFoul::IssueRenderers::Rails < PartyFoul::IssueRenderers::Rack
   # @return [Hash]
   def params
     parameter_filter = ActionDispatch::Http::ParameterFilter.new(env["action_dispatch.parameter_filter"])
-    parameter_filter.filter(env['action_dispatch.request.parameters'])
+    if env['action_dispatch.request.parameters']
+      return parameter_filter.filter(env['action_dispatch.request.parameters'])
+    else
+      return parameter_filter
+    end
   end
 
   # Rails session hash. Filtered parms are respected.
@@ -30,6 +34,7 @@ class PartyFoul::IssueRenderers::Rails < PartyFoul::IssueRenderers::Rack
   end
 
   def raw_title
-    %{#{env['action_controller.instance'].class}##{env['action_dispatch.request.parameters']['action']} (#{exception.class}) "#{exception.message}"}
+    parameters = env['action_dispatch.request.parameters']['action'] if env['action_dispatch.request.parameters']
+    %{#{env['action_controller.instance'].class}##{parameters} (#{exception.class}) "#{exception.message}"}
   end
 end

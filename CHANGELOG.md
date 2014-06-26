@@ -1,6 +1,7 @@
 ## 1.5.5
  * Remove unused attr whitelisted\_rack\_variables
-
+ * check for existance of env['action_dispatch.request.parameters'] ([Bug #107]https://github.com/dockyard/party_foul/pull/107/)
+ 
 ## 1.5.4
  * Fix test hanging
  * Updated to Octokit 3.1
