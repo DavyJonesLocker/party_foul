@@ -50,12 +50,14 @@ class PartyFoul::ExceptionHandler
   #
   # @param [Sawyer::Resource]
   def update_issue(issue)
-    unless issue.key?(:labels) && issue[:labels].include?('wontfix')
+    label_names = issue.key?(:labels) ? issue[:labels].map {|label| label[:name] } : []
+
+    unless label_names.include?('wontfix')
       body = rendered_issue.update_body(issue[:body])
       params = {state: 'open'}
 
       if issue[:state] == 'closed'
-        params[:labels] = (['bug', 'regression'] + issue[:labels]).uniq
+        params[:labels] = (['bug', 'regression'] + label_names).uniq
       end
 
       self.sha = PartyFoul.github.references(PartyFoul.repo_path, "heads/#{PartyFoul.branch}").object.sha
