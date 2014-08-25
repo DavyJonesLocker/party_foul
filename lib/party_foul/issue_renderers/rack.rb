@@ -5,7 +5,7 @@ class PartyFoul::IssueRenderers::Rack < PartyFoul::IssueRenderers::Base
   end      
   
   def comment_options
-    super.merge(URL: url, Params: params, Session: session, 'IP Address' => ip_address, 'HTTP Headers' => http_headers)
+    super.merge(URL: url, Params: params, Session: session, 'IP Address' => ip_address_locator, 'HTTP Headers' => http_headers)
   end
 
   # Rack params
@@ -15,11 +15,11 @@ class PartyFoul::IssueRenderers::Rack < PartyFoul::IssueRenderers::Base
     request.params
   end
 
-  # IP address of the client who triggered the exception
+  # Link to IP address geolocator of the client who triggered the exception
   #
   # @return [String]
-  def ip_address
-    request.ip
+  def ip_address_locator
+    "<a href='http://ipinfo.io/#{request.ip}'>#{request.ip}</a>"
   end
 
   def url

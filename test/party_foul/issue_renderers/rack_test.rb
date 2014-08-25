@@ -29,18 +29,20 @@ describe 'Rack Issue Renderer' do
     end
   end  
   
-  describe '#ip_address' do
+  describe '#ip_address_geolocator' do
     # we are delegating to rack, see
     # https://github.com/rack/rack/blob/master/test/spec_request.rb    
     
-    it 'returns the IP address when REMOTE_ADDR is set' do
+    it 'returns the link to geolocation IP address when REMOTE_ADDR is set' do
       issue_renderer = PartyFoul::IssueRenderers::Rack.new(nil, { 'REMOTE_ADDR' => '1.2.3.4' })
-      issue_renderer.ip_address.must_equal '1.2.3.4'
+      ip_addr = "<a href='http://ipinfo.io/1.2.3.4'>1.2.3.4</a>"
+      issue_renderer.ip_address_locator.must_equal ip_addr
     end
     
-    it 'return the IP address when HTTP_X_FORWARDED_FOR is set' do
+    it 'return the link to geolocation IP address when HTTP_X_FORWARDED_FOR is set' do
       issue_renderer = PartyFoul::IssueRenderers::Rack.new(nil, { 'HTTP_X_FORWARDED_FOR' => '10.0.0.1, 10.0.0.1, 3.4.5.6' })
-      issue_renderer.ip_address.must_equal '3.4.5.6'
+      ip_addr = "<a href='http://ipinfo.io/3.4.5.6'>3.4.5.6</a>"
+      issue_renderer.ip_address_locator.must_equal ip_addr
     end
   end
   
