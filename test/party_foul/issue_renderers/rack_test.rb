@@ -54,10 +54,15 @@ describe 'Rack Issue Renderer' do
   end  
   
   describe '#session' do
-    it 'returns the session' do
+    it 'returns the session when it has value' do
       issue_renderer = PartyFoul::IssueRenderers::Rack.new(nil, { 'rack.session' => 'abc:123' })
       issue_renderer.session.must_equal 'abc:123'
-    end    
+    end
+
+    it 'returns empty hash when it is empty' do
+      issue_renderer = PartyFoul::IssueRenderers::Rack.new(nil, {})
+      issue_renderer.session.must_equal Hash.new
+    end
   end
   
   describe '#http_headers' do

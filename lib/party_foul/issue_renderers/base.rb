@@ -129,7 +129,11 @@ BODY
     hash.inject('') do |rows, row|
       key, value = row
       if row[1].kind_of?(Hash)
-        value = build_table_from_hash(row[1])
+        value = if row[1].empty?
+          "[EMPTY]"
+        else
+         build_table_from_hash(row[1])
+       end
       else
         value = CGI.escapeHTML(value.to_s)
       end
