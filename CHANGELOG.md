@@ -1,5 +1,7 @@
 ## 1.5.5
  * Remove unused attr whitelisted\_rack\_variables
+ * env['action_dispatch.request.parameters'] not present when file is
+   beeing uploaded
 
 ## 1.5.4
  * Fix test hanging
