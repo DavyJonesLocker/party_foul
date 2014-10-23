@@ -72,7 +72,15 @@ class PartyFoul::ExceptionHandler
   private
 
   def self.clean_env(env)
-    env.select { |key, value| Marshal.dump(value) rescue false }
+    env.select do |key, value|
+      begin
+        Marshal.dump(value)
+      rescue TypeError
+        true
+      rescue
+        false
+      end
+    end
   end
 
   def fingerprint

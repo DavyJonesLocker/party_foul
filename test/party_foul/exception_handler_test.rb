@@ -188,4 +188,20 @@ describe 'Party Foul Exception Handler' do
       end
     end
   end
+
+  describe '.clean_env' do
+    context 'when env contains file reference' do
+      before do
+        @env = { 
+          'action_dispatch.request.parameters' => {
+            :@tempfile => File.open(__FILE__)
+          }
+        }
+      end
+
+      it "marshal dump shouldn't reject values when they contain File" do
+        PartyFoul::ExceptionHandler.send(:clean_env, @env)['action_dispatch.request.parameters'].must_be_instance_of Hash
+      end
+    end
+  end
 end
