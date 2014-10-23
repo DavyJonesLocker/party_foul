@@ -12,7 +12,14 @@ class PartyFoul::IssueRenderers::Rails < PartyFoul::IssueRenderers::Rack
   # @return [Hash]
   def session
     parameter_filter = ActionDispatch::Http::ParameterFilter.new(env['action_dispatch.parameter_filter'])
-    parameter_filter.filter(env['rack.session'] || { } )
+
+    env_session = begin
+      env['rack.session'].to_hash
+    rescue NoMethodError
+      env['rack.session'] || { }
+    end
+
+    parameter_filter.filter(env_session)
   end
 
   # The timestamp when the exception occurred. Will use Time.current when available to record

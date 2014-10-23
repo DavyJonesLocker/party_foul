@@ -1,5 +1,12 @@
 require 'test_helper'
 
+# dummy ActionDispatch::Request::Session representation
+class ActionDispatchRequestSessionDummy
+   def to_hash
+    { 'status' => 'ok', 'password' => 'test' }
+  end
+end
+
 describe 'Rails Issue Renderer' do
   describe '#params' do
     before do
@@ -44,7 +51,18 @@ describe 'Rails Issue Renderer' do
       end
     end
 
+    context 'session object is Rails 4 session object' do
+      let(:params) do
+        {'action_dispatch.parameter_filter' => ['password'],
+         'rack.session' => ActionDispatchRequestSessionDummy.new ,
+         'QUERY_STRING' => { 'status' => 'fail' } }
+      end
 
+      it 'returns ok' do
+        @rendered_issue.session['status'].must_equal 'ok'
+        @rendered_issue.session['password'].must_equal '[FILTERED]'
+      end
+    end
   end
 
   describe '#raw_title' do
