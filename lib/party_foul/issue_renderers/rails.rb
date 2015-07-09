@@ -30,6 +30,6 @@ class PartyFoul::IssueRenderers::Rails < PartyFoul::IssueRenderers::Rack
   end
 
   def raw_title
-    %{#{env['action_controller.instance'].class}##{env['action_dispatch.request.parameters']['action']} (#{exception.class}) "#{exception.message}"}
+    %{#{env['action_controller.instance'].class}##{(env['action_dispatch.request.parameters'] || {})['action']} (#{exception.class}) "#{exception.message}"}
   end
 end
