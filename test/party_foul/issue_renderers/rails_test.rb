@@ -2,13 +2,22 @@ require 'test_helper'
 
 describe 'Rails Issue Renderer' do
   describe '#params' do
+    let(:request_parameters) { { 'status' => 'ok', 'password' => 'test' } }
     before do
-      @rendered_issue = PartyFoul::IssueRenderers::Rails.new(nil, {'action_dispatch.parameter_filter' => ['password'], 'action_dispatch.request.parameters' => { 'status' => 'ok', 'password' => 'test' }, 'QUERY_STRING' => { 'status' => 'fail' } })
+      @rendered_issue = PartyFoul::IssueRenderers::Rails.new(nil, {'action_dispatch.parameter_filter' => ['password'], 'action_dispatch.request.parameters' => request_parameters, 'QUERY_STRING' => { 'status' => 'fail' } })
     end
 
     it 'returns ok' do
       @rendered_issue.params['status'].must_equal 'ok'
       @rendered_issue.params['password'].must_equal '[FILTERED]'
+    end
+
+    context 'without request parameters' do
+      let(:request_parameters) { nil }
+
+      it 'returns empty hash' do
+        @rendered_issue.params.must_equal({})
+      end
     end
   end
 
