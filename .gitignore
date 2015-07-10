@@ -13,3 +13,4 @@ test/dummy/config/initializers/_environment.rb
 doc/*
 test/tmp/*
 *.swp
+.tags*
