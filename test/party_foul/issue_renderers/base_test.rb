@@ -2,6 +2,9 @@ require 'test_helper'
 require 'active_support/core_ext/object/blank'
 require 'action_dispatch/http/parameter_filter'
 
+# Fix deprecation warnings
+ActiveSupport.test_order = :sorted
+
 describe 'Party Foul Issue Renderer Base' do
   before do
     Time.stubs(:now).returns(Time.new(1970, 1, 1, 0, 0, 0, '-05:00'))
