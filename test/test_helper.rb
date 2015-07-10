@@ -25,7 +25,19 @@ module MiniTest::Expectations
 end
 
 def clean_up_party
-  %w{github oauth_token api_endpoint owner repo blacklisted_exceptions processor web_url branch additional_labels comment_limit}.each do |attr|
+  %w{
+    additional_labels
+    api_endpoint
+    blacklisted_exceptions
+    branch
+    comment_limit
+    github
+    oauth_token
+    owner
+    processor web_url
+    repo
+    title_prefix
+  }.each do |attr|
     PartyFoul.send("#{attr}=", nil)
   end
 end
