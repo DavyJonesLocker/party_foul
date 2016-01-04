@@ -1,8 +1,8 @@
 # PartyFoul #
 
-[![Build Status](https://secure.travis-ci.org/dockyard/party_foul.png?branch=master)](http://travis-ci.org/dockyard/party_foul)
-[![Dependency Status](https://gemnasium.com/dockyard/party_foul.png?travis)](https://gemnasium.com/dockyard/party_foul)
-[![Code Climate](https://codeclimate.com/github/dockyard/party_foul.png)](https://codeclimate.com/github/dockyard/party_foul)
+[![Build Status](https://secure.travis-ci.org/dockyard/party_foul.svg?branch=master)](http://travis-ci.org/dockyard/party_foul)
+[![Dependency Status](https://gemnasium.com/dockyard/party_foul.svg?travis)](https://gemnasium.com/dockyard/party_foul)
+[![Code Climate](https://codeclimate.com/github/dockyard/party_foul.svg)](https://codeclimate.com/github/dockyard/party_foul)
 
 Rails exceptions automatically opened as issues on GitHub
 
@@ -93,7 +93,7 @@ PartyFoul.configure do |config|
   # The branch for your deployed code
   # config.branch               = 'master'
 
-  # Setting your title prefix can help with 
+  # Setting your title prefix can help with
   # distinguising the issue between environments
   # config.title_prefix         = Rails.env
 end
