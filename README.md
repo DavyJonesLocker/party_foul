@@ -99,9 +99,10 @@ PartyFoul.configure do |config|
 end
 ```
 
-You can generate an OAuth token from via the
-[OAuth Authorizations API](http://developer.github.com/v3/oauth/#oauth-authorizations-api)
-with cURL:
+You can
+[create an OAuth token](https://help.github.com/articles/creating-an-access-token-for-command-line-use/)
+or generate an OAuth token via the
+[OAuth Authorizations API](http://developer.github.com/v3/oauth/#oauth-authorizations-api) with cURL:
 
 ```bash
 curl -u <github_login> -i -d "{ \"scopes\": [\"repo\"] }" \
