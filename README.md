@@ -211,7 +211,7 @@ The code that you want to handle should be wrapped like so:
 begin
   ... # some code that might raise an error
 rescue => error
-  PartyFoul::RacklessExceptionHandler.handle(error, {class: class_name, method: method_name, params: message)
+  PartyFoul::RacklessExceptionHandler.handle(error, class: class_name, method: method_name, params: message)
   raise error
 end
 ```
