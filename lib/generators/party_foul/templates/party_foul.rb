@@ -6,7 +6,7 @@ PartyFoul.configure do |config|
   # The OAuth token for the account that is opening the issues on GitHub
   config.oauth_token            = '<%= @oauth_token %>'
 
-  # The API api_endpoint for GitHub. Unless you are hosting a private
+  # The API endpoint for GitHub. Unless you are hosting a private
   # instance of Enterprise GitHub you do not need to include this
   config.api_endpoint           = '<%= @api_endpoint %>'
 
@@ -33,7 +33,7 @@ PartyFoul.configure do |config|
   # Limit the number of comments per issue
   # config.comment_limit        = 10
 
-  # Setting your title prefix can help with 
+  # Setting your title prefix can help with
   # distinguising the issue between environments
   # config.title_prefix         = Rails.env
 end
