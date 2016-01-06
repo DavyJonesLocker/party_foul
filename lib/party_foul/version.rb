@@ -1,3 +1,3 @@
 module PartyFoul
-  VERSION = '1.5.5'
+  VERSION = '1.5.6'.freeze
 end
