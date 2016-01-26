@@ -143,6 +143,20 @@ Fingerprint: `abcdefg1234567890`
         fingerprint.wont_equal rendered_issue.fingerprint
       end
     end
+
+    context 'title length limit' do
+      before do
+        PartyFoul.configure do |config|
+          config.title_prefix = 'PRODUCTION'
+        end
+      end
+
+      it 'at most 256 chars' do
+        rendered_issue = PartyFoul::IssueRenderers::Base.new(nil, nil)
+        rendered_issue.stubs(:raw_title).returns('F'*300)
+        rendered_issue.title.size.must_equal 256
+      end
+    end
   end
 
   describe '#stack_trace' do
