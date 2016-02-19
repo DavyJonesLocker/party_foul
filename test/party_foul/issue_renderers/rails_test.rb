@@ -1,4 +1,6 @@
 require 'test_helper'
+require 'action_dispatch/http/request'
+require 'action_dispatch/request/session'
 
 describe 'Rails Issue Renderer' do
   describe '#params' do
@@ -33,7 +35,24 @@ describe 'Rails Issue Renderer' do
   end
 
   describe '#session' do
-    let(:params) { {'action_dispatch.parameter_filter' => ['password'], 'rack.session' => { 'status' => 'ok', 'password' => 'test' }, 'QUERY_STRING' => { 'status' => 'fail' } } }
+    def rails_session(hash_data)
+      store = Class.new {
+        def initialize(data); @data = data; end
+        def load_session(env); [1, @data]; end
+        def session_exists?(env); true; end
+      }.new(hash_data)
+      req = ActionDispatch::Request.new('rack.input' => {})
+
+      ActionDispatch::Request::Session.create(store, req, {})
+    end
+
+    let(:params) {
+      {
+        'action_dispatch.parameter_filter' => ['password'],
+        'rack.session' => rails_session('status' => 'ok', 'password' => 'test'),
+        'QUERY_STRING' => { 'status' => 'fail' }
+      }
+    }
 
     before do
       @rendered_issue = PartyFoul::IssueRenderers::Rails.new(nil, params)
