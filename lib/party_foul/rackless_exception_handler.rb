@@ -5,7 +5,9 @@ class PartyFoul::RacklessExceptionHandler < PartyFoul::ExceptionHandler
   #
   # @param [Exception, Hash]
   def self.handle(exception, env)
-    self.new(exception, clean_env(env)).run
+    if allow_handling?(exception)
+      self.new(exception, clean_env(env)).run
+    end
   end
 
   # Uses the Rackless IssueRenderer for a rackless environment

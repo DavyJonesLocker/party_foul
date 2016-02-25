@@ -20,7 +20,19 @@ describe 'Party Foul Rackless Exception Handler' do
       expected_exception_handler = PartyFoul::RacklessExceptionHandler.new(nil, params)
       expected_exception_handler.expects(:run)
       PartyFoul::RacklessExceptionHandler.expects(:new).with(nil, params).returns(expected_exception_handler)
-      PartyFoul::RacklessExceptionHandler.handle(nil, params)      
+      PartyFoul::RacklessExceptionHandler.handle(nil, params)
+    end
+
+    context 'filtering based upon exception' do
+      before do
+        PartyFoul.blacklisted_exceptions = ['StandardError']
+      end
+
+      it 'does not handle exception' do
+        PartyFoul::RacklessExceptionHandler.expects(:new).never
+
+        PartyFoul::RacklessExceptionHandler.handle StandardError.new, {}
+      end
     end
   end
 
