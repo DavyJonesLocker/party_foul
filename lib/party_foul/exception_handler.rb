@@ -7,7 +7,9 @@ class PartyFoul::ExceptionHandler
   #
   # @param [Exception, Hash]
   def self.handle(exception, env)
-    PartyFoul.processor.handle(exception, clean_env(env))
+    if allow_handling?(exception)
+      PartyFoul.processor.handle(exception, clean_env(env))
+    end
   end
 
   # Makes an attempt to determine what framework is being used and will use the proper
@@ -82,6 +84,21 @@ class PartyFoul::ExceptionHandler
       end
     end
   end
+
+  def self.allow_handling?(captured_exception)
+    !PartyFoul.blacklisted_exceptions.find do |blacklisted_exception|
+      names = blacklisted_exception.split('::'.freeze)
+      names.shift if names.empty? || names.first.empty?
+
+      constant = Object
+      names.each do |name|
+        constant = constant.const_defined?(name) ? constant.const_get(name) : constant.const_missing(name)
+      end
+
+      constant === captured_exception
+    end
+  end
+  private_class_method :allow_handling?
 
   def fingerprint
     rendered_issue.fingerprint
