@@ -1,6 +1,6 @@
 # PartyFoul #
 
-[![Build Status](https://secure.travis-ci.org/dockyard/party_foul.svg?branch=master)](http://travis-ci.org/dockyard/party_foul)
+[![Build Status](https://secure.travis-ci.org/DockYard/party_foul.svg?branch=master)](http://travis-ci.org/DockYard/party_foul)
 [![Dependency Status](https://gemnasium.com/dockyard/party_foul.svg?travis)](https://gemnasium.com/dockyard/party_foul)
 [![Code Climate](https://codeclimate.com/github/dockyard/party_foul.svg)](https://codeclimate.com/github/dockyard/party_foul)
 
@@ -21,10 +21,10 @@ following:
    unique title, session information, and stack trace. The issue is
 tagged as a `bug`. A new comment is added with relevant data on the
 application state.
-3. If an open issue is found, the occurence count and time stamp is
+3. If an open issue is found, the occurrence count and time stamp is
    updated. A new comment is added with relevant data on the
 application state.
-4. If a closed issue is found, the occurence count and time stamp is
+4. If a closed issue is found, the occurrence count and time stamp is
    updated. The issue is reopened and a `regression` tag is
 added. A new comment is added with relevant data on the
 application state.
@@ -217,7 +217,7 @@ end
 ```
 
 ### Tracking errors in a Sidekiq worker
-In order to use PartyFoul for exception handling with Sidekiq you will need to create an initializer with some middleware configuration. The following example is based on using [Sidekiq with another exception notifiier server](https://github.com/bugsnag/bugsnag-ruby/blob/master/lib/bugsnag/sidekiq.rb).
+In order to use PartyFoul for exception handling with Sidekiq you will need to create an initializer with some middleware configuration. The following example is based on using [Sidekiq with another exception notifier server](https://github.com/bugsnag/bugsnag-ruby/blob/master/lib/bugsnag/sidekiq.rb).
 
 File: config/initializers/partyfoul_sidekiq.rb
 
