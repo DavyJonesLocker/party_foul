@@ -115,7 +115,7 @@ or generate an OAuth token via the
 [OAuth Authorizations API](http://developer.github.com/v3/oauth/#oauth-authorizations-api) with cURL:
 
 ```bash
-curl -u <github_login> -i -d "{ \"scopes\": [\"repo\"] }" \
+curl -u <github_login> -i -d "{ \"scopes\": [\"repo\"], \"note\":[\"Test\"] }" \
 https://api.github.com/authorizations
 ```
 
