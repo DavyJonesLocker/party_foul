@@ -79,9 +79,14 @@ module PartyFoul
   #
   # @param [Block]
   def self.configure(&block)
+    require_hooks
     yield self
     self.github ||= Octokit::Client.new access_token: oauth_token, api_endpoint: api_endpoint
   end
+end
+
+def require_hooks
+  require 'party_foul/rake' if defined?(Rake)
 end
 
 require 'party_foul/exception_handler'
