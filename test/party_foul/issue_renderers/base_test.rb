@@ -186,6 +186,7 @@ Fingerprint: `abcdefg1234567890`
     end
 
     it 'formats the stack trace with link to shortened application path' do
+      clean_up_party
       exception = mock do
         stubs backtrace: ['/path/to/app/lib/some/file.rb:123 in `method`']
       end
