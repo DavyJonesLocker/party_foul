@@ -2,7 +2,6 @@ require 'cgi'
 
 class PartyFoul::IssueRenderers::Base
   attr_accessor :exception, :env, :sha
-  attr_reader :body
 
   # A new renderer instance for GitHub issues
   #
