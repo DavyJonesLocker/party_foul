@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.description = 'Auto-submit Rails exceptions as new issues on GitHub'
   s.license     = 'MIT'
 
-  s.required_ruby_version = '>= 1.9.3'
+  s.required_ruby_version = '>= 2.1.0'
 
   s.files = Dir['{app,config,db,lib}/**/*'] + ['Rakefile', 'README.md']
   s.test_files = Dir['test/**/*']
