@@ -106,16 +106,24 @@ Fingerprint: `abcdefg1234567890`
   end
 
   describe '#title' do
-    it 'masks the object ids in the raw_title' do
-      rendered_issue = PartyFoul::IssueRenderers::Base.new(nil, nil)
-      rendered_issue.stubs(:raw_title).returns('Error for #<ClassName:0xabcdefg1234567>')
-      rendered_issue.title.must_equal 'Error for #<ClassName:0xXXXXXX>'
-    end
+    context 'when no title prefix is configured' do
+      before do
+        PartyFoul.configure do |config|
+          config.title_prefix = nil
+        end
+      end
 
-    it 'masks the extended object ids in the raw_title' do
-      rendered_issue = PartyFoul::IssueRenderers::Base.new(nil, nil)
-      rendered_issue.stubs(:raw_title).returns('Error for #<#<ClassName:0x007fbddbdcd340>:0x007fbddf6be0a0>')
-      rendered_issue.title.must_equal 'Error for #<#<ClassName:0xXXXXXX>:0xXXXXXX>'
+      it 'masks the object ids in the raw_title' do
+        rendered_issue = PartyFoul::IssueRenderers::Base.new(nil, nil)
+        rendered_issue.stubs(:raw_title).returns('Error for #<ClassName:0xabcdefg1234567>')
+        rendered_issue.title.must_equal 'Error for #<ClassName:0xXXXXXX>'
+      end
+
+      it 'masks the extended object ids in the raw_title' do
+        rendered_issue = PartyFoul::IssueRenderers::Base.new(nil, nil)
+        rendered_issue.stubs(:raw_title).returns('Error for #<#<ClassName:0x007fbddbdcd340>:0x007fbddf6be0a0>')
+        rendered_issue.title.must_equal 'Error for #<#<ClassName:0xXXXXXX>:0xXXXXXX>'
+      end
     end
 
     context 'when a custom title prefix is configured' do

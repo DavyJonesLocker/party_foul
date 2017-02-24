@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'actionpack', '~> 4.0'
   s.add_development_dependency 'activesupport', '~> 4.0'
   s.add_development_dependency 'railties', '~> 4.0'
-  s.add_development_dependency 'minitest', '~> 4.7'
+  s.add_development_dependency 'minitest', '~> 5.8'
   s.add_development_dependency 'webmock'
   s.add_development_dependency 'rack-test'
   s.add_development_dependency 'mocha'

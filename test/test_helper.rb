@@ -11,8 +11,10 @@ rescue LoadError
 end
 require 'rack/test'
 require 'mocha/setup'
+require 'active_support'
 require 'party_foul'
 
+ActiveSupport.test_order = :random
 
 class MiniTest::Spec
   class << self
