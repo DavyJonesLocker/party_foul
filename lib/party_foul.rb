@@ -2,7 +2,8 @@ require 'octokit'
 
 module PartyFoul
   class << self
-    attr_accessor :github, :oauth_token, :api_endpoint, :owner, :repo, :blacklisted_exceptions, :processor, :web_url, :branch, :additional_labels, :comment_limit, :title_prefix
+    attr_accessor :github, :oauth_token, :owner, :repo, :additional_labels, :comment_limit, :title_prefix
+    attr_writer :branch, :web_url, :api_endpoint, :processor, :blacklisted_exceptions
   end
 
   # The git branch that is used for linking in the stack trace
@@ -78,9 +79,9 @@ module PartyFoul
   # Will also setup for GitHub api connections
   #
   # @param [Block]
-  def self.configure(&block)
+  def self.configure
     yield self
-    self.github ||= Octokit::Client.new access_token: oauth_token, api_endpoint: api_endpoint
+    self.github = Octokit::Client.new access_token: oauth_token, api_endpoint: api_endpoint
   end
 end
 

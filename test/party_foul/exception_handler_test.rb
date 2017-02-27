@@ -106,9 +106,7 @@ describe 'Party Foul Exception Handler' do
       end
 
       it "doesn't post a comment if the limit has been met" do
-        PartyFoul.configure do |config|
-          config.comment_limit = 10
-        end
+        PartyFoul.comment_limit = 10
         PartyFoul::ExceptionHandler.any_instance.expects(:occurrence_count).returns(10)
         PartyFoul.github.expects(:add_comment).never
         PartyFoul::ExceptionHandler.new(nil, {}).run
