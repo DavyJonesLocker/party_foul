@@ -44,7 +44,9 @@ BODY
   # Customize by overriding {#comment_options}
   #
   def comment
-    build_table_from_hash(comment_options)
+    html = build_table_from_hash(comment_options)
+    html = truncate_comment while html.size > PartyFoul.max_comment_size
+    html
   end
 
   # Compiles the stack trace for use in the issue body. Lines in the
@@ -183,5 +185,12 @@ BODY
     else
       line.sub(app_root, '[app]...')
     end
+  end
+
+  def truncate_comment
+    @sorted_comment_options ||= comment_options.sort_by { |_, v| v.size }
+    key_of_largest = @sorted_comment_options.pop[0]
+    comment_options[key_of_largest] = '[truncated]' if key_of_largest
+    build_table_from_hash(comment_options)
   end
 end

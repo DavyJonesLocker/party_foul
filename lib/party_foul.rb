@@ -3,7 +3,7 @@ require 'octokit'
 module PartyFoul
   class << self
     attr_accessor :github, :oauth_token, :owner, :repo, :additional_labels, :comment_limit, :title_prefix
-    attr_writer :branch, :web_url, :api_endpoint, :processor, :blacklisted_exceptions
+    attr_writer :branch, :web_url, :api_endpoint, :processor, :blacklisted_exceptions, :max_comment_size
   end
 
   # The git branch that is used for linking in the stack trace
@@ -66,6 +66,14 @@ module PartyFoul
   # @return [String]
   def self.repo_url
     "#{web_url}/#{repo_path}"
+  end
+
+  # The maximum size of a commit that can be submitted to GitHub.
+  # Comments larger than this will be truncated.
+  #
+  # @return [Integer]
+  def self.max_comment_size
+    @max_comment_size ||= 65_535
   end
 
   # The configure block for PartyFoul. Use to initialize settings

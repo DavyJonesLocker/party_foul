@@ -207,4 +207,40 @@ Fingerprint: `abcdefg1234567890`
       end
     end
   end
+
+  describe '#comment' do
+    before do
+      @rendered_issue = PartyFoul::IssueRenderers::Base.new(nil, nil)
+    end
+
+    it 'formats comment options as a table' do
+      @rendered_issue.stubs(:comment_options).returns({'Test Key' => 'Test Value'})
+      expected_comment = "<table><tr><th>Test Key</th><td>Test Value</td></tr></table>"
+      @rendered_issue.comment.must_equal expected_comment
+    end
+
+    context 'with a huge table' do
+      before do
+        @rendered_issue.stubs(:comment_options).returns({
+          'Test Key'         => 'Test Value',
+          'Big Key'          => 'x' * 66_000,
+          'After Key'        => 'Should be included',
+          'Another Big Key'  => 'z' * 66_000,
+        })
+      end
+
+      it 'truncates the comment' do
+        expected_comment = <<-COMMENT.delete("\n")
+<table>
+<tr><th>Test Key</th><td>Test Value</td></tr>
+<tr><th>Big Key</th><td>[truncated]</td></tr>
+<tr><th>After Key</th><td>Should be included</td></tr>
+<tr><th>Another Big Key</th><td>[truncated]</td></tr>
+</table>
+        COMMENT
+        @rendered_issue.comment.must_equal expected_comment
+      end
+    end
+  end
+
 end
