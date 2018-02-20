@@ -21,7 +21,7 @@ class PartyFoul::IssueRenderers::Base
       masked_title
     end
 
-    _title[0..255]
+    _title[0..149]
   end
 
   # Renders the issue body

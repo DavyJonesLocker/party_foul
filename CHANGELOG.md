@@ -1,3 +1,6 @@
+## 1.5.7
+  * Truncate GH issue title to 150 chars - anything longer now seems
+    to cause a 422 error from GH.
 ## 1.5.6
  * Upgrade Octokit to 4.x
 
