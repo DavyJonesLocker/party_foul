@@ -57,7 +57,7 @@ BODY
   #
   # @return [String]
   def stack_trace
-    exception.backtrace.map do |line|
+    (exception.backtrace || []).map do |line|
       if from_bundler?(line)
         format_line(line)
       elsif (matches = extract_file_name_and_line_number(line))
